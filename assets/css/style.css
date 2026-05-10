@@ -131,24 +131,27 @@ body {
 
 /* GLOBAL FOOTER STYLES */
 .global-footer {
-  margin-top: 50px; /* Wieder etwas Abstand nach oben */
-  padding: 40px 60px;
+  height: 100px; /* Exakt wie Topbar */
   background: #0f172a !important;
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px; /* Exakt wie Topbar */
+  position: relative; /* Nicht mehr fixiert */
   width: 100%;
-  position: relative;
   z-index: 10;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+  margin-top: 50px;
 }
 
 .footer-inner {
   width: 100%;
-  max-width: 1400px; /* Wieder die Begrenzung für bessere Symmetrie */
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative; /* Basis für die absolute Zentrierung der Links */
+  position: relative;
 }
 
 .footer-brand {
@@ -673,6 +676,7 @@ button:hover{
 
 /* Blaues Design */
 .glass-card.blue-theme {
+  border: 1px solid #38bdf8 !important;
   box-shadow: 
     0 30px 80px -15px rgba(0, 0, 0, 0.9),
     0 0 40px rgba(56, 189, 248, 0.25) !important; /* Stärkerer blauer Schatten */
@@ -687,6 +691,7 @@ button:hover{
 
 /* Lila Design */
 .glass-card.purple-theme {
+  border: 1px solid #a855f7 !important;
   box-shadow: 
     0 30px 80px -15px rgba(0, 0, 0, 0.9),
     0 0 40px rgba(168, 85, 247, 0.25) !important; /* Stärkerer lila Schatten */
@@ -1389,15 +1394,27 @@ select option {
 .modal {
   position: relative;
   z-index: 10;
-  overflow: hidden;
-  background: transparent !important; /* Muss transparent sein, damit ::before sichtbar ist */
+  overflow: hidden; /* WICHTIG: Clippt die Animation auf den Container */
+  background: #0f172a; /* Solid background */
   border-radius: 40px;
-  padding: 60px;
+  padding: 0; /* Padding wird auf den inneren Scroll-Container verlagert */
   max-width: 800px;
   width: 95%;
   text-align: center;
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
   animation: modalIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh; /* Begrenzt die Höhe des Modals */
+}
+
+/* Neuer Scroll-Bereich NUR für den Text */
+.modal-content-scroll {
+  overflow-y: auto;
+  padding: 60px;
+  flex: 1;
+  position: relative;
+  z-index: 5;
 }
 
 .modal::before {
@@ -1406,8 +1423,8 @@ select option {
   z-index: -2;
   left: 50%;
   top: 50%;
-  width: 150%; /* Etwas kleiner für schärfere Farben */
-  height: 300%; /* Hoch genug für die Rotation */
+  width: 200%; /* Groß genug für Rotation */
+  height: 200%;
   background: conic-gradient(
     from 0deg,
     #38bdf8, 
@@ -1418,7 +1435,7 @@ select option {
   );
   transform-origin: center;
   animation: rotate-border 4s linear infinite;
-  transform: translate(-50%, -50%); /* Klassisches Transform für bessere Browserunterstützung */
+  transform: translate(-50%, -50%);
 }
 
 .modal::after {

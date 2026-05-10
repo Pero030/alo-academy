@@ -51,8 +51,9 @@ function chooseImage(index, element) {
   </div>`;
   if (item.correct) {
     selectedImageUrl = item.image;
+    // Sofort in der Vorschau aktualisieren
     const previewImg = document.getElementById('previewProductImg');
-    if (previewImg) previewImg.src = selectedImageUrl;
+    if (previewImg) previewImg.src = item.image;
     addProgress(10);
   } else {
     selectedImageUrl = '';
@@ -520,8 +521,11 @@ function loadShopBuilderData() {
   }
 
   if (footer) {
-    const safeName = (playerName || 'E-Commerce Academy').trim();
-    footer.innerHTML = footer.innerHTML.replace(/Powered by[^<]*/i, `Powered by ${safeName}`);
+    const safeName = (playerName || 'E-Commerce Experte').trim();
+    const copyrightElement = document.getElementById('previewCopyright');
+    if (copyrightElement) {
+      copyrightElement.innerText = `© 2026 alle Rechte gehören ${safeName}`;
+    }
   }
 }
 

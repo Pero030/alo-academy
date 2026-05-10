@@ -258,11 +258,38 @@ function updateProgressUI() {
   if (bar) bar.style.width = progress + '%';
 }
 
-function confirmRestart() {
+let confirmMode = 'restart'; // 'restart' or 'home'
+
+function confirmRestart(mode = 'restart') {
+  // Wenn wir zur Startseite wollen, prüfen wir zuerst, ob überhaupt ein Spiel läuft
+  if (mode === 'home') {
+    const hasName = localStorage.getItem('ecommercePlayerName');
+    const hasProgress = progress > 0;
+    
+    // Wenn kein Spiel läuft (kein Name & kein Fortschritt), direkt zur Startseite
+    if (!hasName && !hasProgress) {
+      window.location.href = 'index.html';
+      return;
+    }
+  }
+
+  confirmMode = mode;
   const modal = document.getElementById('restartConfirmModal');
   if (modal) {
     modal.style.display = 'flex';
     document.body.classList.add('modal-open');
+  }
+}
+
+function handleRestartConfirm() {
+  if (confirmMode === 'home') {
+    // Vor dem Verlassen alles zurücksetzen, damit kein alter Spielstand geladen wird
+    localStorage.removeItem('ecommerceAcademySave');
+    localStorage.removeItem('ecommercePlayerName');
+    localStorage.removeItem('ecommerceSkipStartScreen');
+    window.location.href = 'index.html';
+  } else {
+    restartGame();
   }
 }
 
