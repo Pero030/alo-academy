@@ -18,6 +18,35 @@ function loadProductMission() {
   renderImages(product.imageOptions);
 }
 
+// Preload-Funktion für Produktbilder
+function preloadProductImages() {
+  const imageUrls = [];
+  // Sammle alle Bild-URLs aus dem products-Objekt (in data.js definiert)
+  if (typeof products !== 'undefined') {
+    Object.values(products).forEach(product => {
+      if (product.images) {
+        product.images.forEach(item => {
+          if (item.image) imageUrls.push(item.image);
+        });
+      }
+    });
+  }
+
+  // Lade jedes Bild im Hintergrund
+  imageUrls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
+  console.log(`${imageUrls.length} Bilder werden im Hintergrund vorgeladen...`);
+}
+
+// Starte Preloading sobald das Skript lädt (auf der Startseite)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', preloadProductImages);
+} else {
+  preloadProductImages();
+}
+
 function renderImages(images) {
   currentImageOptions = images;
   const container = document.getElementById('imageChoices');
