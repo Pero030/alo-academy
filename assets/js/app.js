@@ -9,13 +9,16 @@ let seoWords = [];
 // --- Initialisierung ---
 document.addEventListener('DOMContentLoaded', () => {
   // Prüfen, ob die Cookie-Abfrage erzwungen werden soll (von index.html kommend)
-  const forceCookie = sessionStorage.getItem('ecommerceShowCookie');
-  if (forceCookie === 'true') {
-    sessionStorage.removeItem('ecommerceShowCookie');
-    if (typeof initCookieConsent === 'function') {
-      initCookieConsent();
+  // Kurze Verzögerung für Online-Stabilität (GitHub Pages)
+  setTimeout(() => {
+    const forceCookie = localStorage.getItem('ecommerceShowCookie');
+    if (forceCookie === 'true') {
+      localStorage.removeItem('ecommerceShowCookie');
+      if (typeof initCookieConsent === 'function') {
+        initCookieConsent();
+      }
     }
-  }
+  }, 150);
 
   const hasSave = localStorage.getItem('ecommerceAcademySave');
   const hasName = localStorage.getItem('ecommercePlayerName');
