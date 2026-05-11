@@ -1424,8 +1424,8 @@ select option {
   z-index: -2;
   left: 50%;
   top: 50%;
-  width: 200%; /* Groß genug für Rotation */
-  height: 200%;
+  width: 150%; /* Angepasst an Startseite */
+  height: 300%; /* Angepasst an Startseite */
   background: conic-gradient(
     from 0deg,
     #38bdf8, 

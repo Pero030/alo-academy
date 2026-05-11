@@ -11,32 +11,26 @@
 </head>
 <body>
 
-<!-- Cookie Consent Modal -->
-<div id="cookieModal" class="modal-overlay" style="z-index: 20000;">
-  <div class="modal" style="max-width: 600px;">
-    <div class="modal-content-scroll">
-      <h3>Willkommen bei der Academy</h3>
-      <p>Um fortfahren zu können, stimme bitte unseren <span onclick="showLegal('datenschutz')" style="color: #38bdf8; cursor: pointer !important; text-decoration: underline;">Datenschutzbestimmungen</span> und <span onclick="showLegal('nutzung')" style="color: #a855f7; cursor: pointer !important; text-decoration: underline;">Nutzungsbedingungen</span> zu.</p>
-      <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-bottom: 25px; text-align: left; font-size: 16px;">
-        <label for="cookieAgree" style="display: flex; align-items: center; gap: 15px; cursor: pointer; user-select: none;">
-          <input type="checkbox" id="cookieAgree" style="width: 25px; height: 25px; margin: 0; cursor: pointer !important; accent-color: #38bdf8; appearance: auto;">
-          <span style="cursor: pointer;">Ich habe alles gelesen und stimme zu.</span>
-        </label>
-      </div>
-      <button class="modal-btn" id="cookieAcceptBtn" onclick="acceptCookies()" style="opacity: 0.5; pointer-events: none; width: 100%;">Zustimmen & Loslegen</button>
-    </div>
-  </div>
-</div>
-
   <header class="topbar">
     <div class="logo-area" onclick="location.href='index.html'" style="cursor: pointer;">
       <img src="assets/images/Logo/Logo.png" alt="Logo" class="main-logo">
     </div>
     <div class="topbar-right">
-      <button onclick="confirmRestart('home')" style="background: rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 12px; font-size: 14px; border: none; cursor: pointer;">🏠 Zur Startseite</button>
-      <button onclick="goToTask('shopBuilderSection')" style="background: rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 12px; font-size: 14px; margin-left: 10px;">🛠️ Builder Test</button>
+      <button onclick="confirmRestart('home')" style="background: #38bdf8; color: white; padding: 10px 20px; border-radius: 12px; font-size: 14px; border: none; cursor: pointer; font-weight: bold;">🏠 Zur Startseite</button>
+      <button onclick="checkBuilderPin()" style="background: #a855f7; color: white; padding: 10px 20px; border-radius: 12px; font-size: 14px; margin-left: 10px; cursor: pointer; border: none; font-weight: bold;">🛠️ Builder Test</button>
     </div>
   </header>
+
+  <script>
+    function checkBuilderPin() {
+      const pin = prompt("Bitte gib die PIN ein, um den Builder Test zu starten:");
+      if (pin === "080918") {
+        goToTask('shopBuilderSection');
+      } else if (pin !== null) {
+        alert("Falsche PIN!");
+      }
+    }
+  </script>
 
 <!-- Popup für Spiel-Neustart -->
 <div id="restartConfirmModal" class="modal-overlay">
