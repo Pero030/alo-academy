@@ -131,15 +131,16 @@ body {
 
 /* GLOBAL FOOTER STYLES */
 .global-footer {
-  height: 100px; /* Exakt wie Topbar */
+  min-height: 100px; /* Mindesthöhe wie Topbar */
+  height: auto; /* Erlaubt natürliches Wachstum */
   background: #0f172a !important;
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px; /* Exakt wie Topbar */
-  position: relative; /* Nicht mehr fixiert */
+  padding: 20px 40px; /* Flexibleres Padding statt fester Höhe */
+  position: relative; /* Nicht mehr fixiert für besseres Scrollen */
   width: 100%;
   z-index: 10;
   box-shadow: 0 -10px 30px rgba(0,0,0,0.3);

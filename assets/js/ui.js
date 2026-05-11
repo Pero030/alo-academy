@@ -160,7 +160,7 @@ function showInfo(type) {
   const infoData = {
     productName: {
       title: "SEO Produktname",
-      text: "Ein guter SEO-Produktname enthält das Haupt-Keyword ganz vorne. Er sollte präzise beschreiben, was das Produkt ist, damit Kunden (und Google) es sofort verstehen. Beispiel: 'Gaming Maus mit 16.000 DPI' statt nur 'Maus'."
+      text: "Ein guter SEO-Name ist wie ein Schild an einem Geschäft: Er muss sofort sagen, was drin ist. Das Haupt-Keyword ist das wichtigste Wort – also genau das Wort, das Kunden bei Google eintippen würden (zum Beispiel 'Gaming Maus' oder 'Bluetooth Kopfhörer'). Dieses Wort sollte immer ganz am Anfang stehen. Danach schreibst du ein besonderes Merkmal dazu, damit dein Produkt besser klingt als die anderen. Beispiel: Statt nur 'Maus' schreibst du 'Gaming Maus mit 16.000 DPI'. So verstehen Kunden und Google sofort, was dein Produkt besonders macht."
     },
     productDescription: {
       title: "Produktbeschreibung",
@@ -184,7 +184,7 @@ function showInfo(type) {
     },
     productSelect: {
       title: "Produktauswahl",
-      text: "Wähle ein Produkt aus, für das du den Shop optimieren möchtest. Jedes Produkt hat unterschiedliche Zielgruppen und SEO-Anforderungen."
+      text: "Überlege dir zuerst, was du verkaufen möchtest. Das ist wichtig, weil jeder Kunde andere Dinge sucht: Ein Gamer braucht andere Informationen als jemand, der eine Kaffeemaschine kauft. Wähle ein Produkt aus der Liste aus. Danach lernst du, wie du genau für dieses Produkt die richtigen Worte findest, damit Kunden es im Internet auch finden (SEO)."
     },
     seoBuilder: {
       title: "SEO-Titel bauen",

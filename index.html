@@ -97,7 +97,13 @@
       <p class="hero-text">
         Tauche ein in die Welt der Ausbildungsberufe! In diesen interaktiven Lernspielen erfährst du alles über die Berufe, die in der Annedore-Leber-Oberschule unterrichtet werden. Im Moment bieten wir eine Simulation für die Ausbildung zum E-Commerce-Kaufmann an – weitere Berufe folgen!
       </p>
-      <a href="E-Commerce.html" class="play-button">Zum Spiel</a>
+      <button onclick="goToGame()" class="play-button">Zum Spiel</button>
+      <script>
+        function goToGame() {
+          sessionStorage.setItem('ecommerceShowCookie', 'true');
+          window.location.href = 'E-Commerce.html';
+        }
+      </script>
       <div style="margin-top: 40px; display: flex; gap: 30px; justify-content: center; opacity: 0.6; font-size: 14px;">
         <span>🎮 Praxis-Simulation</span>
         <span>🎓 Berufsorientierung</span>

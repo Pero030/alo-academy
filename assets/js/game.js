@@ -453,6 +453,46 @@ function toggleShopElement(elementId, element) {
   }
 }
 
+// Cookie Consent Logik
+function initCookieConsent() {
+  const modal = document.getElementById('cookieModal');
+  const checkbox = document.getElementById('cookieAgree');
+  const btn = document.getElementById('cookieAcceptBtn');
+  
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.classList.add('modal-open');
+  }
+
+  if (checkbox && btn) {
+    // Checkbox beim Öffnen immer zurücksetzen
+    checkbox.checked = false;
+    btn.style.opacity = '0.5';
+    btn.style.pointerEvents = 'none';
+
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'all';
+      } else {
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+      }
+    });
+  }
+}
+
+function acceptCookies() {
+  const modal = document.getElementById('cookieModal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.classList.remove('modal-open');
+  }
+}
+
+// Initialisierung beim Laden der Seite ENTFERNT, da nur beim Spielstart gewünscht
+// document.addEventListener('DOMContentLoaded', initCookieConsent);
+
 function showLegal(type) {
   const modal = document.getElementById('legalModal');
   const content = document.getElementById('legalContent');
@@ -505,6 +545,24 @@ function showLegal(type) {
 
             <p><strong style="color: #38bdf8;">5. Rechtswirksamkeit dieses Haftungsausschlusses</strong><br>
             Dieser Haftungsausschluss ist als Teil des Internetangebotes zu betrachten, von dem aus auf diese Seite verwiesen wurde. Sofern Teile oder einzelne Formulierungen dieses Textes der geltenden Rechtslage nicht, nicht mehr oder nicht vollständig entsprechen sollten, bleiben die übrigen Teile des Dokumentes in ihrem Inhalt und ihrer Gültigkeit davon unberührt.</p>`;
+  } else if (type === 'nutzung') {
+    text = `<h3>Nutzungsbedingungen</h3>
+            <p><strong style="color: #38bdf8;">1. Geltungsbereich</strong></p>
+            <p>Diese Nutzungsbedingungen gelten für die Nutzung des Spiels "E-Commerce Academy". Mit der Nutzung der Anwendung erklären Sie sich mit den folgenden Bedingungen einverstanden.</p>
+
+            <p><strong style="color: #a855f7;">2. Zweck der Anwendung</strong></p>
+            <p>Die Anwendung dient rein zu Bildungs- und Unterhaltungszwecken im Rahmen des E-Commerce-Unterrichts. Es findet kein echter Warenhandel statt. Alle im Spiel getätigten Transaktionen sind fiktiv.</p>
+
+            <p><strong style="color: #38bdf8;">3. Urheberrecht</strong></p>
+            <p>Die in der Anwendung verwendeten Grafiken, Texte und das Spieldesign sind urheberrechtlich geschützt. Eine kommerzielle Nutzung oder Vervielfältigung außerhalb des Bildungskontexts ist ohne ausdrückliche Genehmigung nicht gestattet.</p>
+
+            <p><strong style="color: #a855f7;">4. Haftung für Inhalte</strong></p>
+            <p>Wir übernehmen keine Gewähr für die Richtigkeit der im Spiel vermittelten wirtschaftlichen oder rechtlichen Tipps, da diese zur Vereinfachung didaktisch reduziert wurden.</p>
+
+            <p><strong style="color: #38bdf8;">5. Beendigung der Nutzung</strong></p>
+            <p>Da keine Benutzerkonten existieren, kann die Nutzung jederzeit durch einfaches Schließen des Browsers beendet werden. Ein Löschen der lokalen Daten im Browser setzt alle Spielstände zurück.</p>
+            
+            <p><i>Stand: 11. Mai 2026</i></p>`;
   } 
 
   content.innerHTML = text;

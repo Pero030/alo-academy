@@ -8,6 +8,15 @@ let seoWords = [];
 
 // --- Initialisierung ---
 document.addEventListener('DOMContentLoaded', () => {
+  // Prüfen, ob die Cookie-Abfrage erzwungen werden soll (von index.html kommend)
+  const forceCookie = sessionStorage.getItem('ecommerceShowCookie');
+  if (forceCookie === 'true') {
+    sessionStorage.removeItem('ecommerceShowCookie');
+    if (typeof initCookieConsent === 'function') {
+      initCookieConsent();
+    }
+  }
+
   const hasSave = localStorage.getItem('ecommerceAcademySave');
   const hasName = localStorage.getItem('ecommercePlayerName');
   const skipStart = localStorage.getItem('ecommerceSkipStartScreen');
@@ -182,6 +191,10 @@ function nextTutorialStep() {
 }
 
 function startTutorialSinglePage() {
+  if (typeof initCookieConsent === 'function') {
+    initCookieConsent();
+  }
+  
   hideElement('startScreen');
   showElement('gameContent');
   
@@ -197,6 +210,10 @@ function startTutorialSinglePage() {
 }
 
 function skipTutorialSinglePage() {
+  if (typeof initCookieConsent === 'function') {
+    initCookieConsent();
+  }
+  
   // Zeige ein kleines Modal oder direkt ein Input-Feld für den Namen
   showModal('Shop-Name wählen', 'Bitte gib einen Namen für deinen Shop ein, bevor du startest:', 'Name bestätigen');
   
