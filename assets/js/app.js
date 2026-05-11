@@ -194,10 +194,6 @@ function nextTutorialStep() {
 }
 
 function startTutorialSinglePage() {
-  if (typeof initCookieConsent === 'function') {
-    initCookieConsent();
-  }
-  
   hideElement('startScreen');
   showElement('gameContent');
   
@@ -213,10 +209,6 @@ function startTutorialSinglePage() {
 }
 
 function skipTutorialSinglePage() {
-  if (typeof initCookieConsent === 'function') {
-    initCookieConsent();
-  }
-  
   // Zeige ein kleines Modal oder direkt ein Input-Feld für den Namen
   showModal('Shop-Name wählen', 'Bitte gib einen Namen für deinen Shop ein, bevor du startest:', 'Name bestätigen');
   
