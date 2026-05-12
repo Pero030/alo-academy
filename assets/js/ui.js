@@ -167,8 +167,8 @@ function showInfo(type) {
       text: "Hier verkaufst du dein Produkt! Nutze emotionale Sprache und nenne klare Vorteile (USPs). Vergiss nicht, wichtige Keywords natürlich einzubauen, um bei Suchmaschinen besser gefunden zu werden."
     },
     metaTitle: {
-      title: "Meta Title",
-      text: "Der Meta Title ist die blaue Überschrift in den Google-Suchergebnissen. Er sollte maximal 60 Zeichen lang sein und das wichtigste Keyword sowie deinen Shop-Namen enthalten."
+      title: "Meta Titel",
+      text: "Der Meta Titel ist die blaue Überschrift in den Google-Suchergebnissen. Er sollte maximal 60 Zeichen lang sein und das wichtigste Keyword sowie deinen Shop-Namen enthalten."
     },
     altText: {
       title: "Bild Alt-Text",
