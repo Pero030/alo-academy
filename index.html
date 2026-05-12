@@ -2,7 +2,10 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimum-scale=1.0">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized" content="width">
+  <meta name="format-detection" content="telephone=no">
   <title>E-Commerce Academy - Startseite</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
@@ -16,6 +19,7 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden; /* Verhindert horizontales Scrollen */
+      zoom: 1 !important;
     }
     .landing-main {
       flex: 1;
@@ -194,6 +198,43 @@
 
   <script src="assets/js/game.js"></script>
   <script>
+    // Zoomen vollständig verhindern
+    document.addEventListener('gesturestart', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+    document.addEventListener('gesturechange', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+    document.addEventListener('gestureend', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+    document.addEventListener('touchstart', function(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    document.addEventListener('touchmove', function(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    document.addEventListener('wheel', function(e) {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {
+        e.preventDefault();
+      }
+    });
+
+    // Zoom-Level überwachen und zurücksetzen
+    setInterval(function() {
+      document.body.style.zoom = 1;
+      document.documentElement.style.zoom = 1;
+    }, 100);
+
     // Cookie Consent Logik für die Startseite
     function initCookieConsent() {
       const modal = document.getElementById('cookieModal');

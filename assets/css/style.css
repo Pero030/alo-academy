@@ -5,10 +5,14 @@
   font-family: 'Inter', sans-serif;
 }
 
+html {
+  zoom: 1 !important;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: #1e293b;
-  background-image: 
+  background-image:
     radial-gradient(circle at top left, rgba(56,189,248,0.3), transparent 60%),
     radial-gradient(circle at bottom right, rgba(168,85,247,0.25), transparent 60%),
     linear-gradient(135deg, #1e293b, #334155, #1e293b);
@@ -21,6 +25,7 @@ body {
   overflow-x:hidden;
   font-size: 20px; /* Standard-Schriftgröße erhöht */
   line-height: 1.6;
+  zoom: 1 !important;
 }
 
 /* Verhindert den Schreib-Cursor, erlaubt aber weiterhin das Kopieren von Text */
@@ -685,9 +690,10 @@ button:hover{
 
 .glass-card.blue-theme:hover {
   transform: translateY(-8px);
-  box-shadow: 
+  box-shadow:
     0 45px 100px -20px rgba(0, 0, 0, 1),
     0 0 60px rgba(56, 189, 248, 0.45) !important; /* Massiver blauer Glow im Hover */
+  border-color: inherit !important;
 }
 
 /* Lila Design */
@@ -700,9 +706,10 @@ button:hover{
 
 .glass-card.purple-theme:hover {
   transform: translateY(-8px);
-  box-shadow: 
+  box-shadow:
     0 45px 100px -20px rgba(0, 0, 0, 1),
     0 0 60px rgba(168, 85, 247, 0.45) !important; /* Massiver lila Glow im Hover */
+  border-color: inherit !important;
 }
 
 /* Skill-Karten in der Einleitung */
@@ -1383,7 +1390,7 @@ select option {
   bottom: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background: #0f172a !important; /* Komplett blickdicht */
+  background: rgba(15, 23, 42, 0.3) !important; /* Transparent mit 30% Deckkraft */
   backdrop-filter: blur(20px);
   display: none;
   align-items: center;
@@ -1396,7 +1403,7 @@ select option {
   position: relative;
   z-index: 10;
   overflow: hidden; /* WICHTIG: Clippt die Animation auf den Container */
-  background: #0f172a; /* Solid background */
+  background: rgba(15, 23, 42, 0.85); /* Transparent mit 85% Deckkraft */
   border-radius: 40px;
   padding: 0; /* Padding wird auf den inneren Scroll-Container verlagert */
   max-width: 800px;
@@ -1444,7 +1451,7 @@ select option {
   position: absolute;
   z-index: -1;
   inset: 4px; /* Dicke des Rahmens */
-  background: #0f172a; /* Absolut blickdichter Hintergrund */
+  background: rgba(15, 23, 42, 0.9); /* Transparent mit 90% Deckkraft */
   border-radius: 36px;
 }
 
@@ -1487,10 +1494,52 @@ select option {
   box-shadow: 0 15px 30px rgba(168, 85, 247, 0.5);
 }
 
+/* Cursor für alle klickbare Elemente und ihre Kinder */
+div[onclick],
+div[onclick] *,
+li[onclick],
+li[onclick] * {
+  cursor: pointer !important;
+}
+
+/* Kein Hover-Effekt für die Hauptkacheln */
+.glass-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+  border-width: inherit !important;
+  border-style: inherit !important;
+}
+
+/* Hover-Effekt für li-Elemente mit onclick */
+li[onclick]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+  border-color: rgba(56, 189, 248, 0.5) !important;
+}
+
+/* Hover-Effekt für div-Elemente mit onclick (innerhalb von Kacheln) */
+.glass-card div[onclick]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+  border-color: rgba(56, 189, 248, 0.5) !important;
+}
+
+/* Spezifische Hover-Effekte für purple-theme li-Elemente */
+.glass-card.purple-theme li[onclick]:hover {
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+  border-color: rgba(168, 85, 247, 0.5) !important;
+}
+
+/* Spezifische Hover-Effekte für purple-theme div-Elemente */
+.glass-card.purple-theme div[onclick]:hover {
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+  border-color: rgba(168, 85, 247, 0.5) !important;
+}
+
 /* RESPONSIVE */
 
 @media(max-width:1000px){
-
   .hero{
     grid-template-columns:1fr;
   }
