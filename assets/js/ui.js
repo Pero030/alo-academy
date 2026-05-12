@@ -268,7 +268,7 @@ function confirmRestart(mode = 'restart') {
     
     // Wenn kein Spiel läuft (kein Name & kein Fortschritt), direkt zur Startseite
     if (!hasName && !hasProgress) {
-      window.location.href = 'index.html';
+      window.location.href = '../';
       return;
     }
   }
@@ -287,7 +287,7 @@ function handleRestartConfirm() {
     localStorage.removeItem('ecommerceAcademySave');
     localStorage.removeItem('ecommercePlayerName');
     localStorage.removeItem('ecommerceSkipStartScreen');
-    window.location.href = 'index.html';
+    window.location.href = '../';
   } else {
     restartGame();
   }
