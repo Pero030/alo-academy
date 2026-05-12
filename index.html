@@ -198,6 +198,9 @@
 
   <script src="assets/js/game.js"></script>
   <script>
+    if (window.innerWidth < 1024) {
+      document.body.innerHTML = "<h1>Bitte mit PC öffnen</h1>";
+    }
     // Zoomen vollständig verhindern
     document.addEventListener('gesturestart', function(e) {
       e.preventDefault();
