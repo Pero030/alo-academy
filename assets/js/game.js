@@ -510,7 +510,7 @@ function showLegal(type) {
             <p>Es findet <strong>keine Übertragung</strong> dieser persönlichen Spieldaten an unsere Server oder an Dritte statt. Die Daten verbleiben auf Ihrem Endgerät.</p>
             
             <p><strong style="color: #38bdf8;">3. Lokale Speicherung von Downloads (Zertifikat)</strong></p>
-            <p>Innerhalb der Anwendung haben Sie die Möglichkeit, ein Bild (Screenshot) Ihrer erstellten Shopseite als Zertifikat herunterzuladen. Dieses Bild wird direkt in Ihrem Browser generiert und <strong>lokal auf Ihrem Computer gespeichert</strong>. Eine Speicherung oder Übermittlung dieses Bildes an unsere Server erfolgt zu keinem Zeitpunkt.</p>
+            <p>Innerhalb der Anwendung haben Sie die Möglichkeit, ein Bild (Screenshot) Ihrer erstellten Shopseite herunterzuladen. Dieses Bild wird direkt in Ihrem Browser generiert und <strong>lokal auf Ihrem Computer gespeichert</strong>. Eine Speicherung oder Übermittlung dieses Bildes an unsere Server erfolgt zu keinem Zeitpunkt.</p>
 
             <p><strong style="color: #a855f7;">4. Server-Log-Files</strong></p>
             <p>Da dies eine Online-Anwendung ist, erhebt der Provider der Seiten automatisch Informationen in sogenannten Server-Log-Files (z.B. IP-Adresse, Browsertyp). Diese sind technisch notwendig für den Betrieb der Webseite, werden aber nicht mit Ihren lokalen Spieldaten verknüpft.</p>
@@ -523,9 +523,9 @@ function showLegal(type) {
  else if (type === 'impressum') {
     text = `<h3>Impressum</h3>
             <p><strong>Angaben gemäß § 5 TMG:</strong></p>
-            <p>Annedore-Leber-Oberschule<br>Paster-Behrens-Strasse 88<br>12359 Berlin</p>
-            <p><strong>Kontakt:</strong><br>E-Mail: sekr.br@aloberlin.de</p>
-            <p><strong>Vertreten durch:</strong><br>Schulleiter: Herr Thomas Schofer</p>
+            <p> Steve Klose <br></p>
+            <p><strong>Kontakt:</strong><br>E-Mail: s.klose@aloberlin.de</p>
+            <p><strong>Vertreten durch:</strong><br>Ersteller: Steve Klose</p>
             
             <hr style="margin: 30px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
             
@@ -551,7 +551,7 @@ function showLegal(type) {
             <p>Diese Nutzungsbedingungen gelten für die Nutzung des Spiels "E-Commerce Academy". Mit der Nutzung der Anwendung erklären Sie sich mit den folgenden Bedingungen einverstanden.</p>
 
             <p><strong style="color: #a855f7;">2. Zweck der Anwendung</strong></p>
-            <p>Die Anwendung dient rein zu Bildungs- und Unterhaltungszwecken im Rahmen des E-Commerce-Unterrichts. Es findet kein echter Warenhandel statt. Alle im Spiel getätigten Transaktionen sind fiktiv.</p>
+            <p>Die Anwendung dient rein zu Bildungs- und Unterhaltungszwecken im Rahmen der Annedore-Leber-Oberschule statt. Es findet kein echter Warenhandel statt. Alle im Spiel getätigten Aktionen sind fiktiv.</p>
 
             <p><strong style="color: #38bdf8;">3. Urheberrecht</strong></p>
             <p>Die in der Anwendung verwendeten Grafiken, Texte und das Spieldesign sind urheberrechtlich geschützt. Eine kommerzielle Nutzung oder Vervielfältigung außerhalb des Bildungskontexts ist ohne ausdrückliche Genehmigung nicht gestattet.</p>
