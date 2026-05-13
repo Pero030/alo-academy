@@ -548,10 +548,10 @@ function showLegal(type) {
   } else if (type === 'nutzung') {
     text = `<h3>Nutzungsbedingungen</h3>
             <p><strong style="color: #38bdf8;">1. Geltungsbereich</strong></p>
-            <p>Diese Nutzungsbedingungen gelten für die Nutzung des Spiels "E-Commerce Academy". Mit der Nutzung der Anwendung erklären Sie sich mit den folgenden Bedingungen einverstanden.</p>
+            <p>Diese Nutzungsbedingungen gelten für die Nutzung der Spiele in der "ALO Academy". Mit der Nutzung der Anwendung erklären Sie sich mit den folgenden Bedingungen einverstanden.</p>
 
             <p><strong style="color: #a855f7;">2. Zweck der Anwendung</strong></p>
-            <p>Die Anwendung dient rein zu Bildungs- und Unterhaltungszwecken im Rahmen der Annedore-Leber-Oberschule statt. Es findet kein echter Warenhandel statt. Alle im Spiel getätigten Aktionen sind fiktiv.</p>
+            <p>Die Anwendung dient rein zu Bildungs- und Unterhaltungszwecken im Rahmen der Annedore-Leber-Oberschule. Es werden kein echter Produkte odre Datein erstellt. Alle im Spiel getätigten Aktionen sind fiktiv.</p>
 
             <p><strong style="color: #38bdf8;">3. Urheberrecht</strong></p>
             <p>Die in der Anwendung verwendeten Grafiken, Texte und das Spieldesign sind urheberrechtlich geschützt. Eine kommerzielle Nutzung oder Vervielfältigung außerhalb des Bildungskontexts ist ohne ausdrückliche Genehmigung nicht gestattet.</p>
