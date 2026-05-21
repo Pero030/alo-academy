@@ -118,13 +118,7 @@
   </style>
 </head>
 <body>
-
-  <!-- HEADER (Gleich wie im Spiel) -->
-  <header class="topbar">
-    <div class="logo-area" onclick="location.href='./'" style="cursor: pointer;">
-      <img src="assets/images/Logo/Logo.png" alt="Logo" class="main-logo">
-    </div>
-  </header>
+  <div data-component="header" data-variant="home" data-component-base="."></div>
 
   <!-- MAIN LANDING AREA -->
   <main class="landing-main">
@@ -134,12 +128,18 @@
         <span style="font-size: 0.7em; opacity: 0.9; color: white; display: block; margin-top: 10px;">bei der ALO Academy</span>
       </h1>
       <p class="hero-text">
-        Tauche ein in die Welt der Ausbildungsberufe! In diesen interaktiven Lernspielen erfährst du alles über die Berufe, die in der Annedore-Leber-Oberschule unterrichtet werden. Im Moment bieten wir eine Simulation für die Ausbildung zum E-Commerce-Kaufmann an – weitere Berufe folgen!
+        Tauche ein in die Welt der Ausbildungsberufe! In diesen interaktiven Lernspielen erfährst du alles über die Berufe, die in der Annedore-Leber-Oberschule unterrichtet werden. Wähle deinen Beruf und starte die Simulation!
       </p>
-      <button onclick="initCookieConsent()" class="play-button">Zum Spiel</button>
+      <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
+        <button onclick="goToECommerce()" class="play-button" style="background: linear-gradient(135deg, #38bdf8, #0ea5e9);">🛒 E-Commerce</button>
+        <button onclick="goToBurokaufmann()" class="play-button" style="background: linear-gradient(135deg, #a855f7, #9333ea);">📄 Büromanagement</button>
+      </div>
       <script>
-        function goToGame() {
-          window.location.href = 'E-Commerce/';
+        function goToECommerce() {
+          initCookieConsent('E-Commerce');
+        }
+        function goToBurokaufmann() {
+          initCookieConsent('Büromanagement');
         }
       </script>
       <div style="margin-top: 40px; display: flex; gap: 30px; justify-content: center; opacity: 0.6; font-size: 14px;">
@@ -150,23 +150,7 @@
       <p style="font-size: 12px; opacity: 0.4; margin-top: 15px;">* spielinternes Zertifikat zur Lernbestätigung</p>
     </div>
   </main>
-
-  <!-- FOOTER (Gleich wie im Spiel) -->
-  <footer class="global-footer" style="background: rgba(15, 23, 42, 0.9); border-top: 1px solid rgba(255,255,255,0.05);">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <img src="assets/images/Logo/Logo.png" alt="Logo" class="footer-logo">
-      </div>
-      <div class="footer-text">
-        <div class="footer-links">
-          <span onclick="showLegal('datenschutz')" style="cursor: pointer;">Datenschutz</span>
-          <span onclick="showLegal('impressum')" style="color: #a855f7; cursor: pointer;">Impressum</span>
-          <span onclick="window.open('https://aloberlin.4lima.de/', '_blank')" style="cursor: pointer;">ALOBERLIN WEBSITE</span>
-        </div>
-        <span class="copyright-text">© 2026 Annedore-Leber-Oberschule. Alle Rechte vorbehalten.</span>
-      </div>
-    </div>
-  </footer>
+  <div data-component="footer" data-variant="home" data-component-base="."></div>
 
   <!-- Modals für Footer-Links auf der Startseite -->
   <div id="cookieModal" class="modal-overlay" style="z-index: 20000;">
@@ -196,11 +180,9 @@
     </div>
   </div>
 
+  <script type="module" src="components/components.js"></script>
   <script src="assets/js/game.js"></script>
   <script>
-    if (window.innerWidth < 1024) {
-      document.body.innerHTML = "<h1>Bitte mit PC öffnen</h1>";
-    }
     // Zoomen vollständig verhindern
     document.addEventListener('gesturestart', function(e) {
       e.preventDefault();
@@ -239,7 +221,7 @@
     }, 100);
 
     // Cookie Consent Logik für die Startseite
-    function initCookieConsent() {
+    function initCookieConsent(targetGame) {
       const modal = document.getElementById('cookieModal');
       const checkbox = document.getElementById('cookieAgree');
       const btn = document.getElementById('cookieAcceptBtn');
@@ -247,6 +229,7 @@
       if (modal) {
         modal.style.display = 'flex';
         document.body.classList.add('modal-open');
+        modal.dataset.targetGame = targetGame;
       }
 
       if (checkbox && btn) {
@@ -269,9 +252,15 @@
     function acceptCookies() {
       const modal = document.getElementById('cookieModal');
       if (modal) {
+        const targetGame = modal.dataset.targetGame;
         modal.style.display = 'none';
         document.body.classList.remove('modal-open');
-        goToGame();
+        localStorage.setItem('cookieConsentAccepted', 'true');
+        if (targetGame === 'E-Commerce') {
+          window.location.href = 'E-Commerce/';
+        } else if (targetGame === 'Büromanagement') {
+          window.location.href = 'Büromanagement/';
+        }
       }
     }
 

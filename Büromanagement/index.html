@@ -1,0 +1,3072 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=1400, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimum-scale=1.0" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="MobileOptimized" content="width" />
+        <meta name="format-detection" content="telephone=no" />
+        <title>Büromanagement - ALO Academy</title>
+        <link rel="stylesheet" href="../assets/css/style.css" />
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <script>
+            // Zoomen vollständig verhindern
+            document.addEventListener(
+                "gesturestart",
+                function (e) {
+                    e.preventDefault();
+                },
+                { passive: false },
+            );
+            document.addEventListener(
+                "gesturechange",
+                function (e) {
+                    e.preventDefault();
+                },
+                { passive: false },
+            );
+            document.addEventListener(
+                "gestureend",
+                function (e) {
+                    e.preventDefault();
+                },
+                { passive: false },
+            );
+            document.addEventListener(
+                "touchstart",
+                function (e) {
+                    if (e.touches.length > 1) {
+                        e.preventDefault();
+                    }
+                },
+                { passive: false },
+            );
+            document.addEventListener(
+                "touchmove",
+                function (e) {
+                    if (e.touches.length > 1) {
+                        e.preventDefault();
+                    }
+                },
+                { passive: false },
+            );
+            document.addEventListener(
+                "wheel",
+                function (e) {
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                    }
+                },
+                { passive: false },
+            );
+            document.addEventListener("keydown", function (e) {
+                if (
+                    (e.ctrlKey || e.metaKey) &&
+                    (e.key === "+" || e.key === "-" || e.key === "0")
+                ) {
+                    e.preventDefault();
+                }
+            });
+
+            // Zoom-Level überwachen und zurücksetzen
+            setInterval(function () {
+                document.body.style.zoom = 1;
+                document.documentElement.style.zoom = 1;
+            }, 100);
+        </script>
+    </head>
+    <body>
+        <!-- Start Screen -->
+        <div
+            id="startScreen"
+            style="display: none"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="startScreenTitle"
+        >
+            <div class="start-screen-card">
+                <h1
+                    id="startScreenTitle"
+                    style="
+                        font-size: 52px;
+                        margin-bottom: 20px;
+                        background: linear-gradient(135deg, #38bdf8, #a855f7);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-clip: text;
+                        color: transparent;
+                        font-weight: 900;
+                        white-space: nowrap;
+                        padding-right: 0.2em;
+                        display: inline-block;
+                        position: relative;
+                        z-index: 1;
+                    "
+                >
+                    Bereit für deine Karriere?
+                </h1>
+
+                <p
+                    style="
+                        font-size: 20px;
+                        line-height: 1.8;
+                        color: rgba(255, 255, 255, 0.8);
+                        margin: auto;
+                        white-space: nowrap;
+                        padding: 0 20px;
+                        position: relative;
+                        z-index: 1;
+                    "
+                >
+                    Möchtest du das Tutorial machen oder direkt mit deiner
+                    ersten Mission starten?
+                </p>
+
+                <div
+                    style="
+                        display: flex;
+                        gap: 20px;
+                        justify-content: center;
+                        margin-top: 40px;
+                        flex-wrap: wrap;
+                        position: relative;
+                        z-index: 1;
+                    "
+                >
+                    <button
+                        class="primary-btn"
+                        onclick="startTutorialSinglePage()"
+                        aria-label="Tutorial starten"
+                        style="
+                            min-width: 320px;
+                            font-size: 20px;
+                            padding: 18px 45px;
+                        "
+                    >
+                        Tutorial starten
+                    </button>
+
+                    <button
+                        class="purple-btn"
+                        onclick="skipTutorialSinglePage()"
+                        aria-label="Tutorial überspringen"
+                        style="
+                            min-width: 320px;
+                            font-size: 20px;
+                            padding: 18px 45px;
+                        "
+                    >
+                        Tutorial überspringen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <div data-component="header" data-variant="buero" data-component-base=".."></div>
+
+        <!-- MAIN GAME CONTENT -->
+        <div class="layout" id="gameContent" style="display: none">
+            <aside
+                class="sidebar"
+                role="complementary"
+                aria-labelledby="lernpfadTitle"
+            >
+                <h2 id="lernpfadTitle">Lernpfad</h2>
+
+                <div
+                    class="mission blue-border"
+                    id="menu1"
+                    role="button"
+                    tabindex="0"
+                    onclick="goToTask('introSection')"
+                    onkeydown="
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            goToTask('introSection');
+                        }
+                    "
+                >
+                    Einleitung
+                </div>
+
+                <div
+                    class="mission purple-border locked"
+                    id="menu2"
+                    role="button"
+                    tabindex="-1"
+                    style="opacity: 0.5; pointer-events: none"
+                    onclick="goToTask('task1Section')"
+                    onkeydown="
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            goToTask('task1Section');
+                        }
+                    "
+                >
+                    Bestellannahme
+                </div>
+
+                <div
+                    class="mission blue-border locked"
+                    id="menu3"
+                    role="button"
+                    tabindex="-1"
+                    style="opacity: 0.5; pointer-events: none"
+                    onclick="goToTask('task2Section')"
+                    onkeydown="
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            goToTask('task2Section');
+                        }
+                    "
+                >
+                    Rechnung erstellen
+                </div>
+
+                <div
+                    class="mission purple-border locked"
+                    id="menu4"
+                    role="button"
+                    tabindex="-1"
+                    style="opacity: 0.5; pointer-events: none"
+                    onclick="goToTask('task3Section')"
+                    onkeydown="
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            goToTask('task3Section');
+                        }
+                    "
+                >
+                    Kommunikation
+                </div>
+
+                <div
+                    class="mission blue-border locked"
+                    id="menu7"
+                    role="button"
+                    tabindex="-1"
+                    style="opacity: 0.5; pointer-events: none"
+                    onclick="goToTask('task4Section')"
+                    onkeydown="
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            goToTask('task4Section');
+                        }
+                    "
+                >
+                    Budget-Management
+                </div>
+
+                <hr
+                    style="
+                        margin: 20px 0;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                    "
+                />
+
+                <div class="progress-bar">
+                    <div class="progress" id="progress" style="width: 0%"></div>
+                </div>
+
+                <div
+                    class="sidebar-footer"
+                    style="
+                        margin-top: auto;
+                        padding-top: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                    "
+                >
+                    <button
+                        id="sidebarStartBtn"
+                        class="primary-btn"
+                        onclick="backToStart()"
+                        style="
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                            padding: 15px;
+                            border-radius: 12px;
+                            font-weight: bold;
+                            font-size: 16px;
+                            background: linear-gradient(
+                                135deg,
+                                #22c55e,
+                                #16a34a
+                            );
+                            color: white;
+                            border: none;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+                        "
+                    >
+                        🚀 Spiel starten
+                    </button>
+                    <button
+                        class="restart-btn"
+                        onclick="confirmRestart()"
+                        aria-label="Spiel beenden"
+                        style="
+                            width: 100%;
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 10px;
+                            background: #ef4444;
+                            color: white;
+                            padding: 12px;
+                            border-radius: 12px;
+                            border: none;
+                            cursor: pointer;
+                            font-weight: bold;
+                            font-size: 14px;
+                            transition: all 0.2s ease;
+                        "
+                    >
+                        <span class="restart-icon">🔄</span> Spiel Beenden
+                    </button>
+
+                    <!-- Test-Schnellnavigation -->
+                    <div
+                        style="
+                            border-top: 1px solid rgba(255, 255, 255, 0.1);
+                            padding-top: 15px;
+                        "
+                    >
+                        <p
+                            style="
+                                color: rgba(255, 255, 255, 0.4);
+                                font-size: 11px;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                margin-bottom: 10px;
+                                text-align: center;
+                            "
+                        >
+                            ⚡ Schnellnavigation
+                        </p>
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 8px;
+                            "
+                        >
+                            <button
+                                onclick="goToTask('introSection')"
+                                style="
+                                    background: rgba(56, 189, 248, 0.15);
+                                    border: 1px solid rgba(56, 189, 248, 0.3);
+                                    color: #38bdf8;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(56,189,248,0.3)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(56,189,248,0.15)'
+                                "
+                            >
+                                📖 Einleitung
+                            </button>
+                            <button
+                                onclick="
+                                    goToTask('task1Section');
+                                    loadRandomOrder();
+                                "
+                                style="
+                                    background: rgba(168, 85, 247, 0.15);
+                                    border: 1px solid rgba(168, 85, 247, 0.3);
+                                    color: #a855f7;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(168,85,247,0.3)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(168,85,247,0.15)'
+                                "
+                            >
+                                📦 Mission 1
+                            </button>
+                            <button
+                                onclick="
+                                    goToTask('task2Section');
+                                    loadRandomOrder(false, 'invoiceData2');
+                                "
+                                style="
+                                    background: rgba(56, 189, 248, 0.15);
+                                    border: 1px solid rgba(56, 189, 248, 0.3);
+                                    color: #38bdf8;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(56,189,248,0.3)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(56,189,248,0.15)'
+                                "
+                            >
+                                📄 Mission 2
+                            </button>
+                            <button
+                                onclick="
+                                    goToTask('task3Section');
+                                    startKommunikation();
+                                "
+                                style="
+                                    background: rgba(168, 85, 247, 0.15);
+                                    border: 1px solid rgba(168, 85, 247, 0.3);
+                                    color: #a855f7;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(168,85,247,0.3)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(168,85,247,0.15)'
+                                "
+                            >
+                                💬 Mission 3
+                            </button>
+                            <button
+                                onclick="goToTask('task4Section')"
+                                style="
+                                    background: rgba(56, 189, 248, 0.15);
+                                    border: 1px solid rgba(56, 189, 248, 0.3);
+                                    color: #38bdf8;
+                                    padding: 8px;
+                                    border-radius: 8px;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                    grid-column: 1/-1;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(56,189,248,0.3)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(56,189,248,0.15)'
+                                "
+                            >
+                                🗂️ Mission 4
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="content">
+                <section
+                    class="section"
+                    id="interactiveTutorial"
+                    style="display: none"
+                >
+                    <div class="badge">
+                        Tutorial <span id="tutorialStep">1</span>/6
+                    </div>
+
+                    <div class="tutorial-box">
+                        <h2 id="tutorialTitle">Willkommen</h2>
+                        <p id="tutorialText"></p>
+                        <p style="margin-top: 12px">
+                            <strong id="tutorialAction"></strong>
+                        </p>
+                    </div>
+
+                    <button onclick="nextTutorialStep()">Weiter</button>
+                </section>
+
+                <script>
+                    if (window.innerWidth < 1024) {
+                        document.body.innerHTML = "<h1>Bitte mit PC öffnen</h1>";
+                    }
+                </script>
+
+                <!-- Tutorial Section -->
+                <section
+                    class="section"
+                    id="tutorialSection"
+                    style="display: none"
+                >
+                    <div
+                        class="glass-card blue-theme"
+                        style="
+                            padding: 40px;
+                            border-radius: 30px;
+                            text-align: center;
+                        "
+                    >
+                        <h2
+                            style="
+                                color: #38bdf8;
+                                margin-bottom: 30px;
+                                font-size: 32px;
+                            "
+                        >
+                            Willkommen im Tutorial
+                        </h2>
+                        <p
+                            id="tutorialText"
+                            style="
+                                font-size: 20px;
+                                color: white;
+                                line-height: 1.6;
+                                margin-bottom: 20px;
+                            "
+                        ></p>
+                        <p style="margin-top: 12px">
+                            <strong id="tutorialAction"></strong>
+                        </p>
+                    </div>
+
+                    <button onclick="nextTutorialStep()">Weiter</button>
+                </section>
+
+                <!-- Intro Section -->
+                <section
+                    class="section"
+                    id="introSection"
+                    style="display: none"
+                >
+                    <div class="intro-hero">
+                        <div
+                            style="
+                                position: absolute;
+                                top: -50px;
+                                right: -50px;
+                                width: 200px;
+                                height: 200px;
+                                background: rgba(56, 189, 248, 0.1);
+                                filter: blur(50px);
+                                border-radius: 50%;
+                            "
+                        ></div>
+                        <h1
+                            style="
+                                margin-bottom: 25px;
+                                font-size: 64px;
+                                font-weight: 900;
+                                letter-spacing: -2px;
+                                text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                                background: linear-gradient(
+                                    135deg,
+                                    #38bdf8,
+                                    #a855f7
+                                );
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                                color: transparent;
+                            "
+                        >
+                            Die Welt des Büromanagements
+                        </h1>
+                        <p
+                            style="
+                                font-size: 24px;
+                                line-height: 1.6;
+                                color: #ffffff;
+                                max-width: 900px;
+                                margin: 0 auto;
+                                font-weight: 300;
+                                position: relative;
+                                z-index: 1;
+                            "
+                        >
+                            Kaufmann/-frau für Büromanagement ist das Rückgrat
+                            jedes erfolgreichen Unternehmens. Du organisierst,
+                            koordinierst und steuerst die administrativen
+                            Prozesse – präzise, effizient und professionell.
+                        </p>
+                    </div>
+
+                    <!-- Key Stats & Facts -->
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 20px;
+                            margin-bottom: 50px;
+                        "
+                    >
+                        <div
+                            class="glass-card blue-theme"
+                            style="
+                                padding: 25px;
+                                text-align: center;
+                                border-radius: 20px;
+                                border: 1px solid #38bdf8 !important;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            "
+                            onclick="showStatInfo('umsatz')"
+                        >
+                            <span
+                                style="
+                                    display: block;
+                                    font-size: 32px;
+                                    font-weight: 800;
+                                    color: #38bdf8;
+                                "
+                                >Weltweit</span
+                            >
+                            <span
+                                style="
+                                    font-size: 14px;
+                                    color: #ffffff;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                "
+                                >Nachgefragt</span
+                            >
+                        </div>
+                        <div
+                            class="glass-card purple-theme"
+                            style="
+                                padding: 25px;
+                                text-align: center;
+                                border-radius: 20px;
+                                border: 1px solid #a855f7 !important;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            "
+                            onclick="showStatInfo('anteil')"
+                        >
+                            <span
+                                style="
+                                    display: block;
+                                    font-size: 32px;
+                                    font-weight: 800;
+                                    color: #a855f7;
+                                "
+                                >Digital</span
+                            >
+                            <span
+                                style="
+                                    font-size: 14px;
+                                    color: #ffffff;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                "
+                                >Zukunftsfähig</span
+                            >
+                        </div>
+                        <div
+                            class="glass-card blue-theme"
+                            style="
+                                padding: 25px;
+                                text-align: center;
+                                border-radius: 20px;
+                                border: 1px solid #38bdf8 !important;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            "
+                            onclick="showStatInfo('erreichbarkeit')"
+                        >
+                            <span
+                                style="
+                                    display: block;
+                                    font-size: 32px;
+                                    font-weight: 800;
+                                    color: #38bdf8;
+                                "
+                                >Vielseitig</span
+                            >
+                            <span
+                                style="
+                                    font-size: 14px;
+                                    color: #ffffff;
+                                    text-transform: uppercase;
+                                    letter-spacing: 1px;
+                                "
+                                >Einsatzbereiche</span
+                            >
+                        </div>
+                    </div>
+
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 30px;
+                            margin-bottom: 40px;
+                        "
+                    >
+                        <!-- Die Ausbildung -->
+                        <div
+                            class="glass-card blue-theme"
+                            style="
+                                padding: 40px;
+                                border-radius: 30px;
+                                position: relative;
+                                overflow: hidden;
+                                border: 1px solid #38bdf8 !important;
+                            "
+                        >
+                            <div
+                                style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 6px;
+                                    height: 100%;
+                                    background: #38bdf8;
+                                "
+                            ></div>
+                            <h3
+                                style="
+                                    color: #38bdf8;
+                                    margin-bottom: 25px;
+                                    font-size: 28px;
+                                    text-align: center;
+                                "
+                            >
+                                Der Ausbildungsweg
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 17px;
+                                    line-height: 1.8;
+                                    color: #ffffff;
+                                    margin-bottom: 25px;
+                                "
+                            >
+                                Im Jahr <strong>2026</strong> ist der
+                                "Kaufmann/-frau für Büromanagement" einer der
+                                vielseitigsten und gefragtesten Berufe. Du
+                                lernst, wie du administrative Prozesse
+                                optimierst, Teams koordinierst und den Erfolg
+                                eines Unternehmens sicherstellst.
+                            </p>
+                            <div style="display: grid; gap: 15px">
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('dualer_fokus')"
+                                >
+                                    <span style="font-size: 24px">🏢</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Dualer Fokus</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Praxis im Betrieb + Theorie in der
+                                            Berufsschule</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('tools_technik')"
+                                >
+                                    <span style="font-size: 24px">💻</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Tools & Technik</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Office, ERP, CRM &
+                                            Projektmanagement</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('recht_sicherheit')"
+                                >
+                                    <span style="font-size: 24px">⚖️</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Recht & Sicherheit</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >DSGVO, Arbeitsrecht &
+                                            Datenschutz</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('marketing_sales')"
+                                >
+                                    <span style="font-size: 24px">💰</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Finanzen & Controlling</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Budgetierung &
+                                            Kostenkontrolle</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('kundenmanagement')"
+                                >
+                                    <span style="font-size: 24px">💬</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Kundenmanagement</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Kommunikation & Support</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Die 5 Säulen -->
+                        <div
+                            class="glass-card purple-theme"
+                            style="
+                                padding: 40px;
+                                border-radius: 30px;
+                                position: relative;
+                                overflow: hidden;
+                                border: 1px solid #a855f7 !important;
+                            "
+                        >
+                            <div
+                                style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 6px;
+                                    height: 100%;
+                                    background: #a855f7;
+                                "
+                            ></div>
+                            <h3
+                                style="
+                                    color: #a855f7;
+                                    margin-bottom: 25px;
+                                    font-size: 28px;
+                                    text-align: center;
+                                "
+                            >
+                                Die 5 Säulen des Erfolgs
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 18px;
+                                    line-height: 1.7;
+                                    color: #ffffff;
+                                    margin-bottom: 20px;
+                                "
+                            >
+                                Ein erfolgreiches Büro basiert auf fünf
+                                Kernbereichen, die perfekt ineinandergreifen
+                                müssen. Diese fünf Säulen bilden das Fundament
+                                für jede administrative Karriere und sind
+                                entscheidend für den langfristigen Erfolg eines
+                                Unternehmens.
+                            </p>
+                            <div style="display: grid; gap: 15px">
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('sortiment')"
+                                >
+                                    <span style="font-size: 24px">📄</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Dokumentenmanagement</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Ordnung & Struktur</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('plattform')"
+                                >
+                                    <span style="font-size: 24px">⚙️</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Prozesse</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Effiziente Arbeitsabläufe</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('marketing_saeulen')"
+                                >
+                                    <span style="font-size: 24px">📢</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Kommunikation</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Intern & Extern</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('logistik')"
+                                >
+                                    <span style="font-size: 24px">📅</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Organisation</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Termin- & Ressourcenplanung</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('service')"
+                                >
+                                    <span style="font-size: 24px">💬</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Service</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Exzellenter Büroservice</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Karriere-Fokus -->
+                    <div class="pro-tip" style="margin-bottom: 50px">
+                        <h3
+                            style="
+                                margin-bottom: 20px;
+                                font-size: 32px;
+                                font-weight: 800;
+                                text-align: center;
+                                background: linear-gradient(
+                                    135deg,
+                                    #38bdf8,
+                                    #a855f7
+                                );
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                                color: transparent;
+                                position: relative;
+                                z-index: 1;
+                            "
+                        >
+                            Deine Karriere im Fokus
+                        </h3>
+                        <p
+                            style="
+                                font-size: 19px;
+                                line-height: 1.8;
+                                color: #ffffff;
+                                margin-bottom: 25px;
+                                text-align: center;
+                                position: relative;
+                                z-index: 1;
+                            "
+                        >
+                            Als Kaufmann/-frau für Büromanagement behältst du
+                            den Überblick über alle administrativen Abläufe. Von
+                            der Buchhaltung bis zur Kundenkommunikation – du
+                            bist die zentrale Schnittstelle, die alles
+                            zusammenhält und für reibungslose Prozesse sorgt.
+                        </p>
+                        <div
+                            style="
+                                display: flex;
+                                gap: 30px;
+                                flex-wrap: wrap;
+                                justify-content: center;
+                                position: relative;
+                                z-index: 1;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <span style="color: #38bdf8">✔</span>
+                                Vielseitige Aufgaben
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <span style="color: #38bdf8">✔</span> Sichere
+                                Arbeitsplätze
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <span style="color: #38bdf8">✔</span>
+                                Aufstiegschancen
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <span style="color: #38bdf8">✔</span>
+                                Branchenübergreifend
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills Bereich -->
+                    <div style="margin-bottom: 50px">
+                        <h3
+                            style="
+                                margin-bottom: 30px;
+                                font-size: 32px;
+                                text-align: center;
+                                font-weight: 800;
+                                background: linear-gradient(
+                                    135deg,
+                                    #38bdf8,
+                                    #a855f7
+                                );
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                                color: transparent;
+                            "
+                        >
+                            🛠️ Dein Experten-Arsenal
+                        </h3>
+                        <div
+                            style="
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 30px;
+                            "
+                        >
+                            <div
+                                class="skill-card blue-skill"
+                                style="
+                                    padding: 40px;
+                                    border-radius: 25px;
+                                    border: 1px solid #38bdf8 !important;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                "
+                                onclick="showStatInfo('hard_skills')"
+                            >
+                                <strong
+                                    style="
+                                        font-size: 28px;
+                                        color: #38bdf8;
+                                        display: block;
+                                        margin-bottom: 15px;
+                                        text-align: center;
+                                    "
+                                    >Fachliche Kompetenzen (Hard Skills)</strong
+                                >
+                                <p
+                                    style="
+                                        font-size: 19px;
+                                        line-height: 1.6;
+                                        color: #ffffff;
+                                        margin-bottom: 20px;
+                                        text-align: center;
+                                    "
+                                >
+                                    Dein technisches Handwerkszeug: Die
+                                    erlernbaren Fähigkeiten, um administrative
+                                    Prozesse präzise zu steuern und zu
+                                    optimieren.
+                                </p>
+                                <div style="display: grid; gap: 20px">
+                                    <div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: space-between;
+                                                margin-bottom: 8px;
+                                            "
+                                        >
+                                            <span>Buchhaltung</span>
+                                            <span>85%</span>
+                                        </div>
+                                        <div
+                                            style="
+                                                width: 100%;
+                                                height: 8px;
+                                                background: rgba(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    0.1
+                                                );
+                                                border-radius: 4px;
+                                            "
+                                        >
+                                            <div
+                                                style="
+                                                    width: 85%;
+                                                    height: 100%;
+                                                    background: #38bdf8;
+                                                    border-radius: 4px;
+                                                    box-shadow: 0 0 15px #38bdf8;
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: space-between;
+                                                margin-bottom: 8px;
+                                            "
+                                        >
+                                            <span>Datenverarbeitung</span>
+                                            <span>80%</span>
+                                        </div>
+                                        <div
+                                            style="
+                                                width: 100%;
+                                                height: 8px;
+                                                background: rgba(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    0.1
+                                                );
+                                                border-radius: 4px;
+                                            "
+                                        >
+                                            <div
+                                                style="
+                                                    width: 80%;
+                                                    height: 100%;
+                                                    background: #38bdf8;
+                                                    border-radius: 4px;
+                                                    box-shadow: 0 0 15px #38bdf8;
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: space-between;
+                                                margin-bottom: 8px;
+                                            "
+                                        >
+                                            <span>Rechtliche Grundlagen</span>
+                                            <span>80%</span>
+                                        </div>
+                                        <div
+                                            style="
+                                                width: 100%;
+                                                height: 8px;
+                                                background: rgba(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    0.1
+                                                );
+                                                border-radius: 4px;
+                                            "
+                                        >
+                                            <div
+                                                style="
+                                                    width: 80%;
+                                                    height: 100%;
+                                                    background: #38bdf8;
+                                                    border-radius: 4px;
+                                                    box-shadow: 0 0 15px #38bdf8;
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="skill-card purple-skill"
+                                style="
+                                    padding: 40px;
+                                    border-radius: 25px;
+                                    border: 1px solid #a855f7 !important;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                "
+                                onclick="showStatInfo('soft_skills')"
+                            >
+                                <strong
+                                    style="
+                                        font-size: 28px;
+                                        color: #a855f7;
+                                        display: block;
+                                        margin-bottom: 15px;
+                                        text-align: center;
+                                    "
+                                    >Strategisches Denken (Soft Skills)</strong
+                                >
+                                <p
+                                    style="
+                                        font-size: 19px;
+                                        line-height: 1.6;
+                                        color: #ffffff;
+                                        margin-bottom: 20px;
+                                        text-align: center;
+                                    "
+                                >
+                                    Deine persönlichen Stärken: Die
+                                    psychologischen und analytischen
+                                    Fähigkeiten, um Teams zu koordinieren und
+                                    Prozesse zu verbessern.
+                                </p>
+                                <div style="display: grid; gap: 20px">
+                                    <div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: space-between;
+                                                margin-bottom: 8px;
+                                            "
+                                        >
+                                            <span>Kommunikationsfähigkeit</span>
+                                            <span>90%</span>
+                                        </div>
+                                        <div
+                                            style="
+                                                width: 100%;
+                                                height: 8px;
+                                                background: rgba(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    0.1
+                                                );
+                                                border-radius: 4px;
+                                            "
+                                        >
+                                            <div
+                                                style="
+                                                    width: 90%;
+                                                    height: 100%;
+                                                    background: #a855f7;
+                                                    border-radius: 4px;
+                                                    box-shadow: 0 0 15px #a855f7;
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: space-between;
+                                                margin-bottom: 8px;
+                                            "
+                                        >
+                                            <span>Organisationstalent</span>
+                                            <span>82%</span>
+                                        </div>
+                                        <div
+                                            style="
+                                                width: 100%;
+                                                height: 8px;
+                                                background: rgba(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    0.1
+                                                );
+                                                border-radius: 4px;
+                                            "
+                                        >
+                                            <div
+                                                style="
+                                                    width: 82%;
+                                                    height: 100%;
+                                                    background: #a855f7;
+                                                    border-radius: 4px;
+                                                    box-shadow: 0 0 15px #a855f7;
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: space-between;
+                                                margin-bottom: 8px;
+                                            "
+                                        >
+                                            <span>Teamfähigkeit</span>
+                                            <span>82%</span>
+                                        </div>
+                                        <div
+                                            style="
+                                                width: 100%;
+                                                height: 8px;
+                                                background: rgba(
+                                                    255,
+                                                    255,
+                                                    255,
+                                                    0.1
+                                                );
+                                                border-radius: 4px;
+                                            "
+                                        >
+                                            <div
+                                                style="
+                                                    width: 82%;
+                                                    height: 100%;
+                                                    background: #a855f7;
+                                                    border-radius: 4px;
+                                                    box-shadow: 0 0 15px #a855f7;
+                                                "
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEU: Lernwege & KPIs -->
+                    <div
+                        style="
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 30px;
+                            margin-bottom: 50px;
+                        "
+                    >
+                        <div
+                            class="glass-card blue-theme"
+                            style="
+                                padding: 40px;
+                                border-radius: 30px;
+                                position: relative;
+                                overflow: hidden;
+                                border: 1px solid #38bdf8 !important;
+                            "
+                        >
+                            <div
+                                style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 6px;
+                                    height: 100%;
+                                    background: #38bdf8;
+                                "
+                            ></div>
+                            <h3
+                                style="
+                                    color: #38bdf8;
+                                    margin-bottom: 25px;
+                                    font-size: 28px;
+                                    text-align: center;
+                                "
+                            >
+                                🎓 Büromanagement lernen
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 17px;
+                                    line-height: 1.8;
+                                    color: #ffffff;
+                                    margin-bottom: 25px;
+                                "
+                            >
+                                Neben der Ausbildung gibt es viele Wege zum
+                                Experten:
+                            </p>
+                            <div style="display: grid; gap: 15px">
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('fachwirt')"
+                                >
+                                    <span style="font-size: 24px">🎓</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Fachwirt</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Die Aufstiegsfortbildung nach der
+                                            Ausbildung – Bachelor-Niveau (DQR
+                                            6)</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('studium')"
+                                >
+                                    <span style="font-size: 24px">📚</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Studium</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >"BWL, Verwaltung oder Public
+                                            Management" an Hochschulen</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('zertifikate')"
+                                >
+                                    <span style="font-size: 24px">📜</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Zertifikate</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Profi-Kurse für Office, ERP oder
+                                            Projektmanagement</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('self_made')"
+                                >
+                                    <span style="font-size: 24px">🔧</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Praxiserfahrung</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Mit kleinen Projekten starten –
+                                            Eventplanung, Buchhaltung für
+                                            Freelancer</span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(56, 189, 248, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(56, 189, 248, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('bootcamps')"
+                                >
+                                    <span style="font-size: 24px">📖</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Weiterbildung</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Intensive 3-6 monatige Kurse für
+                                            praxisnahe Einstiege</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="glass-card purple-theme"
+                            style="
+                                padding: 40px;
+                                border-radius: 30px;
+                                position: relative;
+                                overflow: hidden;
+                                border: 1px solid #a855f7 !important;
+                            "
+                        >
+                            <div
+                                style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 6px;
+                                    height: 100%;
+                                    background: #a855f7;
+                                "
+                            ></div>
+                            <h3
+                                style="
+                                    color: #a855f7;
+                                    margin-bottom: 25px;
+                                    font-size: 28px;
+                                    text-align: center;
+                                "
+                            >
+                                📊 Die Top 5 Kennzahlen
+                            </h3>
+                            <p
+                                style="
+                                    font-size: 17px;
+                                    line-height: 1.8;
+                                    color: #ffffff;
+                                    margin-bottom: 25px;
+                                "
+                            >
+                                Das "Dashboard" eines jeden Bürokaufmanns:
+                            </p>
+                            <div style="display: grid; gap: 15px">
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('conversion_rate')"
+                                >
+                                    <span style="font-size: 24px">📈</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Effizienzrate</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >% der Prozesse optimiert
+                                            <span
+                                                style="
+                                                    color: #a855f7;
+                                                    font-weight: bold;
+                                                "
+                                                >ER</span
+                                            ></span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('akquise_kosten')"
+                                >
+                                    <span style="font-size: 24px">⏱️</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Bearbeitungszeit</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Ø Zeit pro Aufgabe
+                                            <span
+                                                style="
+                                                    color: #a855f7;
+                                                    font-weight: bold;
+                                                "
+                                                >BT</span
+                                            ></span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('warenkorb_wert')"
+                                >
+                                    <span style="font-size: 24px">✅</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Prozessqualität</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >% fehlerfreie Prozesse
+                                            <span
+                                                style="
+                                                    color: #a855f7;
+                                                    font-weight: bold;
+                                                "
+                                                >PQ</span
+                                            ></span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('kundenwert')"
+                                >
+                                    <span style="font-size: 24px">⭐</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Kundenzufriedenheit</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >Bewertung 1-10
+                                            <span
+                                                style="
+                                                    color: #a855f7;
+                                                    font-weight: bold;
+                                                "
+                                                >CSAT</span
+                                            ></span
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 15px;
+                                        background: rgba(168, 85, 247, 0.08);
+                                        padding: 15px;
+                                        border-radius: 15px;
+                                        border: 1px solid
+                                            rgba(168, 85, 247, 0.2);
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                    "
+                                    onclick="showStatInfo('retourenquote')"
+                                >
+                                    <span style="font-size: 24px">📋</span>
+                                    <div>
+                                        <strong
+                                            style="
+                                                display: block;
+                                                font-size: 16px;
+                                            "
+                                            >Dokumentationsquote</strong
+                                        >
+                                        <span
+                                            style="
+                                                font-size: 14px;
+                                                color: #ffffff;
+                                            "
+                                            >% dokumentierte Vorgänge
+                                            <span
+                                                style="
+                                                    color: #a855f7;
+                                                    font-weight: bold;
+                                                "
+                                                >DQ</span
+                                            ></span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Task 1 Section: Bestellannahme -->
+                <section
+                    class="section"
+                    id="task1Section"
+                    style="display: none"
+                >
+                    <h2
+                        style="
+                            font-size: 32px;
+                            color: #a855f7;
+                            margin-bottom: 25px;
+                        "
+                    >
+                        Mission 1: Bestellannahme
+                    </h2>
+
+                    <p
+                        id="mission1Desc"
+                        style="
+                            font-size: 18px;
+                            margin-bottom: 35px;
+                            color: rgba(255, 255, 255, 0.85);
+                            line-height: 1.7;
+                        "
+                    ></p>
+                    <script>
+                        (function () {
+                            const name =
+                                localStorage.getItem(
+                                    "buromanagementPlayerName",
+                                ) || "";
+                            const greeting = name
+                                ? `<strong style="color:#38bdf8;">${name}</strong>, `
+                                : "";
+                            document.getElementById("mission1Desc").innerHTML =
+                                `${greeting}prüfe die eingehende Bestellung und nimm sie an, wenn alle Angaben korrekt sind.<br>
+                           Suche in den Datenbanken nach den richtigen Informationen.
+                           <span style="color:#fbbf24;font-weight:600;"> Suchst du etwas Falsches raus, erscheint eine neue Bestellung.</span>`;
+                        })();
+                    </script>
+
+                    <div id="taskMission" style="display: block">
+                        <div
+                            id="invoiceData"
+                            style="
+                                margin-bottom: 40px;
+                                background: white;
+                                border-radius: 20px;
+                                padding: 40px;
+                                border: 2px solid #e2e8f0;
+                                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+                                display: block;
+                            "
+                        >
+                            <!-- Bestellung wird hier dynamisch geladen -->
+                        </div>
+
+                        <div
+                            id="taskInputs"
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                gap: 15px;
+                                margin-bottom: 30px;
+                            "
+                        >
+                            <div
+                                id="customerSelection"
+                                style="
+                                    display: none;
+                                    background: rgba(59, 130, 246, 0.2);
+                                    border: 2px solid #3b82f6;
+                                    border-radius: 10px;
+                                    padding: 10px;
+                                    color: #ffffff;
+                                    font-size: 14px;
+                                "
+                            ></div>
+                            <div
+                                id="productSelection"
+                                style="
+                                    display: none;
+                                    background: rgba(168, 85, 247, 0.2);
+                                    border: 2px solid #a855f7;
+                                    border-radius: 10px;
+                                    padding: 10px;
+                                    color: #ffffff;
+                                    font-size: 14px;
+                                "
+                            ></div>
+                            <div style="display: flex; gap: 15px">
+                                <div
+                                    class="input-group-wrapper"
+                                    style="flex: 1"
+                                >
+                                    <button
+                                        class="primary-btn"
+                                        onclick="openCustomerDatabase()"
+                                        style="
+                                            background: #38bdf8;
+                                            color: white;
+                                            padding: 18px;
+                                            border-radius: 20px;
+                                            border: none;
+                                            font-size: 16px;
+                                            cursor: pointer;
+                                            width: 100%;
+                                        "
+                                    >
+                                        Kundendatenbank
+                                    </button>
+                                    <div class="button-group-inline" style="margin-top: 10px;">
+                                        <button class="info-icon-btn" onclick="showInfo('kundedatenbank')">INFO</button>
+                                    </div>
+                                </div>
+                                <div
+                                    class="input-group-wrapper"
+                                    style="flex: 1"
+                                >
+                                    <button
+                                        class="primary-btn"
+                                        onclick="
+                                            event.stopPropagation();
+                                            openProductDatabase()
+                                        "
+                                        style="
+                                            background: #a855f7;
+                                            color: white;
+                                            padding: 18px;
+                                            border-radius: 20px;
+                                            border: none;
+                                            font-size: 16px;
+                                            cursor: pointer;
+                                            width: 100%;
+                                        "
+                                    >
+                                        Produktdatenbank
+                                    </button>
+                                    <div class="button-group-inline" style="margin-top: 10px;">
+                                        <button class="info-icon-btn" onclick="showInfo('produktdatenbank')">INFO</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group-wrapper">
+                                <button
+                                    class="primary-btn"
+                                    onclick="validateOrder()"
+                                    style="
+                                        background: #22c55e;
+                                        color: white;
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        border: none;
+                                        font-size: 16px;
+                                        cursor: pointer;
+                                    "
+                                >
+                                    Bestellung prüfen
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="taskFeedback" style="margin-top: 20px"></div>
+                    </div>
+                </section>
+
+                <!-- Kundendatenbank Modal -->
+                <!-- Kundendatenbank Modal -->
+                <div
+                    id="customerDatabaseModal"
+                    style="
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(15, 23, 42, 0.85);
+                        backdrop-filter: blur(12px);
+                        z-index: 10000;
+                        justify-content: center;
+                        align-items: center;
+                    "
+                >
+                    <div
+                        style="
+                            background: #fff;
+                            border-radius: 24px;
+                            width: 90%;
+                            max-width: 900px;
+                            max-height: 85vh;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+                        "
+                    >
+                        <!-- Header -->
+                        <div
+                            style="
+                                background: linear-gradient(
+                                    135deg,
+                                    #667eea,
+                                    #764ba2
+                                );
+                                padding: 28px 32px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                flex-shrink: 0;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 14px;
+                                "
+                            >
+                                <div
+                                    style="
+                                        width: 44px;
+                                        height: 44px;
+                                        background: rgba(255, 255, 255, 0.2);
+                                        border-radius: 12px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 22px;
+                                    "
+                                >
+                                    👥
+                                </div>
+                                <div>
+                                    <h2
+                                        style="
+                                            color: white;
+                                            font-size: 22px;
+                                            font-weight: 800;
+                                            margin: 0;
+                                        "
+                                    >
+                                        Kundendatenbank
+                                    </h2>
+                                    <p
+                                        style="
+                                            color: rgba(255, 255, 255, 0.7);
+                                            font-size: 13px;
+                                            margin: 4px 0 0 0;
+                                        "
+                                    >
+                                        Wähle den passenden Kunden aus der
+                                        Bestellung
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                onclick="closeCustomerDatabase()"
+                                style="
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 50%;
+                                    background: rgba(255, 255, 255, 0.2);
+                                    border: none;
+                                    color: white;
+                                    font-size: 18px;
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    transition: background 0.2s;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(255,255,255,0.35)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(255,255,255,0.2)'
+                                "
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <!-- Tabelle -->
+                        <div style="overflow-y: auto; padding: 24px; flex: 1">
+                            <div id="customerList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produktdatenbank Modal -->
+                <div
+                    id="productDatabaseModal"
+                    style="
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(15, 23, 42, 0.85);
+                        backdrop-filter: blur(12px);
+                        z-index: 10000;
+                        justify-content: center;
+                        align-items: center;
+                    "
+                >
+                    <div
+                        style="
+                            background: #fff;
+                            border-radius: 24px;
+                            width: 90%;
+                            max-width: 1000px;
+                            max-height: 85vh;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+                        "
+                    >
+                        <!-- Header -->
+                        <div
+                            style="
+                                background: linear-gradient(
+                                    135deg,
+                                    #667eea,
+                                    #764ba2
+                                );
+                                padding: 28px 32px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                flex-shrink: 0;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 14px;
+                                "
+                            >
+                                <div
+                                    style="
+                                        width: 44px;
+                                        height: 44px;
+                                        background: rgba(255, 255, 255, 0.2);
+                                        border-radius: 12px;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 22px;
+                                    "
+                                >
+                                    📦
+                                </div>
+                                <div>
+                                    <h2
+                                        style="
+                                            color: white;
+                                            font-size: 22px;
+                                            font-weight: 800;
+                                            margin: 0;
+                                        "
+                                    >
+                                        Produktdatenbank
+                                    </h2>
+                                    <p
+                                        style="
+                                            color: rgba(255, 255, 255, 0.7);
+                                            font-size: 13px;
+                                            margin: 4px 0 0 0;
+                                        "
+                                    >
+                                        Wähle das passende Produkt anhand der
+                                        Artikelnummer
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                onclick="closeProductDatabase()"
+                                style="
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 50%;
+                                    background: rgba(255, 255, 255, 0.2);
+                                    border: none;
+                                    color: white;
+                                    font-size: 18px;
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    transition: background 0.2s;
+                                "
+                                onmouseover="
+                                    this.style.background =
+                                        'rgba(255,255,255,0.35)'
+                                "
+                                onmouseout="
+                                    this.style.background =
+                                        'rgba(255,255,255,0.2)'
+                                "
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <!-- Tabelle -->
+                        <div style="overflow-y: auto; padding: 24px; flex: 1">
+                            <div id="productList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task 2 Section: Rechnung erstellen -->
+                <section
+                    class="section"
+                    id="task2Section"
+                    style="display: none"
+                >
+                    <h2
+                        style="
+                            font-size: 32px;
+                            color: #38bdf8;
+                            margin-bottom: 25px;
+                        "
+                    >
+                        Mission 2: Rechnung erstellen
+                    </h2>
+
+                    <p
+                        style="
+                            font-size: 18px;
+                            margin-bottom: 35px;
+                            color: rgba(255, 255, 255, 0.85);
+                        "
+                    >
+                        Erstelle eine korrekte Rechnung basierend auf der
+                        Bestellung mit allen gesetzlichen Pflichtangaben.
+                    </p>
+
+                    <div id="taskMission" style="display: block">
+                        <div
+                            id="invoiceData2"
+                            style="
+                                margin-bottom: 40px;
+                                background: white;
+                                border-radius: 20px;
+                                padding: 40px;
+                                border: 2px solid #e2e8f0;
+                                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+                                display: block;
+                            "
+                        >
+                            <!-- Bestellung wird hier dynamisch geladen -->
+                        </div>
+
+                        <div
+                            id="taskInputs2"
+                            style="
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 15px;
+                                margin-bottom: 30px;
+                            "
+                        >
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="rechnungsnummer2"
+                                    placeholder="Rechnungsnummer"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('rechnungsnummer')">INFO</button>
+                                    <button class="helper-btn" onclick="helpRechnungsnummer()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="rechnungsdatum2"
+                                    placeholder="Rechnungsdatum"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('rechnungsdatum')">INFO</button>
+                                    <button class="helper-btn" onclick="helpRechnungsdatum()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="kundenname2"
+                                    placeholder="Kundenname"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('kundenname')">INFO</button>
+                                    <button class="helper-btn" onclick="helpKundenname()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="kundenadresse2"
+                                    placeholder="Kundenadresse"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('kundenadresse')">INFO</button>
+                                    <button class="helper-btn" onclick="helpKundenadresse()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="kundenstadt2"
+                                    placeholder="Kundenstadt"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('kundenstadt')">INFO</button>
+                                    <button class="helper-btn" onclick="helpKundenstadt()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="nettopreis2"
+                                    placeholder="Nettopreis z.B. 1245,00"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('nettopreis')">INFO</button>
+                                    <button class="helper-btn" onclick="helpNettopreis()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="mwst2"
+                                    placeholder="MwSt z.B. 236,55"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('mwst')">INFO</button>
+                                    <button class="helper-btn" onclick="helpMwst()">Hilfe</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group-wrapper">
+                                <input
+                                    type="text"
+                                    id="gesamtbetrag2"
+                                    placeholder="Gesamtbetrag z.B. 1481,55"
+                                    style="
+                                        padding: 18px;
+                                        border-radius: 20px;
+                                        background: rgba(255, 255, 255, 0.05);
+                                        color: white;
+                                        border: 2px solid #38bdf8;
+                                        font-size: 16px;
+                                        outline: none;
+                                        width: 100%;
+                                    "
+                                />
+                                <div class="button-group-inline">
+                                    <button class="info-icon-btn" onclick="showInfo('gesamtbetrag')">INFO</button>
+                                    <button class="helper-btn" onclick="helpGesamtbetrag()">Hilfe</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="taskFeedback2" style="margin-top: 20px"></div>
+
+                        <button
+                            id="saveTaskBtn2"
+                            class="primary-btn"
+                            onclick="submitTask2()"
+                            style="
+                                margin-top: 30px;
+                                display: block !important;
+                                background: #22c55e;
+                                color: white;
+                                visibility: visible !important;
+                            "
+                        >
+                            Aufgabe speichern & Weiter
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Task 3 Section: Kommunikation -->
+                <section
+                    class="section"
+                    id="task3Section"
+                    style="display: none"
+                >
+                    <div style="margin-bottom: 30px">
+                        <h2
+                            style="
+                                font-size: 36px;
+                                color: #a855f7;
+                                margin-bottom: 10px;
+                            "
+                        >
+                            Mission 3: Kommunikation
+                        </h2>
+                        <p
+                            style="
+                                font-size: 18px;
+                                color: rgba(255, 255, 255, 0.8);
+                                line-height: 1.6;
+                            "
+                        >
+                            Wähle in jeder Situation die
+                            <strong>professionellste Antwort</strong>. Du
+                            brauchst mindestens
+                            <strong style="color: #fbbf24">5 von 7</strong>
+                            richtige Antworten, um Mission 4 freizuschalten.
+                        </p>
+                        <div class="button-group-inline" style="margin-top: 15px;">
+                            <button class="info-icon-btn" onclick="showInfo('kommunikation')">INFO</button>
+                        </div>
+                    </div>
+                    <div id="kommunikationContainer"></div>
+                </section>
+
+                <!-- Task 4 Section: Budget-Management -->
+                <section
+                    class="section"
+                    id="task4Section"
+                    style="display: none"
+                >
+                    <div class="intro-hero" style="margin-bottom: 40px">
+                        <h2
+                            style="
+                                font-size: 48px;
+                                font-weight: 900;
+                                background: linear-gradient(
+                                    135deg,
+                                    #38bdf8,
+                                    #a855f7
+                                );
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                                color: transparent;
+                                margin-bottom: 10px;
+                            "
+                        >
+                            Mission 4: Budget-Management
+                        </h2>
+                        <p style="font-size: 20px; color: white; opacity: 0.9">
+                            Verteile das Budget von 100.000 € auf die verschiedenen Abteilungen und erfülle die Mindestanforderungen.
+                        </p>
+                    </div>
+
+                    <div id="budgetGame" style="display: block;">
+                        <div style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; border: 2px solid #38bdf8;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h3 style="color: white; font-size: 24px; margin: 0;">Verfügbares Budget</h3>
+                                <div id="remainingBudget" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; padding: 15px 30px; border-radius: 15px; font-size: 28px; font-weight: bold;">100.000 €</div>
+                            </div>
+                            <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; height: 10px; overflow: hidden;">
+                                <div id="budgetProgressBar" style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+
+                        <div id="departmentInputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                            <!-- Abteilungen werden hier dynamisch eingefügt -->
+                        </div>
+
+                        <div id="budgetFeedback" style="margin-bottom: 30px;"></div>
+
+                        <button
+                            id="checkBudgetBtn"
+                            class="primary-btn"
+                            onclick="checkBudget()"
+                            style="
+                                background: #22c55e;
+                                color: white;
+                                padding: 18px 40px;
+                                border-radius: 20px;
+                                border: none;
+                                font-size: 18px;
+                                cursor: pointer;
+                                width: 100%;
+                            "
+                        >
+                            Budget prüfen
+                        </button>
+                    </div>
+
+                    <div id="taskFeedback4" style="margin-top: 20px"></div>
+                    <button
+                        id="saveTaskBtn4"
+                        class="primary-btn"
+                        onclick="finishGame()"
+                        style="
+                            margin-top: 30px;
+                            display: none;
+                            background: #22c55e;
+                            color: white;
+                        "
+                    >
+                        Spiel abschließen
+                    </button>
+                </section>
+            </div>
+        </div>
+        <div data-component="footer" data-variant="academy" data-component-base=".."></div>
+
+        <!-- Neues Popup für Namenseingabe beim Überspringen -->
+        <div
+            id="skipNameModal"
+            class="modal-overlay"
+            style="z-index: 15000; display: none"
+        >
+            <div class="modal">
+                <div class="modal-content-scroll">
+                    <h3>Willkommen!</h3>
+                    <p>Bevor du startest, verrate uns bitte deinen Namen:</p>
+                    <input
+                        type="text"
+                        id="skipPlayerNameInput"
+                        placeholder="Dein Name..."
+                        style="
+                            margin-bottom: 20px;
+                            border: 1px solid #38bdf8;
+                            padding: 12px;
+                            border-radius: 10px;
+                            width: 100%;
+                            background: rgba(255, 255, 255, 0.05);
+                            color: white;
+                        "
+                    />
+                    <button class="modal-btn" onclick="submitSkipName()">
+                        Mission starten
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datenschutz & Impressum Modals -->
+        <div
+            id="legalModal"
+            class="modal-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="legalModalTitle"
+        >
+            <div
+                class="modal"
+                style="
+                    max-width: 800px;
+                    width: 90%;
+                    max-height: 85vh;
+                    text-align: left;
+                "
+            >
+                <div class="modal-content-scroll" style="padding: 50px">
+                    <h3 id="legalModalTitle" style="display: none">
+                        Rechtliche Informationen
+                    </h3>
+                    <div
+                        id="legalContent"
+                        style="color: #ffffff; line-height: 1.8"
+                    ></div>
+                    <div style="text-align: center; margin-top: 40px">
+                        <button class="modal-btn" onclick="closeLegalModal()">
+                            Schließen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div
+            id="modalOverlay"
+            class="modal-overlay"
+            style="display: none"
+        >
+            <div class="modal">
+                <div class="modal-content-scroll">
+                    <h3
+                        id="modalTitle"
+                        style="color: #38bdf8; margin-bottom: 20px; font-size: 28px"
+                    >
+                        Titel
+                    </h3>
+                    <p
+                        id="modalText"
+                        style="color: white; font-size: 16px; line-height: 1.6"
+                    >
+                        Text
+                    </p>
+                    <button
+                        id="modalActionBtn"
+                        class="modal-btn"
+                        style="margin-top: 30px"
+                    >
+                        Verstanden
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistik-Info Modal -->
+        <div
+            id="statInfoModal"
+            class="modal-overlay"
+            style="display: none"
+        >
+            <div class="modal">
+                <div class="modal-content-scroll">
+                    <h3
+                        id="statInfoTitle"
+                        style="color: #38bdf8; margin-bottom: 20px; font-size: 28px"
+                    >
+                        Titel
+                    </h3>
+                    <p
+                        id="statInfoContent"
+                        style="color: white; font-size: 16px; line-height: 1.6"
+                    >
+                        Inhalt
+                    </p>
+                    <button
+                        id="statInfoCloseBtn"
+                        class="modal-btn"
+                        style="margin-top: 30px"
+                        onclick="closeStatInfo()"
+                    >
+                        Schließen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Neustart-Bestätigungs-Modal -->
+        <div
+            id="restartConfirmModal"
+            class="modal-overlay"
+            style="z-index: 2000; display: none"
+        >
+            <div class="modal">
+                <div class="modal-content-scroll">
+                    <h3 id="restartConfirmTitle">Spiel neu starten?</h3>
+                    <p>
+                        Möchtest du wirklich das Spiel neu starten? Dein Fortschritt
+                        geht verloren.
+                    </p>
+                    <div style="display: flex; gap: 15px; justify-content: center">
+                        <button
+                            id="restartConfirmBtn"
+                            class="modal-btn"
+                            style="background: #ef4444; color: white"
+                        >
+                            Ja, neu starten
+                        </button>
+                        <button
+                            id="restartCancelBtn"
+                            class="modal-btn"
+                            style="background: rgba(255, 255, 255, 0.1); color: white"
+                        >
+                            Abbrechen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zertifikat-Element (versteckt) -->
+        <div id="certificateElement" style="display: none; position: absolute; top: -9999px; left: -9999px;">
+            <div style="width: 794px; height: 1123px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 50px; font-family: Arial, sans-serif;">
+                <div style="background: white; border-radius: 20px; padding: 50px; height: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); position: relative;">
+                    <!-- Logo oben links -->
+                    <div style="position: absolute; top: 30px; left: 30px;">
+                        <img src="../assets/images/Logo/Logo-Zertifikat.png" alt="ALO Academy Logo" style="width: 130px; height: 60px;">
+                    </div>
+                    
+                    <!-- Titel -->
+                    <div style="text-align: center; margin-top: 120px; margin-bottom: 50px;">
+                        <h1 style="color: #667eea; font-size: 48px; margin: 0; font-weight: bold;">Zertifikat</h1>
+                        <p style="color: #764ba2; font-size: 24px; margin: 15px 0 0 0; font-weight: 500;">Büromanagement</p>
+                    </div>
+                    
+                    <!-- Graduations-Symbol -->
+                    <div style="text-align: center; margin-bottom: 50px;">
+                        <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);">
+                            <span style="color: white; font-size: 60px;">🎓</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bescheinigungstext -->
+                    <div style="text-align: center; margin-bottom: 50px;">
+                        <p style="color: #333; font-size: 20px; margin: 0; line-height: 1.6;">Hiermit wird bescheinigt, dass</p>
+                        <h2 id="certificateName" style="color: #667eea; font-size: 36px; margin: 20px 0; font-weight: bold;">[Name]</h2>
+                        <p style="color: #333; font-size: 20px; margin: 0; line-height: 1.6;">alle Missionen erfolgreich abgeschlossen hat</p>
+                    </div>
+                    
+                    <!-- Missionen-Übersicht -->
+                    <div style="text-align: center; margin-bottom: 60px;">
+                        <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 30px;">
+                            <div style="text-align: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                </div>
+                                <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 1</p>
+                                <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Bestellannahme</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                </div>
+                                <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 2</p>
+                                <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Rechnungseingabe</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                </div>
+                                <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 3</p>
+                                <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Kommunikation</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                </div>
+                                <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 4</p>
+                                <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Budget-Management</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div style="text-align: center; margin-top: auto; padding-top: 40px; border-top: 2px solid #f0f0f0;">
+                        <p style="color: #666; font-size: 16px; margin: 0; font-weight: 500;">ALO Academy - Büromanagement Training</p>
+                        <p id="certificateDate" style="color: #999; font-size: 14px; margin: 10px 0 0 0;">[Datum]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="../components/components.js"></script>
+        <script src="assets/js/data.js"></script>
+        <script src="assets/js/game.js"></script>
+        <script src="assets/js/ui.js"></script>
+    </body>
+</html>
