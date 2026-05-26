@@ -1,0 +1,75 @@
+<template data-component-template="footer" data-variant="home">
+  <!-- FOOTER (Gleich wie im Spiel) -->
+  <footer class="global-footer" style="background: rgba(15, 23, 42, 0.9); border-top: 1px solid rgba(255,255,255,0.05);">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/images/Logo/Logo.png" alt="Logo" class="footer-logo">
+      </div>
+      <div class="footer-text">
+        <div class="footer-links">
+          <span onclick="showLegal('datenschutz')" style="cursor: pointer;">Datenschutz</span>
+          <span onclick="showLegal('impressum')" style="color: #a855f7; cursor: pointer;">Impressum</span>
+          <span onclick="showLegal('nutzung')" style="cursor: pointer;">Nutzungsbedingungen</span>
+          <span onclick="window.open('https://aloberlin.4lima.de/', '_blank')" style="color: #a855f7; cursor: pointer;">ALOBERLIN WEBSITE</span>
+        </div>
+        <span class="copyright-text">© 2026 Annedore-Leber-Oberschule. Alle Rechte vorbehalten.</span>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<template data-component-template="footer" data-variant="academy">
+        <!-- GLOBAL MAIN FOOTER -->
+        <footer class="global-footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <img
+                        src="../assets/images/Logo/Logo.png"
+                        alt="Logo"
+                        class="footer-logo"
+                    />
+                </div>
+                <div class="footer-text">
+                    <div
+                        class="footer-links"
+                        style="
+                            display: flex !important;
+                            gap: 20px;
+                            align-items: center;
+                            justify-content: flex-end;
+                        "
+                    >
+                        <span
+                            onclick="showLegal('datenschutz')"
+                            style="cursor: pointer"
+                            >Datenschutz</span
+                        >
+                        <span
+                            onclick="showLegal('impressum')"
+                            style="color: #a855f7; cursor: pointer"
+                            >Impressum</span
+                        >
+                        <span
+                            onclick="showLegal('nutzung')"
+                            style="cursor: pointer"
+                            >Nutzungsbedingungen</span
+                        >
+                        <span
+                            onclick="
+                                window.open(
+                                    'https://aloberlin.4lima.de/',
+                                    '_blank',
+                                )
+                            "
+                            style="color: #a855f7; cursor: pointer"
+                            >ALOBERLIN WEBSITE</span
+                        >
+                    </div>
+                    <span class="copyright-text"
+                        >© 2026 Annedore-Leber-Oberschule. Alle Rechte
+                        vorbehalten.</span
+                    >
+                </div>
+            </div>
+        </footer>
+</template>
