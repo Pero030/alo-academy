@@ -59,6 +59,7 @@ import {
         .glass-card
       ):not(#shopLivePreview *)::before {
         animation: none !important;
+        transform: translate(-50%, -50%) rotate(0deg) !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(
