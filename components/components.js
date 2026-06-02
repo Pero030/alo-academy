@@ -48,6 +48,30 @@ import {
         color: #111827 !important;
       }
 
+      body[data-alo-theme-mode="white"] :where(
+        .topbar,
+        .global-footer,
+        .hero-card,
+        .section,
+        .sidebar,
+        .modal,
+        .glass-card,
+        .mission,
+        .info-box,
+        .info-card,
+        .tutorial-box,
+        .intro-hero,
+        .pro-tip,
+        .start-screen-card
+      ):not(#shopLivePreview *) {
+        box-shadow: 0 8px 22px rgba(17, 24, 39, 0.10) !important;
+        filter: none !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(.main-logo, .footer-logo) {
+        filter: none !important;
+      }
+
       body[data-alo-border-animation="off"] :where(
         .hero-card,
         .section,
@@ -285,10 +309,29 @@ import {
 
     if (mode === "standard") {
       document.body.removeAttribute("data-alo-theme-mode");
+      updateThemeLogos(mode);
       return;
     }
 
     document.body.dataset.aloThemeMode = mode;
+    updateThemeLogos(mode);
+  }
+
+  function getWhiteModeLogoSrc(originalSrc) {
+    return originalSrc.replace(/Logo\.png(?:\?.*)?$/, "Logo-Zertifikat.png");
+  }
+
+  function updateThemeLogos(mode) {
+    const useWhiteLogo = mode === "white";
+
+    document.querySelectorAll(".main-logo, .footer-logo").forEach(function (logo) {
+      if (!logo.dataset.defaultSrc) {
+        logo.dataset.defaultSrc = logo.getAttribute("src") || "";
+      }
+
+      const defaultSrc = logo.dataset.defaultSrc;
+      logo.setAttribute("src", useWhiteLogo ? getWhiteModeLogoSrc(defaultSrc) : defaultSrc);
+    });
   }
 
   function applyBorderAnimationSetting() {
