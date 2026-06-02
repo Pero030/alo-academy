@@ -107,6 +107,7 @@
             </h1>
 
             <p
+                id="settingsSubtitle"
                 style="
                     font-size:20px;
                     color:rgba(255,255,255,0.82);
@@ -1470,6 +1471,20 @@
 
     function showSettingsSection(section) {
 
+        const subtitle =
+            document.getElementById(
+                "settingsSubtitle"
+            );
+
+        const subtitles = {
+            mitteilungen:
+                "Infos erstellen, die über die Glocke angezeigt werden.",
+            wartung:
+                "Wartungsmodus für einzelne Bereiche oder die gesamte Website verwalten.",
+            hilfe:
+                "Hilfe-Buttons für die Lernspiele ein- oder ausschalten."
+        };
+
         const mitteilungen =
             document.getElementById(
                 "sectionMitteilungen"
@@ -1523,6 +1538,11 @@
 
         if (section === "mitteilungen") {
 
+            if (subtitle) {
+                subtitle.textContent =
+                    subtitles.mitteilungen;
+            }
+
             mitteilungen.style.display =
                 "block";
 
@@ -1532,6 +1552,11 @@
         }
 
         if (section === "wartung") {
+
+            if (subtitle) {
+                subtitle.textContent =
+                    subtitles.wartung;
+            }
 
             wartung.style.display =
                 "block";
@@ -1544,6 +1569,11 @@
         }
 
         if (section === "hilfe") {
+
+            if (subtitle) {
+                subtitle.textContent =
+                    subtitles.hilfe;
+            }
 
             hilfe.style.display =
                 "block";
