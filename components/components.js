@@ -11,6 +11,7 @@ import {
 
   const infoReadStorageKey = "aloAcademyReadInfos";
   const themeModeStorageKey = "aloAcademyThemeMode";
+  const borderAnimationStorageKey = "aloAcademyBorderAnimation";
 
   function getThemeMode() {
     try {
@@ -18,6 +19,14 @@ import {
       return mode === "dark" || mode === "white" ? mode : "standard";
     } catch (error) {
       return "standard";
+    }
+  }
+
+  function isBorderAnimationEnabled() {
+    try {
+      return localStorage.getItem(borderAnimationStorageKey) !== "off";
+    } catch (error) {
+      return true;
     }
   }
 
@@ -37,6 +46,19 @@ import {
         background: #ffffff !important;
         background-image: none !important;
         color: #111827 !important;
+      }
+
+      body[data-alo-border-animation="off"] :where(
+        .hero-card,
+        .section,
+        .sidebar,
+        .modal,
+        .intro-hero,
+        .start-screen-card,
+        .pro-tip,
+        .glass-card
+      ):not(#shopLivePreview *)::before {
+        animation: none !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(
@@ -178,6 +200,45 @@ import {
         margin-top: 26px;
       }
 
+      .alo-animation-row {
+        margin-top: 24px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        text-align: left;
+      }
+
+      .alo-animation-row strong {
+        display: block;
+        font-size: 17px;
+      }
+
+      .alo-animation-row span {
+        display: block;
+        font-size: 14px;
+        opacity: 0.75;
+        margin-top: 2px;
+      }
+
+      .alo-animation-toggle {
+        min-width: 130px;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 900;
+        border: 1px solid rgba(34, 197, 94, 0.45);
+        background: rgba(34, 197, 94, 0.18);
+        color: #ffffff;
+      }
+
+      .alo-animation-toggle.off {
+        border-color: rgba(239, 68, 68, 0.45);
+        background: rgba(239, 68, 68, 0.18);
+      }
+
       .alo-theme-option {
         min-height: 92px;
         border-radius: 14px;
@@ -205,6 +266,11 @@ import {
         .alo-theme-options {
           grid-template-columns: 1fr;
         }
+
+        .alo-animation-row {
+          align-items: stretch;
+          flex-direction: column;
+        }
       }
     `;
 
@@ -224,9 +290,21 @@ import {
     document.body.dataset.aloThemeMode = mode;
   }
 
+  function applyBorderAnimationSetting() {
+    ensureThemeModeStyle();
+
+    if (isBorderAnimationEnabled()) {
+      document.body.removeAttribute("data-alo-border-animation");
+      return;
+    }
+
+    document.body.dataset.aloBorderAnimation = "off";
+  }
+
   function safelyApplyThemeMode() {
     try {
       applyThemeMode();
+      applyBorderAnimationSetting();
     } catch (error) {
       console.warn("Theme mode could not be applied.", error);
       document.body.removeAttribute("data-alo-theme-mode");
@@ -254,6 +332,38 @@ import {
     closeThemePicker();
   }
 
+  function toggleBorderAnimation() {
+    try {
+      if (isBorderAnimationEnabled()) {
+        localStorage.setItem(borderAnimationStorageKey, "off");
+      } else {
+        localStorage.removeItem(borderAnimationStorageKey);
+      }
+    } catch (error) {
+      console.warn("Border animation setting could not be saved.", error);
+    }
+
+    applyBorderAnimationSetting();
+    updateBorderAnimationToggle();
+  }
+
+  function updateBorderAnimationToggle() {
+    const toggle = document.getElementById("borderAnimationToggle");
+    const label = document.getElementById("borderAnimationState");
+    const isEnabled = isBorderAnimationEnabled();
+
+    if (toggle) {
+      toggle.textContent = isEnabled ? "Animation an" : "Animation aus";
+      toggle.classList.toggle("off", !isEnabled);
+    }
+
+    if (label) {
+      label.textContent = isEnabled
+        ? "Der farbige Border-Verlauf bewegt sich."
+        : "Der farbige Border-Verlauf steht still.";
+    }
+  }
+
   function openThemePicker() {
     closeThemePicker();
     safelyApplyThemeMode();
@@ -262,6 +372,11 @@ import {
     const standardActive = mode === "standard" ? " active" : "";
     const darkActive = mode === "dark" ? " active" : "";
     const whiteActive = mode === "white" ? " active" : "";
+    const animationLabel = isBorderAnimationEnabled() ? "Animation an" : "Animation aus";
+    const animationState = isBorderAnimationEnabled()
+      ? "Der farbige Border-Verlauf bewegt sich."
+      : "Der farbige Border-Verlauf steht still.";
+    const animationClass = isBorderAnimationEnabled() ? "" : " off";
 
     const modal = document.createElement("div");
     modal.id = "themePickerModal";
@@ -281,6 +396,10 @@ import {
             '<button class="alo-theme-option' + darkActive + '" data-theme-mode="dark" style="background: #000000 !important; color: #ffffff !important;">Darkmode<span>Schwarz / Weiss</span></button>' +
             '<button class="alo-theme-option' + whiteActive + '" data-theme-mode="white" style="background: #ffffff !important; color: #111827 !important; border-color: rgba(17,24,39,0.35) !important;">Whitemode<span>Weiss / Schwarz</span></button>' +
           '</div>' +
+          '<div class="alo-animation-row">' +
+            '<div><strong>Border Animation</strong><span id="borderAnimationState">' + animationState + '</span></div>' +
+            '<button id="borderAnimationToggle" class="alo-animation-toggle' + animationClass + '" type="button">' + animationLabel + '</button>' +
+          '</div>' +
           '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schliessen</button>' +
         '</div>' +
       '</div>';
@@ -297,6 +416,11 @@ import {
         saveThemeMode(button.dataset.themeMode);
       });
     });
+
+    const animationToggle = document.getElementById("borderAnimationToggle");
+    if (animationToggle) {
+      animationToggle.addEventListener("click", toggleBorderAnimation);
+    }
   }
 
   async function getInfos() {
@@ -815,6 +939,7 @@ import {
   window.openThemePicker = openThemePicker;
   window.closeThemePicker = closeThemePicker;
   window.saveThemeMode = saveThemeMode;
+  window.toggleBorderAnimation = toggleBorderAnimation;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", loadComponents);
