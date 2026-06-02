@@ -10,6 +10,298 @@ import {
 (function () {
 
   const infoReadStorageKey = "aloAcademyReadInfos";
+  const themeModeStorageKey = "aloAcademyThemeMode";
+
+  function getThemeMode() {
+    const mode = localStorage.getItem(themeModeStorageKey);
+    return mode === "dark" || mode === "white" ? mode : "standard";
+  }
+
+  function ensureThemeModeStyle() {
+    if (document.getElementById("aloThemeModeStyle")) return;
+
+    const style = document.createElement("style");
+    style.id = "aloThemeModeStyle";
+    style.textContent = `
+      body[data-alo-theme-mode="dark"] {
+        background: #000000 !important;
+        background-image: none !important;
+        color: #ffffff !important;
+      }
+
+      body[data-alo-theme-mode="white"] {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #111827 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .landing-main,
+      body[data-alo-theme-mode="dark"] main,
+      body[data-alo-theme-mode="dark"] .topbar,
+      body[data-alo-theme-mode="dark"] .global-footer,
+      body[data-alo-theme-mode="dark"] .section,
+      body[data-alo-theme-mode="dark"] .sidebar,
+      body[data-alo-theme-mode="dark"] .content,
+      body[data-alo-theme-mode="dark"] .card,
+      body[data-alo-theme-mode="dark"] .glass-card,
+      body[data-alo-theme-mode="dark"] .mission,
+      body[data-alo-theme-mode="dark"] .info-box,
+      body[data-alo-theme-mode="dark"] .info-card,
+      body[data-alo-theme-mode="dark"] .tutorial-box,
+      body[data-alo-theme-mode="dark"] .hero-card,
+      body[data-alo-theme-mode="dark"] .start-screen-card,
+      body[data-alo-theme-mode="dark"] .intro-hero,
+      body[data-alo-theme-mode="dark"] .pro-tip,
+      body[data-alo-theme-mode="dark"] .modal,
+      body[data-alo-theme-mode="dark"] .modal-content-scroll,
+      body[data-alo-theme-mode="dark"] .shop-builder-sidebar,
+      body[data-alo-theme-mode="dark"] .shop-builder-scroll-content,
+      body[data-alo-theme-mode="dark"] #startScreen,
+      body[data-alo-theme-mode="dark"] [style*="background: white"],
+      body[data-alo-theme-mode="dark"] [style*="background:#fff"],
+      body[data-alo-theme-mode="dark"] [style*="background: #fff"],
+      body[data-alo-theme-mode="dark"] [style*="background:#ffffff"],
+      body[data-alo-theme-mode="dark"] [style*="background: #ffffff"],
+      body[data-alo-theme-mode="dark"] [style*="background: rgba(255, 255, 255"],
+      body[data-alo-theme-mode="dark"] [style*="background:rgba(255,255,255"] {
+        background: #000000 !important;
+        background-image: none !important;
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.35) !important;
+      }
+
+      body[data-alo-theme-mode="white"] .landing-main,
+      body[data-alo-theme-mode="white"] main,
+      body[data-alo-theme-mode="white"] .topbar,
+      body[data-alo-theme-mode="white"] .global-footer,
+      body[data-alo-theme-mode="white"] .section,
+      body[data-alo-theme-mode="white"] .sidebar,
+      body[data-alo-theme-mode="white"] .content,
+      body[data-alo-theme-mode="white"] .card,
+      body[data-alo-theme-mode="white"] .glass-card,
+      body[data-alo-theme-mode="white"] .mission,
+      body[data-alo-theme-mode="white"] .info-box,
+      body[data-alo-theme-mode="white"] .info-card,
+      body[data-alo-theme-mode="white"] .tutorial-box,
+      body[data-alo-theme-mode="white"] .hero-card,
+      body[data-alo-theme-mode="white"] .start-screen-card,
+      body[data-alo-theme-mode="white"] .intro-hero,
+      body[data-alo-theme-mode="white"] .pro-tip,
+      body[data-alo-theme-mode="white"] .modal,
+      body[data-alo-theme-mode="white"] .modal-content-scroll,
+      body[data-alo-theme-mode="white"] .shop-builder-sidebar,
+      body[data-alo-theme-mode="white"] .shop-builder-scroll-content,
+      body[data-alo-theme-mode="white"] #startScreen,
+      body[data-alo-theme-mode="white"] [style*="background: #000"],
+      body[data-alo-theme-mode="white"] [style*="background:#000"],
+      body[data-alo-theme-mode="white"] [style*="background: #0f172a"],
+      body[data-alo-theme-mode="white"] [style*="background:#0f172a"],
+      body[data-alo-theme-mode="white"] [style*="background: #111827"],
+      body[data-alo-theme-mode="white"] [style*="background:#111827"],
+      body[data-alo-theme-mode="white"] [style*="background: rgba(15, 23, 42"],
+      body[data-alo-theme-mode="white"] [style*="background:rgba(15,23,42"],
+      body[data-alo-theme-mode="white"] [style*="background: rgba(0, 0, 0"],
+      body[data-alo-theme-mode="white"] [style*="background:rgba(0,0,0"],
+      body[data-alo-theme-mode="white"] [style*="background: rgba(255, 255, 255"],
+      body[data-alo-theme-mode="white"] [style*="background:rgba(255,255,255"] {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #111827 !important;
+        border-color: rgba(17, 24, 39, 0.22) !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .section::after,
+      body[data-alo-theme-mode="dark"] .sidebar::after,
+      body[data-alo-theme-mode="dark"] .modal::after,
+      body[data-alo-theme-mode="dark"] .intro-hero::after,
+      body[data-alo-theme-mode="dark"] .hero-card::after,
+      body[data-alo-theme-mode="dark"] .start-screen-card::after,
+      body[data-alo-theme-mode="dark"] .shop-builder-sidebar::after,
+      body[data-alo-theme-mode="dark"] .pro-tip::after {
+        background: #000000 !important;
+      }
+
+      body[data-alo-theme-mode="white"] .section::after,
+      body[data-alo-theme-mode="white"] .sidebar::after,
+      body[data-alo-theme-mode="white"] .modal::after,
+      body[data-alo-theme-mode="white"] .intro-hero::after,
+      body[data-alo-theme-mode="white"] .hero-card::after,
+      body[data-alo-theme-mode="white"] .start-screen-card::after,
+      body[data-alo-theme-mode="white"] .shop-builder-sidebar::after,
+      body[data-alo-theme-mode="white"] .pro-tip::after {
+        background: #ffffff !important;
+      }
+
+      body[data-alo-theme-mode="dark"],
+      body[data-alo-theme-mode="dark"] p,
+      body[data-alo-theme-mode="dark"] span:not([data-info-count]),
+      body[data-alo-theme-mode="dark"] div,
+      body[data-alo-theme-mode="dark"] label,
+      body[data-alo-theme-mode="dark"] li,
+      body[data-alo-theme-mode="dark"] strong,
+      body[data-alo-theme-mode="dark"] h1,
+      body[data-alo-theme-mode="dark"] h2,
+      body[data-alo-theme-mode="dark"] h3,
+      body[data-alo-theme-mode="dark"] [style*="color: black"],
+      body[data-alo-theme-mode="dark"] [style*="color:#000"],
+      body[data-alo-theme-mode="dark"] [style*="color: #000"],
+      body[data-alo-theme-mode="dark"] [style*="color:#111827"],
+      body[data-alo-theme-mode="dark"] [style*="color: #111827"],
+      body[data-alo-theme-mode="dark"] [style*="color:#1e293b"],
+      body[data-alo-theme-mode="dark"] [style*="color: #1e293b"] {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+      }
+
+      body[data-alo-theme-mode="white"],
+      body[data-alo-theme-mode="white"] p,
+      body[data-alo-theme-mode="white"] span:not([data-info-count]),
+      body[data-alo-theme-mode="white"] div,
+      body[data-alo-theme-mode="white"] label,
+      body[data-alo-theme-mode="white"] li,
+      body[data-alo-theme-mode="white"] strong,
+      body[data-alo-theme-mode="white"] h1,
+      body[data-alo-theme-mode="white"] h2,
+      body[data-alo-theme-mode="white"] h3,
+      body[data-alo-theme-mode="white"] [style*="color: white"],
+      body[data-alo-theme-mode="white"] [style*="color:white"],
+      body[data-alo-theme-mode="white"] [style*="color:#ffffff"],
+      body[data-alo-theme-mode="white"] [style*="color: #ffffff"],
+      body[data-alo-theme-mode="white"] [style*="rgba(255, 255, 255"],
+      body[data-alo-theme-mode="white"] [style*="rgba(255,255,255"] {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+      }
+
+      body[data-alo-theme-mode] button,
+      body[data-alo-theme-mode] .primary-btn,
+      body[data-alo-theme-mode] .purple-btn,
+      body[data-alo-theme-mode] .modal-btn,
+      body[data-alo-theme-mode] .helper-btn,
+      body[data-alo-theme-mode] .info-icon-btn {
+        -webkit-text-fill-color: currentColor !important;
+      }
+
+      body[data-alo-theme-mode="dark"] input,
+      body[data-alo-theme-mode="dark"] textarea,
+      body[data-alo-theme-mode="dark"] select {
+        background: #000000 !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.35) !important;
+      }
+
+      body[data-alo-theme-mode="white"] input,
+      body[data-alo-theme-mode="white"] textarea,
+      body[data-alo-theme-mode="white"] select {
+        background: #ffffff !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        border-color: rgba(17, 24, 39, 0.25) !important;
+      }
+
+      .alo-theme-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .alo-theme-option {
+        min-height: 92px;
+        border-radius: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .alo-theme-option span {
+        font-size: 13px;
+        opacity: 0.75;
+      }
+
+      .alo-theme-option.active {
+        outline: 4px solid #38bdf8 !important;
+        outline-offset: 3px;
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function applyThemeMode() {
+    ensureThemeModeStyle();
+
+    const mode = getThemeMode();
+
+    if (mode === "standard") {
+      document.body.removeAttribute("data-alo-theme-mode");
+      return;
+    }
+
+    document.body.dataset.aloThemeMode = mode;
+  }
+
+  function closeThemePicker() {
+    const modal = document.getElementById("themePickerModal");
+    if (modal) modal.remove();
+    document.body.classList.remove("modal-open");
+  }
+
+  function saveThemeMode(mode) {
+    if (mode === "dark" || mode === "white") {
+      localStorage.setItem(themeModeStorageKey, mode);
+    } else {
+      localStorage.removeItem(themeModeStorageKey);
+    }
+
+    applyThemeMode();
+    closeThemePicker();
+  }
+
+  function openThemePicker() {
+    closeThemePicker();
+    applyThemeMode();
+
+    const mode = getThemeMode();
+    const standardActive = mode === "standard" ? " active" : "";
+    const darkActive = mode === "dark" ? " active" : "";
+    const whiteActive = mode === "white" ? " active" : "";
+
+    const modal = document.createElement("div");
+    modal.id = "themePickerModal";
+    modal.className = "modal-overlay";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.style.display = "flex";
+    modal.style.zIndex = "100000";
+
+    modal.innerHTML =
+      '<div class="modal" style="max-width: 680px; width: 92%; text-align: center;">' +
+        '<div class="modal-content-scroll" style="padding: 44px;">' +
+          '<h3 style="margin-bottom: 16px;">Farben ändern</h3>' +
+          '<p style="font-size: 17px; margin-bottom: 0;">Wähle Standard, Darkmode oder Whitemode. Standard ist der aktuelle Look der Seite.</p>' +
+          '<div class="alo-theme-options">' +
+            '<button class="alo-theme-option' + standardActive + '" onclick="saveThemeMode(\\'standard\\')" style="background: linear-gradient(135deg, #1e293b, #334155) !important; color: #ffffff !important;">Standard<span>Aktueller Look</span></button>' +
+            '<button class="alo-theme-option' + darkActive + '" onclick="saveThemeMode(\\'dark\\')" style="background: #000000 !important; color: #ffffff !important;">Darkmode<span>Schwarz / Weiß</span></button>' +
+            '<button class="alo-theme-option' + whiteActive + '" onclick="saveThemeMode(\\'white\\')" style="background: #ffffff !important; color: #111827 !important; border-color: rgba(17,24,39,0.35) !important;">Whitemode<span>Weiß / Schwarz</span></button>' +
+          '</div>' +
+          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schließen</button>' +
+        '</div>' +
+      '</div>';
+
+    modal.onclick = function (event) {
+      if (event.target === modal) closeThemePicker();
+    };
+
+    document.body.appendChild(modal);
+    document.body.classList.add("modal-open");
+  }
 
   async function getInfos() {
 
@@ -502,6 +794,7 @@ import {
 
       if (!template) throw new Error("Template " + name + "/" + variant + " nicht gefunden");
       mount.outerHTML = template.innerHTML;
+      applyThemeMode();
       updateInfoBadge();
     } catch (error) {
       console.error("Komponente konnte nicht geladen werden: " + name + "/" + variant, error);
@@ -509,6 +802,7 @@ import {
   }
 
   function loadComponents() {
+    applyThemeMode();
     document.querySelectorAll("[data-component]").forEach(loadComponent);
     updateInfoBadge();
   }
@@ -522,6 +816,9 @@ import {
   window.closeSettingsPinModal = closeSettingsPinModal;
   window.updateInfoBadge = updateInfoBadge;
   window.deleteSingleInfo = deleteSingleInfo;
+  window.openThemePicker = openThemePicker;
+  window.closeThemePicker = closeThemePicker;
+  window.saveThemeMode = saveThemeMode;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", loadComponents);
