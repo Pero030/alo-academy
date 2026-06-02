@@ -12,6 +12,8 @@ import {
   const infoReadStorageKey = "aloAcademyReadInfos";
   const themeStorageKey = "aloAcademyColorTheme";
   const customThemeStorageKey = "aloAcademyCustomColorTheme";
+  const borderAnimationStorageKey = "aloAcademyBorderAnimation";
+  const controlColorsStorageKey = "aloAcademyControlColors";
 
   const colorThemes = [
     {
@@ -142,6 +144,13 @@ import {
         --alo-bg-a: #1e293b;
         --alo-bg-b: #334155;
         --alo-bg-c: #0f172a;
+        --alo-info-button: #38bdf8;
+        --alo-info-button-dark: #0ea5e9;
+        --alo-info-button-rgb: 56, 189, 248;
+        --alo-help-button: #a855f7;
+        --alo-help-button-dark: #9333ea;
+        --alo-help-button-rgb: 168, 85, 247;
+        --alo-text-color: #ffffff;
       }
 
       body {
@@ -149,6 +158,21 @@ import {
           radial-gradient(circle at top left, rgba(var(--alo-primary-rgb), 0.3), transparent 60%) !important,
           radial-gradient(circle at bottom right, rgba(var(--alo-secondary-rgb), 0.25), transparent 60%) !important,
           linear-gradient(135deg, var(--alo-bg-a), var(--alo-bg-b), var(--alo-bg-a)) !important;
+        color: var(--alo-text-color) !important;
+      }
+
+      body,
+      .section,
+      .section p,
+      .glass-card,
+      .glass-card p,
+      .glass-card span:not([data-info-count]),
+      .modal p,
+      .mission,
+      .hero-text,
+      .footer-links span,
+      label {
+        color: var(--alo-text-color) !important;
       }
 
       .topbar,
@@ -216,13 +240,14 @@ import {
       .shop-builder-sidebar::before,
       .pro-tip::before {
         background: conic-gradient(var(--alo-primary), var(--alo-secondary), var(--alo-primary), var(--alo-secondary), var(--alo-primary)) !important;
+        animation-play-state: var(--alo-border-animation-state, running) !important;
       }
 
       .topbar-right button[onclick*="openInfoBell"],
       .topbar-right button[onclick*="location.href"],
       .topbar-right button[onclick*="confirmRestart"] {
-        background: rgba(var(--alo-primary-rgb), 0.18) !important;
-        border-color: rgba(var(--alo-primary-rgb), 0.45) !important;
+        background: rgba(var(--alo-info-button-rgb), 0.18) !important;
+        border-color: rgba(var(--alo-info-button-rgb), 0.45) !important;
       }
 
       .topbar-right button[onclick*="openSettingsPin"],
@@ -234,6 +259,120 @@ import {
       .topbar-right button[onclick*="openThemePicker"] {
         background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
         border-color: rgba(255,255,255,0.35) !important;
+      }
+
+      .info-icon-btn,
+      button[onclick*="showInfo("],
+      button[onclick*="showStatInfo("],
+      button[onclick*="openInfoBell"] {
+        background: linear-gradient(135deg, var(--alo-info-button), var(--alo-info-button-dark)) !important;
+        border-color: rgba(var(--alo-info-button-rgb), 0.45) !important;
+        box-shadow: 0 10px 30px rgba(var(--alo-info-button-rgb), 0.35) !important;
+      }
+
+      .helper-btn,
+      button[onclick^="help"],
+      button[onclick*=" help"],
+      button[onclick*="help"] {
+        background: linear-gradient(135deg, var(--alo-help-button), var(--alo-help-button-dark)) !important;
+        border-color: rgba(var(--alo-help-button-rgb), 0.45) !important;
+        box-shadow: 0 10px 30px rgba(var(--alo-help-button-rgb), 0.35) !important;
+      }
+
+      [style*="color:#38bdf8"],
+      [style*="color: #38bdf8"],
+      [style*="color:#0ea5e9"],
+      [style*="color: #0ea5e9"],
+      [style*="color:#7dd3fc"],
+      [style*="color: #7dd3fc"] {
+        color: var(--alo-primary) !important;
+      }
+
+      [style*="color:#a855f7"],
+      [style*="color: #a855f7"],
+      [style*="color:#9333ea"],
+      [style*="color: #9333ea"],
+      [style*="color:#d8b4fe"],
+      [style*="color: #d8b4fe"] {
+        color: var(--alo-secondary) !important;
+      }
+
+      [style*="background:#38bdf8"],
+      [style*="background: #38bdf8"],
+      [style*="background:#0ea5e9"],
+      [style*="background: #0ea5e9"],
+      [style*="background:rgba(56,189,248"],
+      [style*="background: rgba(56,189,248"],
+      [style*="background: rgba(56, 189, 248"],
+      [style*="background-color:#38bdf8"],
+      [style*="background-color: #38bdf8"] {
+        background: rgba(var(--alo-primary-rgb), 0.18) !important;
+      }
+
+      [style*="background:#a855f7"],
+      [style*="background: #a855f7"],
+      [style*="background:#9333ea"],
+      [style*="background: #9333ea"],
+      [style*="background:rgba(168,85,247"],
+      [style*="background: rgba(168,85,247"],
+      [style*="background: rgba(168, 85, 247"],
+      [style*="background-color:#a855f7"],
+      [style*="background-color: #a855f7"] {
+        background: rgba(var(--alo-secondary-rgb), 0.18) !important;
+      }
+
+      button[style*="background:#38bdf8"],
+      button[style*="background: #38bdf8"],
+      button[style*="background:#0ea5e9"],
+      button[style*="background: #0ea5e9"],
+      button[style*="background:rgba(56,189,248"],
+      button[style*="background: rgba(56,189,248"],
+      button[style*="background: rgba(56, 189, 248"] {
+        background: linear-gradient(135deg, var(--alo-primary), var(--alo-primary-dark)) !important;
+      }
+
+      button[style*="background:#a855f7"],
+      button[style*="background: #a855f7"],
+      button[style*="background:#9333ea"],
+      button[style*="background: #9333ea"],
+      button[style*="background:rgba(168,85,247"],
+      button[style*="background: rgba(168,85,247"],
+      button[style*="background: rgba(168, 85, 247"] {
+        background: linear-gradient(135deg, var(--alo-secondary), var(--alo-secondary-dark)) !important;
+      }
+
+      [style*="border:1px solid #38bdf8"],
+      [style*="border: 1px solid #38bdf8"],
+      [style*="border:2px solid #38bdf8"],
+      [style*="border: 2px solid #38bdf8"],
+      [style*="border-color:#38bdf8"],
+      [style*="border-color: #38bdf8"],
+      [style*="border-left:4px solid #38bdf8"],
+      [style*="border-left: 4px solid #38bdf8"] {
+        border-color: var(--alo-primary) !important;
+      }
+
+      [style*="border:1px solid #a855f7"],
+      [style*="border: 1px solid #a855f7"],
+      [style*="border:2px solid #a855f7"],
+      [style*="border: 2px solid #a855f7"],
+      [style*="border-color:#a855f7"],
+      [style*="border-color: #a855f7"],
+      [style*="border-left:4px solid #a855f7"],
+      [style*="border-left: 4px solid #a855f7"] {
+        border-color: var(--alo-secondary) !important;
+      }
+
+      [style*="linear-gradient"][style*="#38bdf8"][style*="#a855f7"],
+      [style*="linear-gradient"][style*="#38bdf8"][style*="#9333ea"],
+      [style*="linear-gradient"][style*="#0ea5e9"][style*="#a855f7"] {
+        background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
+      }
+
+      [style*="-webkit-background-clip:text"],
+      [style*="-webkit-background-clip: text"] {
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
       }
 
       .alo-theme-swatch {
@@ -271,6 +410,58 @@ import {
     root.style.setProperty("--alo-bg-c", theme.backgroundC);
   }
 
+  function getSavedControlColors() {
+    try {
+      const colors = JSON.parse(
+        localStorage.getItem(controlColorsStorageKey) || "{}"
+      );
+
+      return {
+        infoButton: colors.infoButton || "#38bdf8",
+        helpButton: colors.helpButton || "#a855f7",
+        textColor: colors.textColor || "#ffffff"
+      };
+    } catch (error) {
+      return {
+        infoButton: "#38bdf8",
+        helpButton: "#a855f7",
+        textColor: "#ffffff"
+      };
+    }
+  }
+
+  function applyControlColors() {
+    const colors = getSavedControlColors();
+    const root = document.documentElement;
+
+    root.style.setProperty("--alo-info-button", colors.infoButton);
+    root.style.setProperty("--alo-info-button-dark", colors.infoButton);
+    root.style.setProperty("--alo-info-button-rgb", hexToRgb(colors.infoButton));
+    root.style.setProperty("--alo-help-button", colors.helpButton);
+    root.style.setProperty("--alo-help-button-dark", colors.helpButton);
+    root.style.setProperty("--alo-help-button-rgb", hexToRgb(colors.helpButton));
+    root.style.setProperty("--alo-text-color", colors.textColor);
+  }
+
+  function saveControlColors() {
+    const infoInput = document.getElementById("customInfoButtonColor");
+    const helpInput = document.getElementById("customHelpButtonColor");
+    const textInput = document.getElementById("customTextColor");
+
+    if (!infoInput || !helpInput || !textInput) return;
+
+    localStorage.setItem(
+      controlColorsStorageKey,
+      JSON.stringify({
+        infoButton: infoInput.value,
+        helpButton: helpInput.value,
+        textColor: textInput.value
+      })
+    );
+
+    applyControlColors();
+  }
+
   function saveColorTheme(themeId) {
     localStorage.setItem(themeStorageKey, themeId);
     applyColorTheme(themeId);
@@ -296,6 +487,44 @@ import {
 
   function getSavedColorThemeId() {
     return localStorage.getItem(themeStorageKey) || "default";
+  }
+
+  function isBorderAnimationEnabled() {
+    return localStorage.getItem(borderAnimationStorageKey) !== "off";
+  }
+
+  function applyBorderAnimationSetting() {
+    document.documentElement.style.setProperty(
+      "--alo-border-animation-state",
+      isBorderAnimationEnabled() ? "running" : "paused"
+    );
+  }
+
+  function toggleBorderAnimation() {
+    const enabled = !isBorderAnimationEnabled();
+
+    localStorage.setItem(
+      borderAnimationStorageKey,
+      enabled ? "on" : "off"
+    );
+
+    applyBorderAnimationSetting();
+    updateBorderAnimationToggle();
+  }
+
+  function updateBorderAnimationToggle() {
+    const checkbox = document.getElementById("borderAnimationToggle");
+    const label = document.getElementById("borderAnimationToggleLabel");
+
+    if (checkbox) {
+      checkbox.checked = isBorderAnimationEnabled();
+    }
+
+    if (label) {
+      label.textContent = isBorderAnimationEnabled()
+        ? "Animation ist an"
+        : "Animation ist aus";
+    }
   }
 
   function closeThemePicker() {
@@ -327,6 +556,7 @@ import {
 
     const activeThemeId = getSavedColorThemeId();
     const activeTheme = getColorTheme(activeThemeId);
+    const controlColors = getSavedControlColors();
     const modal = document.createElement("div");
 
     modal.id = "themePickerModal";
@@ -351,6 +581,25 @@ import {
             '</div>' +
             '<button class="modal-btn" onclick="saveCustomColorTheme()" style="margin-top: 20px; width: 100%;">Eigene Farben speichern</button>' +
           '</div>' +
+          '<div style="margin-top: 18px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);">' +
+            '<h4 style="color: white; margin: 0 0 16px 0; font-size: 18px;">Button- und Schriftfarben</h4>' +
+            '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">' +
+              '<label style="color: white; font-weight: 800;">Info-Buttons<input id="customInfoButtonColor" type="color" value="' + controlColors.infoButton + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
+              '<label style="color: white; font-weight: 800;">Hilfe-Buttons<input id="customHelpButtonColor" type="color" value="' + controlColors.helpButton + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
+              '<label style="color: white; font-weight: 800;">Schriftfarbe<input id="customTextColor" type="color" value="' + controlColors.textColor + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
+            '</div>' +
+            '<button class="modal-btn" onclick="saveControlColors()" style="margin-top: 20px; width: 100%;">Button- und Schriftfarben speichern</button>' +
+          '</div>' +
+          '<div style="margin-top: 18px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); display:flex; align-items:center; justify-content:space-between; gap: 18px;">' +
+            '<div style="text-align:left;">' +
+              '<h4 style="color: white; margin: 0 0 4px 0; font-size: 18px;">Border-Animation</h4>' +
+              '<p id="borderAnimationToggleLabel" style="font-size: 14px; margin: 0; color: rgba(255,255,255,0.72);"></p>' +
+            '</div>' +
+            '<label style="display:flex; align-items:center; gap: 12px; cursor:pointer; color:white; font-weight:900;">' +
+              '<input id="borderAnimationToggle" type="checkbox" onchange="toggleBorderAnimation()" style="width: 28px; height: 28px; margin: 0; accent-color: var(--alo-primary); cursor:pointer;">' +
+              '<span>Ein</span>' +
+            '</label>' +
+          '</div>' +
           '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schließen</button>' +
         '</div>' +
       '</div>';
@@ -358,9 +607,12 @@ import {
     document.body.appendChild(modal);
     document.body.classList.add("modal-open");
     renderThemeButtons(activeThemeId);
+    updateBorderAnimationToggle();
   }
 
   applyColorTheme(getSavedColorThemeId());
+  applyControlColors();
+  applyBorderAnimationSetting();
 
   async function getInfos() {
 
@@ -877,6 +1129,8 @@ import {
   window.closeThemePicker = closeThemePicker;
   window.saveColorTheme = saveColorTheme;
   window.saveCustomColorTheme = saveCustomColorTheme;
+  window.saveControlColors = saveControlColors;
+  window.toggleBorderAnimation = toggleBorderAnimation;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", loadComponents);
