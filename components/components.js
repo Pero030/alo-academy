@@ -143,7 +143,6 @@ import {
         background: #ffffff !important;
         background-image: none !important;
         color: #111827 !important;
-        border-color: rgba(17, 24, 39, 0.22) !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(
@@ -221,6 +220,16 @@ import {
         background: #ffffff !important;
         background-image: none !important;
         color: #111827 !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(
+        [style*="border: 1px solid rgba(255, 255, 255"],
+        [style*="border:1px solid rgba(255,255,255"],
+        [style*="border: 2px solid rgba(255, 255, 255"],
+        [style*="border:2px solid rgba(255,255,255"],
+        [style*="border-color: rgba(255, 255, 255"],
+        [style*="border-color:rgba(255,255,255"]
+      ):not(#shopLivePreview *):not(.blue-border):not(.purple-border):not(.skill-card):not(.mission) {
         border-color: rgba(17, 24, 39, 0.22) !important;
       }
 
