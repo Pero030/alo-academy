@@ -13,8 +13,12 @@ import {
   const themeModeStorageKey = "aloAcademyThemeMode";
 
   function getThemeMode() {
-    const mode = localStorage.getItem(themeModeStorageKey);
-    return mode === "dark" || mode === "white" ? mode : "standard";
+    try {
+      const mode = localStorage.getItem(themeModeStorageKey);
+      return mode === "dark" || mode === "white" ? mode : "standard";
+    } catch (error) {
+      return "standard";
+    }
   }
 
   function ensureThemeModeStyle() {
@@ -35,169 +39,136 @@ import {
         color: #111827 !important;
       }
 
-      body[data-alo-theme-mode="dark"] .landing-main,
-      body[data-alo-theme-mode="dark"] main,
-      body[data-alo-theme-mode="dark"] .topbar,
-      body[data-alo-theme-mode="dark"] .global-footer,
-      body[data-alo-theme-mode="dark"] .section,
-      body[data-alo-theme-mode="dark"] .sidebar,
-      body[data-alo-theme-mode="dark"] .content,
-      body[data-alo-theme-mode="dark"] .card,
-      body[data-alo-theme-mode="dark"] .glass-card,
-      body[data-alo-theme-mode="dark"] .mission,
-      body[data-alo-theme-mode="dark"] .info-box,
-      body[data-alo-theme-mode="dark"] .info-card,
-      body[data-alo-theme-mode="dark"] .tutorial-box,
-      body[data-alo-theme-mode="dark"] .hero-card,
-      body[data-alo-theme-mode="dark"] .start-screen-card,
-      body[data-alo-theme-mode="dark"] .intro-hero,
-      body[data-alo-theme-mode="dark"] .pro-tip,
-      body[data-alo-theme-mode="dark"] .modal,
-      body[data-alo-theme-mode="dark"] .modal-content-scroll,
-      body[data-alo-theme-mode="dark"] .shop-builder-sidebar,
-      body[data-alo-theme-mode="dark"] .shop-builder-scroll-content,
-      body[data-alo-theme-mode="dark"] #startScreen,
-      body[data-alo-theme-mode="dark"] [style*="background: white"],
-      body[data-alo-theme-mode="dark"] [style*="background:#fff"],
-      body[data-alo-theme-mode="dark"] [style*="background: #fff"],
-      body[data-alo-theme-mode="dark"] [style*="background:#ffffff"],
-      body[data-alo-theme-mode="dark"] [style*="background: #ffffff"],
-      body[data-alo-theme-mode="dark"] [style*="background: rgba(255, 255, 255"],
-      body[data-alo-theme-mode="dark"] [style*="background:rgba(255,255,255"] {
+      body[data-alo-theme-mode="dark"] :where(
+        main,
+        .landing-main,
+        .topbar,
+        .global-footer,
+        .section,
+        .sidebar,
+        .content,
+        .card,
+        .glass-card,
+        .mission,
+        .info-box,
+        .info-card,
+        .tutorial-box,
+        .hero-card,
+        .start-screen-card,
+        .intro-hero,
+        .pro-tip,
+        .modal,
+        .modal-content-scroll,
+        #startScreen
+      ):not(#shopLivePreview *):not(.shop-builder-sidebar):not(.shop-builder-scroll-content) {
         background: #000000 !important;
         background-image: none !important;
         color: #ffffff !important;
         border-color: rgba(255, 255, 255, 0.35) !important;
       }
 
-      body[data-alo-theme-mode="white"] .landing-main,
-      body[data-alo-theme-mode="white"] main,
-      body[data-alo-theme-mode="white"] .topbar,
-      body[data-alo-theme-mode="white"] .global-footer,
-      body[data-alo-theme-mode="white"] .section,
-      body[data-alo-theme-mode="white"] .sidebar,
-      body[data-alo-theme-mode="white"] .content,
-      body[data-alo-theme-mode="white"] .card,
-      body[data-alo-theme-mode="white"] .glass-card,
-      body[data-alo-theme-mode="white"] .mission,
-      body[data-alo-theme-mode="white"] .info-box,
-      body[data-alo-theme-mode="white"] .info-card,
-      body[data-alo-theme-mode="white"] .tutorial-box,
-      body[data-alo-theme-mode="white"] .hero-card,
-      body[data-alo-theme-mode="white"] .start-screen-card,
-      body[data-alo-theme-mode="white"] .intro-hero,
-      body[data-alo-theme-mode="white"] .pro-tip,
-      body[data-alo-theme-mode="white"] .modal,
-      body[data-alo-theme-mode="white"] .modal-content-scroll,
-      body[data-alo-theme-mode="white"] .shop-builder-sidebar,
-      body[data-alo-theme-mode="white"] .shop-builder-scroll-content,
-      body[data-alo-theme-mode="white"] #startScreen,
-      body[data-alo-theme-mode="white"] [style*="background: #000"],
-      body[data-alo-theme-mode="white"] [style*="background:#000"],
-      body[data-alo-theme-mode="white"] [style*="background: #0f172a"],
-      body[data-alo-theme-mode="white"] [style*="background:#0f172a"],
-      body[data-alo-theme-mode="white"] [style*="background: #111827"],
-      body[data-alo-theme-mode="white"] [style*="background:#111827"],
-      body[data-alo-theme-mode="white"] [style*="background: rgba(15, 23, 42"],
-      body[data-alo-theme-mode="white"] [style*="background:rgba(15,23,42"],
-      body[data-alo-theme-mode="white"] [style*="background: rgba(0, 0, 0"],
-      body[data-alo-theme-mode="white"] [style*="background:rgba(0,0,0"],
-      body[data-alo-theme-mode="white"] [style*="background: rgba(255, 255, 255"],
-      body[data-alo-theme-mode="white"] [style*="background:rgba(255,255,255"] {
+      body[data-alo-theme-mode="white"] :where(
+        main,
+        .landing-main,
+        .topbar,
+        .global-footer,
+        .section,
+        .sidebar,
+        .content,
+        .card,
+        .glass-card,
+        .mission,
+        .info-box,
+        .info-card,
+        .tutorial-box,
+        .hero-card,
+        .start-screen-card,
+        .intro-hero,
+        .pro-tip,
+        .modal,
+        .modal-content-scroll,
+        #startScreen
+      ):not(#shopLivePreview *):not(.shop-builder-sidebar):not(.shop-builder-scroll-content) {
         background: #ffffff !important;
         background-image: none !important;
         color: #111827 !important;
         border-color: rgba(17, 24, 39, 0.22) !important;
       }
 
-      body[data-alo-theme-mode="dark"] .section::after,
-      body[data-alo-theme-mode="dark"] .sidebar::after,
-      body[data-alo-theme-mode="dark"] .modal::after,
-      body[data-alo-theme-mode="dark"] .intro-hero::after,
-      body[data-alo-theme-mode="dark"] .hero-card::after,
-      body[data-alo-theme-mode="dark"] .start-screen-card::after,
-      body[data-alo-theme-mode="dark"] .shop-builder-sidebar::after,
-      body[data-alo-theme-mode="dark"] .pro-tip::after {
+      body[data-alo-theme-mode="dark"] :where(
+        .section,
+        .sidebar,
+        .modal,
+        .intro-hero,
+        .hero-card,
+        .start-screen-card,
+        .pro-tip
+      )::after {
         background: #000000 !important;
       }
 
-      body[data-alo-theme-mode="white"] .section::after,
-      body[data-alo-theme-mode="white"] .sidebar::after,
-      body[data-alo-theme-mode="white"] .modal::after,
-      body[data-alo-theme-mode="white"] .intro-hero::after,
-      body[data-alo-theme-mode="white"] .hero-card::after,
-      body[data-alo-theme-mode="white"] .start-screen-card::after,
-      body[data-alo-theme-mode="white"] .shop-builder-sidebar::after,
-      body[data-alo-theme-mode="white"] .pro-tip::after {
+      body[data-alo-theme-mode="white"] :where(
+        .section,
+        .sidebar,
+        .modal,
+        .intro-hero,
+        .hero-card,
+        .start-screen-card,
+        .pro-tip
+      )::after {
         background: #ffffff !important;
       }
 
-      body[data-alo-theme-mode="dark"],
-      body[data-alo-theme-mode="dark"] p,
-      body[data-alo-theme-mode="dark"] span:not([data-info-count]),
-      body[data-alo-theme-mode="dark"] div,
-      body[data-alo-theme-mode="dark"] label,
-      body[data-alo-theme-mode="dark"] li,
-      body[data-alo-theme-mode="dark"] strong,
-      body[data-alo-theme-mode="dark"] h1,
-      body[data-alo-theme-mode="dark"] h2,
-      body[data-alo-theme-mode="dark"] h3,
-      body[data-alo-theme-mode="dark"] [style*="color: black"],
-      body[data-alo-theme-mode="dark"] [style*="color:#000"],
-      body[data-alo-theme-mode="dark"] [style*="color: #000"],
-      body[data-alo-theme-mode="dark"] [style*="color:#111827"],
-      body[data-alo-theme-mode="dark"] [style*="color: #111827"],
-      body[data-alo-theme-mode="dark"] [style*="color:#1e293b"],
-      body[data-alo-theme-mode="dark"] [style*="color: #1e293b"] {
+      body[data-alo-theme-mode="dark"] :where(
+        p,
+        span,
+        label,
+        li,
+        strong,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6
+      ):not(#shopLivePreview *):not([data-info-count]) {
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
       }
 
-      body[data-alo-theme-mode="white"],
-      body[data-alo-theme-mode="white"] p,
-      body[data-alo-theme-mode="white"] span:not([data-info-count]),
-      body[data-alo-theme-mode="white"] div,
-      body[data-alo-theme-mode="white"] label,
-      body[data-alo-theme-mode="white"] li,
-      body[data-alo-theme-mode="white"] strong,
-      body[data-alo-theme-mode="white"] h1,
-      body[data-alo-theme-mode="white"] h2,
-      body[data-alo-theme-mode="white"] h3,
-      body[data-alo-theme-mode="white"] [style*="color: white"],
-      body[data-alo-theme-mode="white"] [style*="color:white"],
-      body[data-alo-theme-mode="white"] [style*="color:#ffffff"],
-      body[data-alo-theme-mode="white"] [style*="color: #ffffff"],
-      body[data-alo-theme-mode="white"] [style*="rgba(255, 255, 255"],
-      body[data-alo-theme-mode="white"] [style*="rgba(255,255,255"] {
+      body[data-alo-theme-mode="white"] :where(
+        p,
+        span,
+        label,
+        li,
+        strong,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6
+      ):not(#shopLivePreview *):not([data-info-count]) {
         color: #111827 !important;
         -webkit-text-fill-color: #111827 !important;
       }
 
-      body[data-alo-theme-mode] button,
-      body[data-alo-theme-mode] .primary-btn,
-      body[data-alo-theme-mode] .purple-btn,
-      body[data-alo-theme-mode] .modal-btn,
-      body[data-alo-theme-mode] .helper-btn,
-      body[data-alo-theme-mode] .info-icon-btn {
-        -webkit-text-fill-color: currentColor !important;
-      }
-
-      body[data-alo-theme-mode="dark"] input,
-      body[data-alo-theme-mode="dark"] textarea,
-      body[data-alo-theme-mode="dark"] select {
+      body[data-alo-theme-mode="dark"] :where(input, textarea, select):not(#shopLivePreview *) {
         background: #000000 !important;
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
         border-color: rgba(255, 255, 255, 0.35) !important;
       }
 
-      body[data-alo-theme-mode="white"] input,
-      body[data-alo-theme-mode="white"] textarea,
-      body[data-alo-theme-mode="white"] select {
+      body[data-alo-theme-mode="white"] :where(input, textarea, select):not(#shopLivePreview *) {
         background: #ffffff !important;
         color: #111827 !important;
         -webkit-text-fill-color: #111827 !important;
         border-color: rgba(17, 24, 39, 0.25) !important;
+      }
+
+      body[data-alo-theme-mode] :where(button, .primary-btn, .purple-btn, .modal-btn, .helper-btn, .info-icon-btn) {
+        -webkit-text-fill-color: currentColor !important;
       }
 
       .alo-theme-options {
@@ -229,6 +200,12 @@ import {
         outline: 4px solid #38bdf8 !important;
         outline-offset: 3px;
       }
+
+      @media (max-width: 700px) {
+        .alo-theme-options {
+          grid-template-columns: 1fr;
+        }
+      }
     `;
 
     document.head.appendChild(style);
@@ -247,6 +224,15 @@ import {
     document.body.dataset.aloThemeMode = mode;
   }
 
+  function safelyApplyThemeMode() {
+    try {
+      applyThemeMode();
+    } catch (error) {
+      console.warn("Theme mode could not be applied.", error);
+      document.body.removeAttribute("data-alo-theme-mode");
+    }
+  }
+
   function closeThemePicker() {
     const modal = document.getElementById("themePickerModal");
     if (modal) modal.remove();
@@ -254,19 +240,23 @@ import {
   }
 
   function saveThemeMode(mode) {
-    if (mode === "dark" || mode === "white") {
-      localStorage.setItem(themeModeStorageKey, mode);
-    } else {
-      localStorage.removeItem(themeModeStorageKey);
+    try {
+      if (mode === "dark" || mode === "white") {
+        localStorage.setItem(themeModeStorageKey, mode);
+      } else {
+        localStorage.removeItem(themeModeStorageKey);
+      }
+    } catch (error) {
+      console.warn("Theme mode could not be saved.", error);
     }
 
-    applyThemeMode();
+    safelyApplyThemeMode();
     closeThemePicker();
   }
 
   function openThemePicker() {
     closeThemePicker();
-    applyThemeMode();
+    safelyApplyThemeMode();
 
     const mode = getThemeMode();
     const standardActive = mode === "standard" ? " active" : "";
@@ -284,14 +274,14 @@ import {
     modal.innerHTML =
       '<div class="modal" style="max-width: 680px; width: 92%; text-align: center;">' +
         '<div class="modal-content-scroll" style="padding: 44px;">' +
-          '<h3 style="margin-bottom: 16px;">Farben ändern</h3>' +
-          '<p style="font-size: 17px; margin-bottom: 0;">Wähle Standard, Darkmode oder Whitemode. Standard ist der aktuelle Look der Seite.</p>' +
+          '<h3 style="margin-bottom: 16px;">Farben aendern</h3>' +
+          '<p style="font-size: 17px; margin-bottom: 0;">Waehle Standard, Darkmode oder Whitemode. Standard ist der aktuelle Look der Seite.</p>' +
           '<div class="alo-theme-options">' +
-            '<button class="alo-theme-option' + standardActive + '" onclick="saveThemeMode(\\'standard\\')" style="background: linear-gradient(135deg, #1e293b, #334155) !important; color: #ffffff !important;">Standard<span>Aktueller Look</span></button>' +
-            '<button class="alo-theme-option' + darkActive + '" onclick="saveThemeMode(\\'dark\\')" style="background: #000000 !important; color: #ffffff !important;">Darkmode<span>Schwarz / Weiß</span></button>' +
-            '<button class="alo-theme-option' + whiteActive + '" onclick="saveThemeMode(\\'white\\')" style="background: #ffffff !important; color: #111827 !important; border-color: rgba(17,24,39,0.35) !important;">Whitemode<span>Weiß / Schwarz</span></button>' +
+            '<button class="alo-theme-option' + standardActive + '" data-theme-mode="standard" style="background: linear-gradient(135deg, #1e293b, #334155) !important; color: #ffffff !important;">Standard<span>Aktueller Look</span></button>' +
+            '<button class="alo-theme-option' + darkActive + '" data-theme-mode="dark" style="background: #000000 !important; color: #ffffff !important;">Darkmode<span>Schwarz / Weiss</span></button>' +
+            '<button class="alo-theme-option' + whiteActive + '" data-theme-mode="white" style="background: #ffffff !important; color: #111827 !important; border-color: rgba(17,24,39,0.35) !important;">Whitemode<span>Weiss / Schwarz</span></button>' +
           '</div>' +
-          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schließen</button>' +
+          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schliessen</button>' +
         '</div>' +
       '</div>';
 
@@ -301,6 +291,12 @@ import {
 
     document.body.appendChild(modal);
     document.body.classList.add("modal-open");
+
+    modal.querySelectorAll("[data-theme-mode]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        saveThemeMode(button.dataset.themeMode);
+      });
+    });
   }
 
   async function getInfos() {
@@ -794,7 +790,7 @@ import {
 
       if (!template) throw new Error("Template " + name + "/" + variant + " nicht gefunden");
       mount.outerHTML = template.innerHTML;
-      applyThemeMode();
+      safelyApplyThemeMode();
       updateInfoBadge();
     } catch (error) {
       console.error("Komponente konnte nicht geladen werden: " + name + "/" + variant, error);
@@ -802,7 +798,7 @@ import {
   }
 
   function loadComponents() {
-    applyThemeMode();
+    safelyApplyThemeMode();
     document.querySelectorAll("[data-component]").forEach(loadComponent);
     updateInfoBadge();
   }
