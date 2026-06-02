@@ -250,6 +250,12 @@ import {
         border-color: rgba(17, 24, 39, 0.25) !important;
       }
 
+      body[data-alo-theme-mode="white"] :where(input, textarea):not(#shopLivePreview *)::placeholder {
+        color: #475569 !important;
+        -webkit-text-fill-color: #475569 !important;
+        opacity: 1 !important;
+      }
+
       body[data-alo-theme-mode] :where(button, .primary-btn, .purple-btn, .modal-btn, .helper-btn, .info-icon-btn) {
         -webkit-text-fill-color: currentColor !important;
       }
