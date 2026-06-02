@@ -10,6 +10,357 @@ import {
 (function () {
 
   const infoReadStorageKey = "aloAcademyReadInfos";
+  const themeStorageKey = "aloAcademyColorTheme";
+  const customThemeStorageKey = "aloAcademyCustomColorTheme";
+
+  const colorThemes = [
+    {
+      id: "default",
+      name: "Blau / Lila",
+      primary: "#38bdf8",
+      primaryDark: "#0ea5e9",
+      secondary: "#a855f7",
+      secondaryDark: "#9333ea",
+      backgroundA: "#1e293b",
+      backgroundB: "#334155",
+      backgroundC: "#0f172a"
+    },
+    {
+      id: "green",
+      name: "Gruen / Mint",
+      primary: "#22c55e",
+      primaryDark: "#16a34a",
+      secondary: "#14b8a6",
+      secondaryDark: "#0f766e",
+      backgroundA: "#052e16",
+      backgroundB: "#064e3b",
+      backgroundC: "#022c22"
+    },
+    {
+      id: "orange",
+      name: "Orange / Rot",
+      primary: "#f97316",
+      primaryDark: "#ea580c",
+      secondary: "#ef4444",
+      secondaryDark: "#b91c1c",
+      backgroundA: "#431407",
+      backgroundB: "#7c2d12",
+      backgroundC: "#1c1917"
+    },
+    {
+      id: "pink",
+      name: "Pink / Rose",
+      primary: "#ec4899",
+      primaryDark: "#db2777",
+      secondary: "#f43f5e",
+      secondaryDark: "#be123c",
+      backgroundA: "#4a044e",
+      backgroundB: "#831843",
+      backgroundC: "#1f1021"
+    },
+    {
+      id: "yellow",
+      name: "Gelb / Gold",
+      primary: "#eab308",
+      primaryDark: "#ca8a04",
+      secondary: "#f59e0b",
+      secondaryDark: "#b45309",
+      backgroundA: "#422006",
+      backgroundB: "#713f12",
+      backgroundC: "#1c1917"
+    }
+  ];
+
+  function hexToRgb(hex) {
+    const normalized = hex.replace("#", "");
+    const value = parseInt(normalized, 16);
+    return [
+      (value >> 16) & 255,
+      (value >> 8) & 255,
+      value & 255
+    ].join(", ");
+  }
+
+  function getColorTheme(themeId) {
+    if (themeId === "custom") {
+      try {
+        const customTheme = JSON.parse(
+          localStorage.getItem(customThemeStorageKey) || "{}"
+        );
+
+        if (customTheme.primary && customTheme.secondary) {
+          return {
+            id: "custom",
+            name: "Eigene Farben",
+            primary: customTheme.primary,
+            primaryDark: customTheme.primary,
+            secondary: customTheme.secondary,
+            secondaryDark: customTheme.secondary,
+            backgroundA: "#1e293b",
+            backgroundB: "#334155",
+            backgroundC: "#0f172a"
+          };
+        }
+      } catch (error) {
+      }
+
+      return {
+        id: "custom",
+        name: "Eigene Farben",
+        primary: "#38bdf8",
+        primaryDark: "#0ea5e9",
+        secondary: "#a855f7",
+        secondaryDark: "#9333ea",
+        backgroundA: "#1e293b",
+        backgroundB: "#334155",
+        backgroundC: "#0f172a"
+      };
+    }
+
+    return colorThemes.find(function(theme) {
+      return theme.id === themeId;
+    }) || colorThemes[0];
+  }
+
+  function ensureThemeStyle() {
+    let style = document.getElementById("aloColorThemeStyle");
+
+    if (!style) {
+      style = document.createElement("style");
+      style.id = "aloColorThemeStyle";
+      document.head.appendChild(style);
+    }
+
+    style.textContent = `
+      :root {
+        --alo-primary: #38bdf8;
+        --alo-primary-dark: #0ea5e9;
+        --alo-primary-rgb: 56, 189, 248;
+        --alo-secondary: #a855f7;
+        --alo-secondary-dark: #9333ea;
+        --alo-secondary-rgb: 168, 85, 247;
+        --alo-bg-a: #1e293b;
+        --alo-bg-b: #334155;
+        --alo-bg-c: #0f172a;
+      }
+
+      body {
+        background-image:
+          radial-gradient(circle at top left, rgba(var(--alo-primary-rgb), 0.3), transparent 60%) !important,
+          radial-gradient(circle at bottom right, rgba(var(--alo-secondary-rgb), 0.25), transparent 60%) !important,
+          linear-gradient(135deg, var(--alo-bg-a), var(--alo-bg-b), var(--alo-bg-a)) !important;
+      }
+
+      .topbar,
+      .global-footer {
+        background: var(--alo-bg-c) !important;
+      }
+
+      h1,
+      h2,
+      h3,
+      .section h1,
+      .section h2,
+      .section h3,
+      .sidebar h2,
+      .modal h3 {
+        color: var(--alo-primary) !important;
+      }
+
+      .hero-title,
+      .sidebar h2,
+      .modal h3 {
+        background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+      }
+
+      .primary-btn,
+      .modal-btn,
+      .info-icon-btn,
+      #saveProductBtn:hover,
+      #saveSEOBtn:hover,
+      #finishGameBtn:hover {
+        background: linear-gradient(135deg, var(--alo-primary), var(--alo-primary-dark)) !important;
+        box-shadow: 0 10px 30px rgba(var(--alo-primary-rgb), 0.35) !important;
+      }
+
+      .purple-btn,
+      .helper-btn,
+      #saveProductBtn,
+      #saveSEOBtn,
+      #finishGameBtn {
+        background: linear-gradient(135deg, var(--alo-secondary), var(--alo-secondary-dark)) !important;
+        box-shadow: 0 10px 30px rgba(var(--alo-secondary-rgb), 0.35) !important;
+      }
+
+      .mission.blue-border,
+      .glass-card.blue-theme,
+      input,
+      textarea,
+      select {
+        border-color: var(--alo-primary) !important;
+      }
+
+      .mission.purple-border,
+      .glass-card.purple-theme {
+        border-color: var(--alo-secondary) !important;
+      }
+
+      .section::before,
+      .sidebar::before,
+      .modal::before,
+      .intro-hero::before,
+      .start-screen-card::before,
+      .hero-card::before,
+      .shop-builder-sidebar::before,
+      .pro-tip::before {
+        background: conic-gradient(var(--alo-primary), var(--alo-secondary), var(--alo-primary), var(--alo-secondary), var(--alo-primary)) !important;
+      }
+
+      .topbar-right button[onclick*="openInfoBell"],
+      .topbar-right button[onclick*="location.href"],
+      .topbar-right button[onclick*="confirmRestart"] {
+        background: rgba(var(--alo-primary-rgb), 0.18) !important;
+        border-color: rgba(var(--alo-primary-rgb), 0.45) !important;
+      }
+
+      .topbar-right button[onclick*="openSettingsPin"],
+      .topbar-right button[onclick*="checkBuilderPin"] {
+        background: rgba(var(--alo-secondary-rgb), 0.18) !important;
+        border-color: rgba(var(--alo-secondary-rgb), 0.45) !important;
+      }
+
+      .topbar-right button[onclick*="openThemePicker"] {
+        background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
+        border-color: rgba(255,255,255,0.35) !important;
+      }
+
+      .alo-theme-swatch {
+        width: 100%;
+        min-height: 74px;
+        border-radius: 16px;
+        color: white;
+        border: 2px solid rgba(255,255,255,0.16);
+        cursor: pointer;
+        font-weight: 900;
+        font-size: 15px;
+      }
+
+      .alo-theme-swatch.active {
+        outline: 4px solid #ffffff !important;
+        outline-offset: 3px;
+      }
+    `;
+  }
+
+  function applyColorTheme(themeId) {
+    const theme = getColorTheme(themeId);
+    const root = document.documentElement;
+
+    ensureThemeStyle();
+
+    root.style.setProperty("--alo-primary", theme.primary);
+    root.style.setProperty("--alo-primary-dark", theme.primaryDark);
+    root.style.setProperty("--alo-primary-rgb", hexToRgb(theme.primary));
+    root.style.setProperty("--alo-secondary", theme.secondary);
+    root.style.setProperty("--alo-secondary-dark", theme.secondaryDark);
+    root.style.setProperty("--alo-secondary-rgb", hexToRgb(theme.secondary));
+    root.style.setProperty("--alo-bg-a", theme.backgroundA);
+    root.style.setProperty("--alo-bg-b", theme.backgroundB);
+    root.style.setProperty("--alo-bg-c", theme.backgroundC);
+  }
+
+  function saveColorTheme(themeId) {
+    localStorage.setItem(themeStorageKey, themeId);
+    applyColorTheme(themeId);
+    renderThemeButtons(themeId);
+  }
+
+  function saveCustomColorTheme() {
+    const primaryInput = document.getElementById("customPrimaryColor");
+    const secondaryInput = document.getElementById("customSecondaryColor");
+
+    if (!primaryInput || !secondaryInput) return;
+
+    localStorage.setItem(
+      customThemeStorageKey,
+      JSON.stringify({
+        primary: primaryInput.value,
+        secondary: secondaryInput.value
+      })
+    );
+
+    saveColorTheme("custom");
+  }
+
+  function getSavedColorThemeId() {
+    return localStorage.getItem(themeStorageKey) || "default";
+  }
+
+  function closeThemePicker() {
+    const modal = document.getElementById("themePickerModal");
+    if (modal) modal.remove();
+    document.body.classList.remove("modal-open");
+  }
+
+  function renderThemeButtons(activeThemeId) {
+    const grid = document.getElementById("themePickerGrid");
+    if (!grid) return;
+
+    const themes = colorThemes.concat([getColorTheme("custom")]);
+
+    grid.innerHTML = themes.map(function(theme) {
+      const activeClass = theme.id === activeThemeId ? " active" : "";
+
+      return (
+        '<button class="alo-theme-swatch' + activeClass + '" onclick="saveColorTheme(\'' + theme.id + '\')" ' +
+        'style="background: linear-gradient(135deg, ' + theme.primary + ', ' + theme.secondary + ');">' +
+          theme.name +
+        '</button>'
+      );
+    }).join("");
+  }
+
+  function openThemePicker() {
+    closeThemePicker();
+
+    const activeThemeId = getSavedColorThemeId();
+    const activeTheme = getColorTheme(activeThemeId);
+    const modal = document.createElement("div");
+
+    modal.id = "themePickerModal";
+    modal.className = "modal-overlay";
+    modal.style.display = "flex";
+    modal.style.zIndex = "100000";
+    modal.onclick = function(event) {
+      if (event.target === modal) closeThemePicker();
+    };
+
+    modal.innerHTML =
+      '<div class="modal" style="max-width: 680px;">' +
+        '<div class="modal-content-scroll" style="padding: 44px;">' +
+          '<h3 style="margin-bottom: 18px;">Website-Farbe</h3>' +
+          '<p style="font-size: 17px; margin-bottom: 28px;">Wähle ein Farbschema. Die Auswahl wird lokal in diesem Browser gespeichert.</p>' +
+          '<div id="themePickerGrid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px;"></div>' +
+          '<div style="margin-top: 28px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);">' +
+            '<h4 style="color: white; margin: 0 0 16px 0; font-size: 18px;">Eigene Farben</h4>' +
+            '<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">' +
+              '<label style="color: white; font-weight: 800;">Hauptfarbe<input id="customPrimaryColor" type="color" value="' + activeTheme.primary + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
+              '<label style="color: white; font-weight: 800;">Zweitfarbe<input id="customSecondaryColor" type="color" value="' + activeTheme.secondary + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
+            '</div>' +
+            '<button class="modal-btn" onclick="saveCustomColorTheme()" style="margin-top: 20px; width: 100%;">Eigene Farben speichern</button>' +
+          '</div>' +
+          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schließen</button>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(modal);
+    document.body.classList.add("modal-open");
+    renderThemeButtons(activeThemeId);
+  }
+
+  applyColorTheme(getSavedColorThemeId());
 
   async function getInfos() {
 
@@ -522,6 +873,10 @@ import {
   window.closeSettingsPinModal = closeSettingsPinModal;
   window.updateInfoBadge = updateInfoBadge;
   window.deleteSingleInfo = deleteSingleInfo;
+  window.openThemePicker = openThemePicker;
+  window.closeThemePicker = closeThemePicker;
+  window.saveColorTheme = saveColorTheme;
+  window.saveCustomColorTheme = saveCustomColorTheme;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", loadComponents);
