@@ -227,8 +227,47 @@ import {
       }
 
       .mission.purple-border,
-      .glass-card.purple-theme {
+      .glass-card.purple-theme,
+      .glass-card.purple-theme-maintenance {
         border-color: var(--alo-secondary) !important;
+      }
+
+      .glass-card.blue-theme,
+      .skill-card.blue-skill {
+        box-shadow:
+          0 30px 80px -15px rgba(0, 0, 0, 0.9),
+          0 0 40px rgba(var(--alo-primary-rgb), 0.35) !important;
+      }
+
+      .glass-card.purple-theme,
+      .glass-card.purple-theme-maintenance,
+      .skill-card.purple-skill {
+        box-shadow:
+          0 30px 80px -15px rgba(0, 0, 0, 0.9),
+          0 0 40px rgba(var(--alo-secondary-rgb), 0.35) !important;
+      }
+
+      .mission.blue-border.active,
+      .mission.active,
+      .mission:not(.active):not(.locked):hover {
+        border-color: var(--alo-primary) !important;
+        box-shadow:
+          0 0 20px rgba(var(--alo-primary-rgb), 0.45),
+          0 10px 30px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      .mission.purple-border.active,
+      .mission.purple-border:hover:not(.locked) {
+        border-color: var(--alo-secondary) !important;
+        box-shadow:
+          0 0 20px rgba(var(--alo-secondary-rgb), 0.45),
+          0 10px 30px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      .tutorial-box,
+      .info-box,
+      .pro-tip {
+        border-left-color: var(--alo-primary) !important;
       }
 
       .section::before,
@@ -345,22 +384,74 @@ import {
       [style*="border: 1px solid #38bdf8"],
       [style*="border:2px solid #38bdf8"],
       [style*="border: 2px solid #38bdf8"],
+      [style*="border:3px solid #38bdf8"],
+      [style*="border: 3px solid #38bdf8"],
+      [style*="border:1px solid rgba(56"],
+      [style*="border: 1px solid rgba(56"],
+      [style*="border:2px solid rgba(56"],
+      [style*="border: 2px solid rgba(56"],
+      [style*="border:1px solid rgb(56"],
+      [style*="border: 1px solid rgb(56"],
+      [style*="border:2px solid rgb(56"],
+      [style*="border: 2px solid rgb(56"],
       [style*="border-color:#38bdf8"],
       [style*="border-color: #38bdf8"],
+      [style*="border-color:rgb(56"],
+      [style*="border-color: rgb(56"],
       [style*="border-left:4px solid #38bdf8"],
-      [style*="border-left: 4px solid #38bdf8"] {
+      [style*="border-left: 4px solid #38bdf8"],
+      [style*="border-left:6px solid #38bdf8"],
+      [style*="border-left: 6px solid #38bdf8"],
+      [style*="border-left:4px solid rgb(56"],
+      [style*="border-left: 4px solid rgb(56"],
+      [style*="border-left:6px solid rgb(56"],
+      [style*="border-left: 6px solid rgb(56"] {
         border-color: var(--alo-primary) !important;
+        border-left-color: var(--alo-primary) !important;
       }
 
       [style*="border:1px solid #a855f7"],
       [style*="border: 1px solid #a855f7"],
       [style*="border:2px solid #a855f7"],
       [style*="border: 2px solid #a855f7"],
+      [style*="border:3px solid #a855f7"],
+      [style*="border: 3px solid #a855f7"],
+      [style*="border:1px solid rgba(168"],
+      [style*="border: 1px solid rgba(168"],
+      [style*="border:2px solid rgba(168"],
+      [style*="border: 2px solid rgba(168"],
+      [style*="border:1px solid rgb(168"],
+      [style*="border: 1px solid rgb(168"],
+      [style*="border:2px solid rgb(168"],
+      [style*="border: 2px solid rgb(168"],
       [style*="border-color:#a855f7"],
       [style*="border-color: #a855f7"],
+      [style*="border-color:rgb(168"],
+      [style*="border-color: rgb(168"],
       [style*="border-left:4px solid #a855f7"],
-      [style*="border-left: 4px solid #a855f7"] {
+      [style*="border-left: 4px solid #a855f7"],
+      [style*="border-left:6px solid #a855f7"],
+      [style*="border-left: 6px solid #a855f7"],
+      [style*="border-left:4px solid rgb(168"],
+      [style*="border-left: 4px solid rgb(168"],
+      [style*="border-left:6px solid rgb(168"],
+      [style*="border-left: 6px solid rgb(168"] {
         border-color: var(--alo-secondary) !important;
+        border-left-color: var(--alo-secondary) !important;
+      }
+
+      [style*="box-shadow: 0 0 15px #38bdf8"],
+      [style*="box-shadow:0 0 15px #38bdf8"],
+      [style*="box-shadow"][style*="rgba(56, 189, 248"],
+      [style*="box-shadow"][style*="rgba(56,189,248"] {
+        box-shadow: 0 0 24px rgba(var(--alo-primary-rgb), 0.55) !important;
+      }
+
+      [style*="box-shadow: 0 0 15px #a855f7"],
+      [style*="box-shadow:0 0 15px #a855f7"],
+      [style*="box-shadow"][style*="rgba(168, 85, 247"],
+      [style*="box-shadow"][style*="rgba(168,85,247"] {
+        box-shadow: 0 0 24px rgba(var(--alo-secondary-rgb), 0.55) !important;
       }
 
       [style*="linear-gradient"][style*="#38bdf8"][style*="#a855f7"],
@@ -412,19 +503,32 @@ import {
 
   function getSavedControlColors() {
     try {
+      const savedColors = localStorage.getItem(controlColorsStorageKey);
+      const activeTheme = getColorTheme(getSavedColorThemeId());
+
+      if (!savedColors) {
+        return {
+          infoButton: activeTheme.primary,
+          helpButton: activeTheme.secondary,
+          textColor: "#ffffff"
+        };
+      }
+
       const colors = JSON.parse(
-        localStorage.getItem(controlColorsStorageKey) || "{}"
+        savedColors || "{}"
       );
 
       return {
-        infoButton: colors.infoButton || "#38bdf8",
-        helpButton: colors.helpButton || "#a855f7",
+        infoButton: colors.infoButton || activeTheme.primary,
+        helpButton: colors.helpButton || activeTheme.secondary,
         textColor: colors.textColor || "#ffffff"
       };
     } catch (error) {
+      const activeTheme = getColorTheme(getSavedColorThemeId());
+
       return {
-        infoButton: "#38bdf8",
-        helpButton: "#a855f7",
+        infoButton: activeTheme.primary,
+        helpButton: activeTheme.secondary,
         textColor: "#ffffff"
       };
     }
@@ -462,9 +566,24 @@ import {
     applyControlColors();
   }
 
+  function resetControlColorsToTheme() {
+    localStorage.removeItem(controlColorsStorageKey);
+    applyControlColors();
+
+    const colors = getSavedControlColors();
+    const infoInput = document.getElementById("customInfoButtonColor");
+    const helpInput = document.getElementById("customHelpButtonColor");
+    const textInput = document.getElementById("customTextColor");
+
+    if (infoInput) infoInput.value = colors.infoButton;
+    if (helpInput) helpInput.value = colors.helpButton;
+    if (textInput) textInput.value = colors.textColor;
+  }
+
   function saveColorTheme(themeId) {
     localStorage.setItem(themeStorageKey, themeId);
     applyColorTheme(themeId);
+    applyControlColors();
     renderThemeButtons(themeId);
   }
 
@@ -589,6 +708,7 @@ import {
               '<label style="color: white; font-weight: 800;">Schriftfarbe<input id="customTextColor" type="color" value="' + controlColors.textColor + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
             '</div>' +
             '<button class="modal-btn" onclick="saveControlColors()" style="margin-top: 20px; width: 100%;">Button- und Schriftfarben speichern</button>' +
+            '<button class="modal-btn" onclick="resetControlColorsToTheme()" style="margin-top: 12px; width: 100%; background: rgba(255,255,255,0.12) !important; color: white !important;">Preset-Farben folgen</button>' +
           '</div>' +
           '<div style="margin-top: 18px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); display:flex; align-items:center; justify-content:space-between; gap: 18px;">' +
             '<div style="text-align:left;">' +
@@ -1130,6 +1250,7 @@ import {
   window.saveColorTheme = saveColorTheme;
   window.saveCustomColorTheme = saveCustomColorTheme;
   window.saveControlColors = saveControlColors;
+  window.resetControlColorsToTheme = resetControlColorsToTheme;
   window.toggleBorderAnimation = toggleBorderAnimation;
 
   if (document.readyState === "loading") {
