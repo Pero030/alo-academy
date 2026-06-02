@@ -1,4 +1,4 @@
-import {
+﻿import {
     db,
     collection,
     getDocs,
@@ -14,6 +14,7 @@ import {
   const customThemeStorageKey = "aloAcademyCustomColorTheme";
   const borderAnimationStorageKey = "aloAcademyBorderAnimation";
   const controlColorsStorageKey = "aloAcademyControlColors";
+  const displayModeStorageKey = "aloAcademyDisplayMode";
 
   const colorThemes = [
     {
@@ -318,6 +319,63 @@ import {
         box-shadow: 0 10px 30px rgba(var(--alo-help-button-rgb), 0.35) !important;
       }
 
+      button,
+      .secondary-btn {
+        border-color: rgba(var(--alo-primary-rgb), 0.35) !important;
+      }
+
+      .finish-btn,
+      #sidebarStartBtn,
+      .progress,
+      #progress,
+      #budgetProgressBar,
+      #remainingBudget {
+        background: linear-gradient(135deg, var(--alo-primary), var(--alo-primary-dark)) !important;
+        box-shadow: 0 10px 30px rgba(var(--alo-primary-rgb), 0.35) !important;
+      }
+
+      .restart-btn,
+      button[style*="#ef4444"],
+      button[style*="#dc2626"],
+      .settings-switch {
+        background: linear-gradient(135deg, var(--alo-secondary), var(--alo-secondary-dark)) !important;
+        box-shadow: 0 10px 30px rgba(var(--alo-secondary-rgb), 0.35) !important;
+      }
+
+      .mission.locked::before {
+        color: var(--alo-secondary) !important;
+      }
+
+      .mission.active::before,
+      .mission:not(.active):not(.locked)::before {
+        color: var(--alo-primary) !important;
+      }
+
+      :focus-visible,
+      .mission:focus-visible,
+      .modal-btn:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible,
+      select:focus-visible {
+        outline-color: var(--alo-primary) !important;
+      }
+
+      input,
+      textarea,
+      select,
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: var(--alo-primary) !important;
+        box-shadow: 0 0 20px rgba(var(--alo-primary-rgb), 0.25) !important;
+      }
+
+      input[type="checkbox"],
+      input[type="radio"] {
+        accent-color: var(--alo-primary) !important;
+      }
+
       [style*="color:#38bdf8"],
       [style*="color: #38bdf8"],
       [style*="color:#0ea5e9"],
@@ -481,11 +539,123 @@ import {
         outline: 4px solid #ffffff !important;
         outline-offset: 3px;
       }
+
+      body[data-alo-display-mode="light"] {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #111827 !important;
+      }
+
+      body[data-alo-display-mode="light"] .topbar,
+      body[data-alo-display-mode="light"] .global-footer {
+        background: #ffffff !important;
+        border-color: #e5e7eb !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
+      }
+
+      body[data-alo-display-mode="light"] .section::after,
+      body[data-alo-display-mode="light"] .sidebar::after,
+      body[data-alo-display-mode="light"] .modal::after,
+      body[data-alo-display-mode="light"] .intro-hero::after,
+      body[data-alo-display-mode="light"] .start-screen-card::after,
+      body[data-alo-display-mode="light"] .hero-card::after,
+      body[data-alo-display-mode="light"] .shop-builder-sidebar::after,
+      body[data-alo-display-mode="light"] .pro-tip::after {
+        background: #ffffff !important;
+      }
+
+      body[data-alo-display-mode="light"] .glass-card,
+      body[data-alo-display-mode="light"] .mission,
+      body[data-alo-display-mode="light"] .info-box,
+      body[data-alo-display-mode="light"] .tutorial-box,
+      body[data-alo-display-mode="light"] .section,
+      body[data-alo-display-mode="light"] .sidebar,
+      body[data-alo-display-mode="light"] .content,
+      body[data-alo-display-mode="light"] .hero-card,
+      body[data-alo-display-mode="light"] .start-screen-card,
+      body[data-alo-display-mode="light"] .intro-hero,
+      body[data-alo-display-mode="light"] .pro-tip,
+      body[data-alo-display-mode="light"] .input-group-wrapper,
+      body[data-alo-display-mode="light"] .shop-builder-sidebar,
+      body[data-alo-display-mode="light"] .shop-builder-scroll-content,
+      body[data-alo-display-mode="light"] #startScreen,
+      body[data-alo-display-mode="light"] .modal,
+      body[data-alo-display-mode="light"] .modal-content-scroll,
+      body[data-alo-display-mode="light"] .info-card,
+      body[data-alo-display-mode="light"] [style*="background: rgba(255, 255, 255"],
+      body[data-alo-display-mode="light"] [style*="background:rgba(255,255,255"],
+      body[data-alo-display-mode="light"] [style*="background: rgba(0, 0, 0"],
+      body[data-alo-display-mode="light"] [style*="background:rgba(0,0,0"],
+      body[data-alo-display-mode="light"] [style*="rgba(15, 23, 42"],
+      body[data-alo-display-mode="light"] [style*="rgba(15,23,42"],
+      body[data-alo-display-mode="light"] [style*="#0f172a"],
+      body[data-alo-display-mode="light"] [style*="#111827"],
+      body[data-alo-display-mode="light"] [style*="#1e293b"],
+      body[data-alo-display-mode="light"] [style*="#334155"] {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #111827 !important;
+      }
+
+      body[data-alo-display-mode="light"],
+      body[data-alo-display-mode="light"] p,
+      body[data-alo-display-mode="light"] span:not([data-info-count]),
+      body[data-alo-display-mode="light"] div:not(.color-swatch):not(.alo-theme-swatch),
+      body[data-alo-display-mode="light"] label,
+      body[data-alo-display-mode="light"] li,
+      body[data-alo-display-mode="light"] strong,
+      body[data-alo-display-mode="light"] .section p,
+      body[data-alo-display-mode="light"] .glass-card p,
+      body[data-alo-display-mode="light"] .modal p,
+      body[data-alo-display-mode="light"] .mission,
+      body[data-alo-display-mode="light"] .hero-text,
+      body[data-alo-display-mode="light"] .footer-links span,
+      body[data-alo-display-mode="light"] .copyright-text {
+        color: #111827 !important;
+      }
+
+      body[data-alo-display-mode="light"] [style*="color:white"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
+      body[data-alo-display-mode="light"] [style*="color: white"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
+      body[data-alo-display-mode="light"] [style*="color:#ffffff"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
+      body[data-alo-display-mode="light"] [style*="color: #ffffff"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
+      body[data-alo-display-mode="light"] [style*="rgba(255,255,255"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
+      body[data-alo-display-mode="light"] [style*="rgba(255, 255, 255"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn) {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+      }
+
+      body[data-alo-display-mode="light"] input,
+      body[data-alo-display-mode="light"] textarea,
+      body[data-alo-display-mode="light"] select {
+        background: #ffffff !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+      }
+
+      body[data-alo-display-mode="light"] input::placeholder,
+      body[data-alo-display-mode="light"] textarea::placeholder {
+        color: #475569 !important;
+        -webkit-text-fill-color: #475569 !important;
+      }
+
+      body[data-alo-display-mode="light"] button,
+      body[data-alo-display-mode="light"] .primary-btn,
+      body[data-alo-display-mode="light"] .purple-btn,
+      body[data-alo-display-mode="light"] .modal-btn,
+      body[data-alo-display-mode="light"] .helper-btn,
+      body[data-alo-display-mode="light"] .info-icon-btn,
+      body[data-alo-display-mode="light"] .restart-btn {
+        color: #ffffff !important;
+      }
+
+      body[data-alo-display-mode="light"] .topbar-right button {
+        color: #111827 !important;
+      }
     `;
   }
 
   function applyColorTheme(themeId) {
-    const theme = getColorTheme(themeId);
+    const theme = getColorTheme("default");
     const root = document.documentElement;
 
     ensureThemeStyle();
@@ -502,36 +672,13 @@ import {
   }
 
   function getSavedControlColors() {
-    try {
-      const savedColors = localStorage.getItem(controlColorsStorageKey);
-      const activeTheme = getColorTheme(getSavedColorThemeId());
+    const activeTheme = getColorTheme("default");
 
-      if (!savedColors) {
-        return {
-          infoButton: activeTheme.primary,
-          helpButton: activeTheme.secondary,
-          textColor: "#ffffff"
-        };
-      }
-
-      const colors = JSON.parse(
-        savedColors || "{}"
-      );
-
-      return {
-        infoButton: colors.infoButton || activeTheme.primary,
-        helpButton: colors.helpButton || activeTheme.secondary,
-        textColor: colors.textColor || "#ffffff"
-      };
-    } catch (error) {
-      const activeTheme = getColorTheme(getSavedColorThemeId());
-
-      return {
-        infoButton: activeTheme.primary,
-        helpButton: activeTheme.secondary,
-        textColor: "#ffffff"
-      };
-    }
+    return {
+      infoButton: activeTheme.primary,
+      helpButton: activeTheme.secondary,
+      textColor: getDisplayMode() === "light" ? "#111827" : "#ffffff"
+    };
   }
 
   function applyControlColors() {
@@ -545,6 +692,83 @@ import {
     root.style.setProperty("--alo-help-button-dark", colors.helpButton);
     root.style.setProperty("--alo-help-button-rgb", hexToRgb(colors.helpButton));
     root.style.setProperty("--alo-text-color", colors.textColor);
+  }
+
+  function replaceAccentColors(styleValue) {
+    return styleValue;
+  }
+
+  function shouldSkipInlineTheme(element) {
+    return (
+      !element ||
+      ["IMG", "PICTURE", "SOURCE", "VIDEO", "CANVAS"].includes(element.tagName) ||
+      element.closest("[data-alo-theme-ignore]")
+    );
+  }
+
+  function applyInlineThemeColors(root) {
+    const scope = root && root.querySelectorAll ? root : document.body;
+
+    if (!scope) return;
+
+    const elements = [];
+
+    if (scope.nodeType === 1 && scope.hasAttribute && scope.hasAttribute("style")) {
+      elements.push(scope);
+    }
+
+    scope
+      .querySelectorAll("[style]")
+      .forEach(function(element) {
+        elements.push(element);
+      });
+
+    elements.forEach(function(element) {
+      if (shouldSkipInlineTheme(element)) return;
+
+      const originalStyle = element.getAttribute("style");
+      const themedStyle = replaceAccentColors(originalStyle);
+
+      if (themedStyle !== originalStyle) {
+        element.setAttribute("style", themedStyle);
+      }
+    });
+  }
+
+  function startInlineThemeObserver() {
+    if (!document.body || window.__aloInlineThemeObserverStarted) return;
+
+    window.__aloInlineThemeObserverStarted = true;
+
+    let scheduled = false;
+    const observer = new MutationObserver(function(mutations) {
+      if (scheduled) return;
+
+      scheduled = true;
+
+      requestAnimationFrame(function() {
+        scheduled = false;
+
+        mutations.forEach(function(mutation) {
+          if (mutation.type === "attributes") {
+            applyInlineThemeColors(mutation.target);
+          }
+
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1) {
+              applyInlineThemeColors(node);
+            }
+          });
+        });
+      });
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+      childList: true,
+      subtree: true
+    });
   }
 
   function saveControlColors() {
@@ -670,12 +894,25 @@ import {
     }).join("");
   }
 
+  function getDisplayMode() {
+    return localStorage.getItem(displayModeStorageKey) === "light" ? "light" : "dark";
+  }
+
+  function applyDisplayMode() {
+    document.body.dataset.aloDisplayMode = getDisplayMode();
+    applyControlColors();
+  }
+
+  function saveDisplayMode(mode) {
+    localStorage.setItem(displayModeStorageKey, mode === "light" ? "light" : "dark");
+    applyDisplayMode();
+    closeThemePicker();
+  }
+
   function openThemePicker() {
     closeThemePicker();
 
-    const activeThemeId = getSavedColorThemeId();
-    const activeTheme = getColorTheme(activeThemeId);
-    const controlColors = getSavedControlColors();
+    const currentMode = getDisplayMode();
     const modal = document.createElement("div");
 
     modal.id = "themePickerModal";
@@ -687,51 +924,25 @@ import {
     };
 
     modal.innerHTML =
-      '<div class="modal" style="max-width: 680px;">' +
+      '<div class="modal" style="max-width: 560px;">' +
         '<div class="modal-content-scroll" style="padding: 44px;">' +
-          '<h3 style="margin-bottom: 18px;">Website-Farbe</h3>' +
-          '<p style="font-size: 17px; margin-bottom: 28px;">Wähle ein Farbschema. Die Auswahl wird lokal in diesem Browser gespeichert.</p>' +
-          '<div id="themePickerGrid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px;"></div>' +
-          '<div style="margin-top: 28px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);">' +
-            '<h4 style="color: white; margin: 0 0 16px 0; font-size: 18px;">Eigene Farben</h4>' +
-            '<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">' +
-              '<label style="color: white; font-weight: 800;">Hauptfarbe<input id="customPrimaryColor" type="color" value="' + activeTheme.primary + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
-              '<label style="color: white; font-weight: 800;">Zweitfarbe<input id="customSecondaryColor" type="color" value="' + activeTheme.secondary + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
-            '</div>' +
-            '<button class="modal-btn" onclick="saveCustomColorTheme()" style="margin-top: 20px; width: 100%;">Eigene Farben speichern</button>' +
+          '<h3 style="margin-bottom: 18px;">Darstellung</h3>' +
+          '<p style="font-size: 17px; margin-bottom: 28px;">Waehle zwischen dem Standard-Darkmode und einem hellen Whitemode.</p>' +
+          '<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">' +
+            '<button class="modal-btn" onclick="saveDisplayMode(\'dark\')" style="' + (currentMode === "dark" ? "outline: 4px solid #ffffff !important;" : "") + '">Darkmode</button>' +
+            '<button class="modal-btn" onclick="saveDisplayMode(\'light\')" style="background: #ffffff !important; color: #111827 !important; border: 2px solid #111827 !important;' + (currentMode === "light" ? "outline: 4px solid #38bdf8 !important;" : "") + '">Whitemode</button>' +
           '</div>' +
-          '<div style="margin-top: 18px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);">' +
-            '<h4 style="color: white; margin: 0 0 16px 0; font-size: 18px;">Button- und Schriftfarben</h4>' +
-            '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">' +
-              '<label style="color: white; font-weight: 800;">Info-Buttons<input id="customInfoButtonColor" type="color" value="' + controlColors.infoButton + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
-              '<label style="color: white; font-weight: 800;">Hilfe-Buttons<input id="customHelpButtonColor" type="color" value="' + controlColors.helpButton + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
-              '<label style="color: white; font-weight: 800;">Schriftfarbe<input id="customTextColor" type="color" value="' + controlColors.textColor + '" style="height: 54px; padding: 4px; margin-top: 8px;"></label>' +
-            '</div>' +
-            '<button class="modal-btn" onclick="saveControlColors()" style="margin-top: 20px; width: 100%;">Button- und Schriftfarben speichern</button>' +
-            '<button class="modal-btn" onclick="resetControlColorsToTheme()" style="margin-top: 12px; width: 100%; background: rgba(255,255,255,0.12) !important; color: white !important;">Preset-Farben folgen</button>' +
-          '</div>' +
-          '<div style="margin-top: 18px; padding: 22px; border-radius: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); display:flex; align-items:center; justify-content:space-between; gap: 18px;">' +
-            '<div style="text-align:left;">' +
-              '<h4 style="color: white; margin: 0 0 4px 0; font-size: 18px;">Border-Animation</h4>' +
-              '<p id="borderAnimationToggleLabel" style="font-size: 14px; margin: 0; color: rgba(255,255,255,0.72);"></p>' +
-            '</div>' +
-            '<label style="display:flex; align-items:center; gap: 12px; cursor:pointer; color:white; font-weight:900;">' +
-              '<input id="borderAnimationToggle" type="checkbox" onchange="toggleBorderAnimation()" style="width: 28px; height: 28px; margin: 0; accent-color: var(--alo-primary); cursor:pointer;">' +
-              '<span>Ein</span>' +
-            '</label>' +
-          '</div>' +
-          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schließen</button>' +
+          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schliessen</button>' +
         '</div>' +
       '</div>';
 
     document.body.appendChild(modal);
     document.body.classList.add("modal-open");
-    renderThemeButtons(activeThemeId);
-    updateBorderAnimationToggle();
   }
 
   applyColorTheme(getSavedColorThemeId());
   applyControlColors();
+  applyDisplayMode();
   applyBorderAnimationSetting();
 
   async function getInfos() {
@@ -993,7 +1204,7 @@ import {
 
                 '<span style="background: rgba(34,197,94,0.16); color: #86efac; border: 1px solid rgba(34,197,94,0.35); padding: 8px 13px; border-radius: 999px; font-size: 13px; font-weight: 800;">Gelesen</span>' +
 
-                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">Löschen</button>' +
+                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">LΓ¶schen</button>' +
 
               '</div>'
 
@@ -1001,7 +1212,7 @@ import {
 
                 '<button onclick="markInfoRead(\'' + encodeURIComponent(id) + '\', this)" style="background:#22c55e; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">Gelesen</button>' +
 
-                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">Löschen</button>' +
+                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">LΓ¶schen</button>' +
 
               '</div>';
 
@@ -1047,7 +1258,7 @@ import {
           '<div style="max-height: 52vh; overflow-y: auto; padding-right: 6px;">' + infoItems + '</div>' +
           '<div style="text-align: center;">' +
             allReadButton +
-            '<button class="modal-btn" onclick="closeInfoBell()" style="margin-top: 22px;">Schließen</button>' +
+            '<button class="modal-btn" onclick="closeInfoBell()" style="margin-top: 22px;">SchlieΓen</button>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -1128,12 +1339,12 @@ import {
     modal.innerHTML =
       '<div class="modal" style="max-width: 500px; width: 90%; max-height: 85vh; text-align: center;">' +
         '<div class="modal-content-scroll" style="padding: 50px">' +
-          '<h3 id="settingsPinTitle" style="font-size: 28px; color: #a855f7; margin-bottom: 25px;">⚙️ Einstellungen</h3>' +
-          '<p style="color: #ffffff; line-height: 1.8; font-size: 18px; margin-bottom: 25px;">Bitte gib die PIN ein, um die Einstellungen zu öffnen:</p>' +
+          '<h3 id="settingsPinTitle" style="font-size: 28px; color: #a855f7; margin-bottom: 25px;">β™οΈ Einstellungen</h3>' +
+          '<p style="color: #ffffff; line-height: 1.8; font-size: 18px; margin-bottom: 25px;">Bitte gib die PIN ein, um die Einstellungen zu Γ¶ffnen:</p>' +
           '<input type="password" id="settingsHeaderPinInput" placeholder="PIN eingeben" style="width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #a855f7; background: rgba(168, 85, 247, 0.1); color: #ffffff; font-size: 18px; text-align: center; margin-bottom: 25px; outline: none;" />' +
           '<div id="settingsPinErrorMessage" style="color: #ef4444; font-size: 16px; margin-bottom: 20px; display: none;">Falsche PIN!</div>' +
           '<div style="display: flex; gap: 20px; justify-content: center;">' +
-            '<button class="modal-btn" onclick="submitSettingsPin()" style="background: #a855f7; color: white">Bestätigen</button>' +
+            '<button class="modal-btn" onclick="submitSettingsPin()" style="background: #a855f7; color: white">BestΓ¤tigen</button>' +
             '<button class="modal-btn" onclick="closeSettingsPinModal()" style="background: #ef4444; color: white">Abbrechen</button>' +
           '</div>' +
         '</div>' +
@@ -1226,6 +1437,7 @@ import {
       if (!template) throw new Error("Template " + name + "/" + variant + " nicht gefunden");
       mount.outerHTML = template.innerHTML;
       updateInfoBadge();
+      applyInlineThemeColors();
     } catch (error) {
       console.error("Komponente konnte nicht geladen werden: " + name + "/" + variant, error);
     }
@@ -1234,6 +1446,8 @@ import {
   function loadComponents() {
     document.querySelectorAll("[data-component]").forEach(loadComponent);
     updateInfoBadge();
+    applyInlineThemeColors();
+    startInlineThemeObserver();
   }
 
   window.openInfoBell = openInfoBell;
@@ -1247,6 +1461,7 @@ import {
   window.deleteSingleInfo = deleteSingleInfo;
   window.openThemePicker = openThemePicker;
   window.closeThemePicker = closeThemePicker;
+  window.saveDisplayMode = saveDisplayMode;
   window.saveColorTheme = saveColorTheme;
   window.saveCustomColorTheme = saveCustomColorTheme;
   window.saveControlColors = saveControlColors;
