@@ -1,4 +1,4 @@
-﻿import {
+import {
     db,
     collection,
     getDocs,
@@ -10,940 +10,307 @@
 (function () {
 
   const infoReadStorageKey = "aloAcademyReadInfos";
-  const themeStorageKey = "aloAcademyColorTheme";
-  const customThemeStorageKey = "aloAcademyCustomColorTheme";
-  const borderAnimationStorageKey = "aloAcademyBorderAnimation";
-  const controlColorsStorageKey = "aloAcademyControlColors";
   const displayModeStorageKey = "aloAcademyDisplayMode";
 
-  const colorThemes = [
-    {
-      id: "default",
-      name: "Blau / Lila",
-      primary: "#38bdf8",
-      primaryDark: "#0ea5e9",
-      secondary: "#a855f7",
-      secondaryDark: "#9333ea",
-      backgroundA: "#1e293b",
-      backgroundB: "#334155",
-      backgroundC: "#0f172a"
-    },
-    {
-      id: "green",
-      name: "Gruen / Mint",
-      primary: "#22c55e",
-      primaryDark: "#16a34a",
-      secondary: "#14b8a6",
-      secondaryDark: "#0f766e",
-      backgroundA: "#052e16",
-      backgroundB: "#064e3b",
-      backgroundC: "#022c22"
-    },
-    {
-      id: "orange",
-      name: "Orange / Rot",
-      primary: "#f97316",
-      primaryDark: "#ea580c",
-      secondary: "#ef4444",
-      secondaryDark: "#b91c1c",
-      backgroundA: "#431407",
-      backgroundB: "#7c2d12",
-      backgroundC: "#1c1917"
-    },
-    {
-      id: "pink",
-      name: "Pink / Rose",
-      primary: "#ec4899",
-      primaryDark: "#db2777",
-      secondary: "#f43f5e",
-      secondaryDark: "#be123c",
-      backgroundA: "#4a044e",
-      backgroundB: "#831843",
-      backgroundC: "#1f1021"
-    },
-    {
-      id: "yellow",
-      name: "Gelb / Gold",
-      primary: "#eab308",
-      primaryDark: "#ca8a04",
-      secondary: "#f59e0b",
-      secondaryDark: "#b45309",
-      backgroundA: "#422006",
-      backgroundB: "#713f12",
-      backgroundC: "#1c1917"
-    }
-  ];
-
-  function hexToRgb(hex) {
-    const normalized = hex.replace("#", "");
-    const value = parseInt(normalized, 16);
-    return [
-      (value >> 16) & 255,
-      (value >> 8) & 255,
-      value & 255
-    ].join(", ");
+  function getDisplayMode() {
+    const mode = localStorage.getItem(displayModeStorageKey);
+    return mode === "dark" || mode === "white" ? mode : "standard";
   }
 
-  function getColorTheme(themeId) {
-    if (themeId === "custom") {
-      try {
-        const customTheme = JSON.parse(
-          localStorage.getItem(customThemeStorageKey) || "{}"
-        );
+  function ensureDisplayModeStyle() {
+    if (document.getElementById("aloDisplayModeStyle")) return;
 
-        if (customTheme.primary && customTheme.secondary) {
-          return {
-            id: "custom",
-            name: "Eigene Farben",
-            primary: customTheme.primary,
-            primaryDark: customTheme.primary,
-            secondary: customTheme.secondary,
-            secondaryDark: customTheme.secondary,
-            backgroundA: "#1e293b",
-            backgroundB: "#334155",
-            backgroundC: "#0f172a"
-          };
-        }
-      } catch (error) {
-      }
-
-      return {
-        id: "custom",
-        name: "Eigene Farben",
-        primary: "#38bdf8",
-        primaryDark: "#0ea5e9",
-        secondary: "#a855f7",
-        secondaryDark: "#9333ea",
-        backgroundA: "#1e293b",
-        backgroundB: "#334155",
-        backgroundC: "#0f172a"
-      };
-    }
-
-    return colorThemes.find(function(theme) {
-      return theme.id === themeId;
-    }) || colorThemes[0];
-  }
-
-  function ensureThemeStyle() {
-    let style = document.getElementById("aloColorThemeStyle");
-
-    if (!style) {
-      style = document.createElement("style");
-      style.id = "aloColorThemeStyle";
-      document.head.appendChild(style);
-    }
-
+    const style = document.createElement("style");
+    style.id = "aloDisplayModeStyle";
     style.textContent = `
-      :root {
-        --alo-primary: #38bdf8;
-        --alo-primary-dark: #0ea5e9;
-        --alo-primary-rgb: 56, 189, 248;
-        --alo-secondary: #a855f7;
-        --alo-secondary-dark: #9333ea;
-        --alo-secondary-rgb: 168, 85, 247;
-        --alo-bg-a: #1e293b;
-        --alo-bg-b: #334155;
-        --alo-bg-c: #0f172a;
-        --alo-info-button: #38bdf8;
-        --alo-info-button-dark: #0ea5e9;
-        --alo-info-button-rgb: 56, 189, 248;
-        --alo-help-button: #a855f7;
-        --alo-help-button-dark: #9333ea;
-        --alo-help-button-rgb: 168, 85, 247;
-        --alo-text-color: #ffffff;
-      }
-
-      body {
-        background-image:
-          radial-gradient(circle at top left, rgba(var(--alo-primary-rgb), 0.3), transparent 60%) !important,
-          radial-gradient(circle at bottom right, rgba(var(--alo-secondary-rgb), 0.25), transparent 60%) !important,
-          linear-gradient(135deg, var(--alo-bg-a), var(--alo-bg-b), var(--alo-bg-a)) !important;
-        color: var(--alo-text-color) !important;
-      }
-
-      body,
-      .section,
-      .section p,
-      .glass-card,
-      .glass-card p,
-      .glass-card span:not([data-info-count]),
-      .modal p,
-      .mission,
-      .hero-text,
-      .footer-links span,
-      label {
-        color: var(--alo-text-color) !important;
-      }
-
-      .topbar,
-      .global-footer {
-        background: var(--alo-bg-c) !important;
-      }
-
-      h1,
-      h2,
-      h3,
-      .section h1,
-      .section h2,
-      .section h3,
-      .sidebar h2,
-      .modal h3 {
-        color: var(--alo-primary) !important;
-      }
-
-      .hero-title,
-      .sidebar h2,
-      .modal h3 {
-        background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
-        -webkit-background-clip: text !important;
-        background-clip: text !important;
-      }
-
-      .primary-btn,
-      .modal-btn,
-      .info-icon-btn,
-      #saveProductBtn:hover,
-      #saveSEOBtn:hover,
-      #finishGameBtn:hover {
-        background: linear-gradient(135deg, var(--alo-primary), var(--alo-primary-dark)) !important;
-        box-shadow: 0 10px 30px rgba(var(--alo-primary-rgb), 0.35) !important;
-      }
-
-      .purple-btn,
-      .helper-btn,
-      #saveProductBtn,
-      #saveSEOBtn,
-      #finishGameBtn {
-        background: linear-gradient(135deg, var(--alo-secondary), var(--alo-secondary-dark)) !important;
-        box-shadow: 0 10px 30px rgba(var(--alo-secondary-rgb), 0.35) !important;
-      }
-
-      .mission.blue-border,
-      .glass-card.blue-theme,
-      input,
-      textarea,
-      select {
-        border-color: var(--alo-primary) !important;
-      }
-
-      .mission.purple-border,
-      .glass-card.purple-theme,
-      .glass-card.purple-theme-maintenance {
-        border-color: var(--alo-secondary) !important;
-      }
-
-      .glass-card.blue-theme,
-      .skill-card.blue-skill {
-        box-shadow:
-          0 30px 80px -15px rgba(0, 0, 0, 0.9),
-          0 0 40px rgba(var(--alo-primary-rgb), 0.35) !important;
-      }
-
-      .glass-card.purple-theme,
-      .glass-card.purple-theme-maintenance,
-      .skill-card.purple-skill {
-        box-shadow:
-          0 30px 80px -15px rgba(0, 0, 0, 0.9),
-          0 0 40px rgba(var(--alo-secondary-rgb), 0.35) !important;
-      }
-
-      .mission.blue-border.active,
-      .mission.active,
-      .mission:not(.active):not(.locked):hover {
-        border-color: var(--alo-primary) !important;
-        box-shadow:
-          0 0 20px rgba(var(--alo-primary-rgb), 0.45),
-          0 10px 30px rgba(0, 0, 0, 0.5) !important;
-      }
-
-      .mission.purple-border.active,
-      .mission.purple-border:hover:not(.locked) {
-        border-color: var(--alo-secondary) !important;
-        box-shadow:
-          0 0 20px rgba(var(--alo-secondary-rgb), 0.45),
-          0 10px 30px rgba(0, 0, 0, 0.5) !important;
-      }
-
-      .tutorial-box,
-      .info-box,
-      .pro-tip {
-        border-left-color: var(--alo-primary) !important;
-      }
-
-      .section::before,
-      .sidebar::before,
-      .modal::before,
-      .intro-hero::before,
-      .start-screen-card::before,
-      .hero-card::before,
-      .shop-builder-sidebar::before,
-      .pro-tip::before {
-        background: conic-gradient(var(--alo-primary), var(--alo-secondary), var(--alo-primary), var(--alo-secondary), var(--alo-primary)) !important;
-        animation-play-state: var(--alo-border-animation-state, running) !important;
-      }
-
-      .topbar-right button[onclick*="openInfoBell"],
-      .topbar-right button[onclick*="location.href"],
-      .topbar-right button[onclick*="confirmRestart"] {
-        background: rgba(var(--alo-info-button-rgb), 0.18) !important;
-        border-color: rgba(var(--alo-info-button-rgb), 0.45) !important;
-      }
-
-      .topbar-right button[onclick*="openSettingsPin"],
-      .topbar-right button[onclick*="checkBuilderPin"] {
-        background: rgba(var(--alo-secondary-rgb), 0.18) !important;
-        border-color: rgba(var(--alo-secondary-rgb), 0.45) !important;
-      }
-
-      .topbar-right button[onclick*="openThemePicker"] {
-        background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
-        border-color: rgba(255,255,255,0.35) !important;
-      }
-
-      .info-icon-btn,
-      button[onclick*="showInfo("],
-      button[onclick*="showStatInfo("],
-      button[onclick*="openInfoBell"] {
-        background: linear-gradient(135deg, var(--alo-info-button), var(--alo-info-button-dark)) !important;
-        border-color: rgba(var(--alo-info-button-rgb), 0.45) !important;
-        box-shadow: 0 10px 30px rgba(var(--alo-info-button-rgb), 0.35) !important;
-      }
-
-      .helper-btn,
-      button[onclick^="help"],
-      button[onclick*=" help"],
-      button[onclick*="help"] {
-        background: linear-gradient(135deg, var(--alo-help-button), var(--alo-help-button-dark)) !important;
-        border-color: rgba(var(--alo-help-button-rgb), 0.45) !important;
-        box-shadow: 0 10px 30px rgba(var(--alo-help-button-rgb), 0.35) !important;
-      }
-
-      button,
-      .secondary-btn {
-        border-color: rgba(var(--alo-primary-rgb), 0.35) !important;
-      }
-
-      .finish-btn,
-      #sidebarStartBtn,
-      .progress,
-      #progress,
-      #budgetProgressBar,
-      #remainingBudget {
-        background: linear-gradient(135deg, var(--alo-primary), var(--alo-primary-dark)) !important;
-        box-shadow: 0 10px 30px rgba(var(--alo-primary-rgb), 0.35) !important;
-      }
-
-      .restart-btn,
-      button[style*="#ef4444"],
-      button[style*="#dc2626"],
-      .settings-switch {
-        background: linear-gradient(135deg, var(--alo-secondary), var(--alo-secondary-dark)) !important;
-        box-shadow: 0 10px 30px rgba(var(--alo-secondary-rgb), 0.35) !important;
-      }
-
-      .mission.locked::before {
-        color: var(--alo-secondary) !important;
-      }
-
-      .mission.active::before,
-      .mission:not(.active):not(.locked)::before {
-        color: var(--alo-primary) !important;
-      }
-
-      :focus-visible,
-      .mission:focus-visible,
-      .modal-btn:focus-visible,
-      button:focus-visible,
-      input:focus-visible,
-      textarea:focus-visible,
-      select:focus-visible {
-        outline-color: var(--alo-primary) !important;
-      }
-
-      input,
-      textarea,
-      select,
-      input:focus,
-      textarea:focus,
-      select:focus {
-        border-color: var(--alo-primary) !important;
-        box-shadow: 0 0 20px rgba(var(--alo-primary-rgb), 0.25) !important;
-      }
-
-      input[type="checkbox"],
-      input[type="radio"] {
-        accent-color: var(--alo-primary) !important;
-      }
-
-      [style*="color:#38bdf8"],
-      [style*="color: #38bdf8"],
-      [style*="color:#0ea5e9"],
-      [style*="color: #0ea5e9"],
-      [style*="color:#7dd3fc"],
-      [style*="color: #7dd3fc"] {
-        color: var(--alo-primary) !important;
-      }
-
-      [style*="color:#a855f7"],
-      [style*="color: #a855f7"],
-      [style*="color:#9333ea"],
-      [style*="color: #9333ea"],
-      [style*="color:#d8b4fe"],
-      [style*="color: #d8b4fe"] {
-        color: var(--alo-secondary) !important;
-      }
-
-      [style*="background:#38bdf8"],
-      [style*="background: #38bdf8"],
-      [style*="background:#0ea5e9"],
-      [style*="background: #0ea5e9"],
-      [style*="background:rgba(56,189,248"],
-      [style*="background: rgba(56,189,248"],
-      [style*="background: rgba(56, 189, 248"],
-      [style*="background-color:#38bdf8"],
-      [style*="background-color: #38bdf8"] {
-        background: rgba(var(--alo-primary-rgb), 0.18) !important;
-      }
-
-      [style*="background:#a855f7"],
-      [style*="background: #a855f7"],
-      [style*="background:#9333ea"],
-      [style*="background: #9333ea"],
-      [style*="background:rgba(168,85,247"],
-      [style*="background: rgba(168,85,247"],
-      [style*="background: rgba(168, 85, 247"],
-      [style*="background-color:#a855f7"],
-      [style*="background-color: #a855f7"] {
-        background: rgba(var(--alo-secondary-rgb), 0.18) !important;
-      }
-
-      button[style*="background:#38bdf8"],
-      button[style*="background: #38bdf8"],
-      button[style*="background:#0ea5e9"],
-      button[style*="background: #0ea5e9"],
-      button[style*="background:rgba(56,189,248"],
-      button[style*="background: rgba(56,189,248"],
-      button[style*="background: rgba(56, 189, 248"] {
-        background: linear-gradient(135deg, var(--alo-primary), var(--alo-primary-dark)) !important;
-      }
-
-      button[style*="background:#a855f7"],
-      button[style*="background: #a855f7"],
-      button[style*="background:#9333ea"],
-      button[style*="background: #9333ea"],
-      button[style*="background:rgba(168,85,247"],
-      button[style*="background: rgba(168,85,247"],
-      button[style*="background: rgba(168, 85, 247"] {
-        background: linear-gradient(135deg, var(--alo-secondary), var(--alo-secondary-dark)) !important;
-      }
-
-      [style*="border:1px solid #38bdf8"],
-      [style*="border: 1px solid #38bdf8"],
-      [style*="border:2px solid #38bdf8"],
-      [style*="border: 2px solid #38bdf8"],
-      [style*="border:3px solid #38bdf8"],
-      [style*="border: 3px solid #38bdf8"],
-      [style*="border:1px solid rgba(56"],
-      [style*="border: 1px solid rgba(56"],
-      [style*="border:2px solid rgba(56"],
-      [style*="border: 2px solid rgba(56"],
-      [style*="border:1px solid rgb(56"],
-      [style*="border: 1px solid rgb(56"],
-      [style*="border:2px solid rgb(56"],
-      [style*="border: 2px solid rgb(56"],
-      [style*="border-color:#38bdf8"],
-      [style*="border-color: #38bdf8"],
-      [style*="border-color:rgb(56"],
-      [style*="border-color: rgb(56"],
-      [style*="border-left:4px solid #38bdf8"],
-      [style*="border-left: 4px solid #38bdf8"],
-      [style*="border-left:6px solid #38bdf8"],
-      [style*="border-left: 6px solid #38bdf8"],
-      [style*="border-left:4px solid rgb(56"],
-      [style*="border-left: 4px solid rgb(56"],
-      [style*="border-left:6px solid rgb(56"],
-      [style*="border-left: 6px solid rgb(56"] {
-        border-color: var(--alo-primary) !important;
-        border-left-color: var(--alo-primary) !important;
-      }
-
-      [style*="border:1px solid #a855f7"],
-      [style*="border: 1px solid #a855f7"],
-      [style*="border:2px solid #a855f7"],
-      [style*="border: 2px solid #a855f7"],
-      [style*="border:3px solid #a855f7"],
-      [style*="border: 3px solid #a855f7"],
-      [style*="border:1px solid rgba(168"],
-      [style*="border: 1px solid rgba(168"],
-      [style*="border:2px solid rgba(168"],
-      [style*="border: 2px solid rgba(168"],
-      [style*="border:1px solid rgb(168"],
-      [style*="border: 1px solid rgb(168"],
-      [style*="border:2px solid rgb(168"],
-      [style*="border: 2px solid rgb(168"],
-      [style*="border-color:#a855f7"],
-      [style*="border-color: #a855f7"],
-      [style*="border-color:rgb(168"],
-      [style*="border-color: rgb(168"],
-      [style*="border-left:4px solid #a855f7"],
-      [style*="border-left: 4px solid #a855f7"],
-      [style*="border-left:6px solid #a855f7"],
-      [style*="border-left: 6px solid #a855f7"],
-      [style*="border-left:4px solid rgb(168"],
-      [style*="border-left: 4px solid rgb(168"],
-      [style*="border-left:6px solid rgb(168"],
-      [style*="border-left: 6px solid rgb(168"] {
-        border-color: var(--alo-secondary) !important;
-        border-left-color: var(--alo-secondary) !important;
-      }
-
-      [style*="box-shadow: 0 0 15px #38bdf8"],
-      [style*="box-shadow:0 0 15px #38bdf8"],
-      [style*="box-shadow"][style*="rgba(56, 189, 248"],
-      [style*="box-shadow"][style*="rgba(56,189,248"] {
-        box-shadow: 0 0 24px rgba(var(--alo-primary-rgb), 0.55) !important;
-      }
-
-      [style*="box-shadow: 0 0 15px #a855f7"],
-      [style*="box-shadow:0 0 15px #a855f7"],
-      [style*="box-shadow"][style*="rgba(168, 85, 247"],
-      [style*="box-shadow"][style*="rgba(168,85,247"] {
-        box-shadow: 0 0 24px rgba(var(--alo-secondary-rgb), 0.55) !important;
-      }
-
-      [style*="linear-gradient"][style*="#38bdf8"][style*="#a855f7"],
-      [style*="linear-gradient"][style*="#38bdf8"][style*="#9333ea"],
-      [style*="linear-gradient"][style*="#0ea5e9"][style*="#a855f7"] {
-        background: linear-gradient(135deg, var(--alo-primary), var(--alo-secondary)) !important;
-      }
-
-      [style*="-webkit-background-clip:text"],
-      [style*="-webkit-background-clip: text"] {
-        -webkit-background-clip: text !important;
-        background-clip: text !important;
-      }
-
-      .alo-theme-swatch {
-        width: 100%;
-        min-height: 74px;
-        border-radius: 16px;
-        color: white;
-        border: 2px solid rgba(255,255,255,0.16);
-        cursor: pointer;
-        font-weight: 900;
-        font-size: 15px;
-      }
-
-      .alo-theme-swatch.active {
-        outline: 4px solid #ffffff !important;
-        outline-offset: 3px;
-      }
-
-      body[data-alo-display-mode="light"] {
-        background: #ffffff !important;
+      body[data-alo-display-mode="dark"] {
+        background: #000000 !important;
         background-image: none !important;
-        color: #111827 !important;
-      }
-
-      body[data-alo-display-mode="light"] .topbar,
-      body[data-alo-display-mode="light"] .global-footer {
-        background: #ffffff !important;
-        border-color: #e5e7eb !important;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12) !important;
-      }
-
-      body[data-alo-display-mode="light"] .section::after,
-      body[data-alo-display-mode="light"] .sidebar::after,
-      body[data-alo-display-mode="light"] .modal::after,
-      body[data-alo-display-mode="light"] .intro-hero::after,
-      body[data-alo-display-mode="light"] .start-screen-card::after,
-      body[data-alo-display-mode="light"] .hero-card::after,
-      body[data-alo-display-mode="light"] .shop-builder-sidebar::after,
-      body[data-alo-display-mode="light"] .pro-tip::after {
-        background: #ffffff !important;
-      }
-
-      body[data-alo-display-mode="light"] .glass-card,
-      body[data-alo-display-mode="light"] .mission,
-      body[data-alo-display-mode="light"] .info-box,
-      body[data-alo-display-mode="light"] .tutorial-box,
-      body[data-alo-display-mode="light"] .section,
-      body[data-alo-display-mode="light"] .sidebar,
-      body[data-alo-display-mode="light"] .content,
-      body[data-alo-display-mode="light"] .hero-card,
-      body[data-alo-display-mode="light"] .start-screen-card,
-      body[data-alo-display-mode="light"] .intro-hero,
-      body[data-alo-display-mode="light"] .pro-tip,
-      body[data-alo-display-mode="light"] .input-group-wrapper,
-      body[data-alo-display-mode="light"] .shop-builder-sidebar,
-      body[data-alo-display-mode="light"] .shop-builder-scroll-content,
-      body[data-alo-display-mode="light"] #startScreen,
-      body[data-alo-display-mode="light"] .modal,
-      body[data-alo-display-mode="light"] .modal-content-scroll,
-      body[data-alo-display-mode="light"] .info-card,
-      body[data-alo-display-mode="light"] [style*="background: rgba(255, 255, 255"],
-      body[data-alo-display-mode="light"] [style*="background:rgba(255,255,255"],
-      body[data-alo-display-mode="light"] [style*="background: rgba(0, 0, 0"],
-      body[data-alo-display-mode="light"] [style*="background:rgba(0,0,0"],
-      body[data-alo-display-mode="light"] [style*="rgba(15, 23, 42"],
-      body[data-alo-display-mode="light"] [style*="rgba(15,23,42"],
-      body[data-alo-display-mode="light"] [style*="#0f172a"],
-      body[data-alo-display-mode="light"] [style*="#111827"],
-      body[data-alo-display-mode="light"] [style*="#1e293b"],
-      body[data-alo-display-mode="light"] [style*="#334155"] {
-        background: #ffffff !important;
-        background-image: none !important;
-        color: #111827 !important;
-      }
-
-      body[data-alo-display-mode="light"],
-      body[data-alo-display-mode="light"] p,
-      body[data-alo-display-mode="light"] span:not([data-info-count]),
-      body[data-alo-display-mode="light"] div:not(.color-swatch):not(.alo-theme-swatch),
-      body[data-alo-display-mode="light"] label,
-      body[data-alo-display-mode="light"] li,
-      body[data-alo-display-mode="light"] strong,
-      body[data-alo-display-mode="light"] .section p,
-      body[data-alo-display-mode="light"] .glass-card p,
-      body[data-alo-display-mode="light"] .modal p,
-      body[data-alo-display-mode="light"] .mission,
-      body[data-alo-display-mode="light"] .hero-text,
-      body[data-alo-display-mode="light"] .footer-links span,
-      body[data-alo-display-mode="light"] .copyright-text {
-        color: #111827 !important;
-      }
-
-      body[data-alo-display-mode="light"] [style*="color:white"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
-      body[data-alo-display-mode="light"] [style*="color: white"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
-      body[data-alo-display-mode="light"] [style*="color:#ffffff"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
-      body[data-alo-display-mode="light"] [style*="color: #ffffff"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
-      body[data-alo-display-mode="light"] [style*="rgba(255,255,255"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn),
-      body[data-alo-display-mode="light"] [style*="rgba(255, 255, 255"]:not(button):not(.primary-btn):not(.purple-btn):not(.modal-btn):not(.helper-btn):not(.info-icon-btn) {
-        color: #111827 !important;
-        -webkit-text-fill-color: #111827 !important;
-      }
-
-      body[data-alo-display-mode="light"] input,
-      body[data-alo-display-mode="light"] textarea,
-      body[data-alo-display-mode="light"] select {
-        background: #ffffff !important;
-        color: #111827 !important;
-        -webkit-text-fill-color: #111827 !important;
-      }
-
-      body[data-alo-display-mode="light"] input::placeholder,
-      body[data-alo-display-mode="light"] textarea::placeholder {
-        color: #475569 !important;
-        -webkit-text-fill-color: #475569 !important;
-      }
-
-      body[data-alo-display-mode="light"] button,
-      body[data-alo-display-mode="light"] .primary-btn,
-      body[data-alo-display-mode="light"] .purple-btn,
-      body[data-alo-display-mode="light"] .modal-btn,
-      body[data-alo-display-mode="light"] .helper-btn,
-      body[data-alo-display-mode="light"] .info-icon-btn,
-      body[data-alo-display-mode="light"] .restart-btn {
         color: #ffffff !important;
       }
 
-      body[data-alo-display-mode="light"] .topbar-right button {
+      body[data-alo-display-mode="white"] {
+        background: #ffffff !important;
+        background-image: none !important;
         color: #111827 !important;
       }
-    `;
-  }
 
-  function applyColorTheme(themeId) {
-    const theme = getColorTheme("default");
-    const root = document.documentElement;
-
-    ensureThemeStyle();
-
-    root.style.setProperty("--alo-primary", theme.primary);
-    root.style.setProperty("--alo-primary-dark", theme.primaryDark);
-    root.style.setProperty("--alo-primary-rgb", hexToRgb(theme.primary));
-    root.style.setProperty("--alo-secondary", theme.secondary);
-    root.style.setProperty("--alo-secondary-dark", theme.secondaryDark);
-    root.style.setProperty("--alo-secondary-rgb", hexToRgb(theme.secondary));
-    root.style.setProperty("--alo-bg-a", theme.backgroundA);
-    root.style.setProperty("--alo-bg-b", theme.backgroundB);
-    root.style.setProperty("--alo-bg-c", theme.backgroundC);
-  }
-
-  function getSavedControlColors() {
-    const activeTheme = getColorTheme("default");
-
-    return {
-      infoButton: activeTheme.primary,
-      helpButton: activeTheme.secondary,
-      textColor: getDisplayMode() === "light" ? "#111827" : "#ffffff"
-    };
-  }
-
-  function applyControlColors() {
-    const colors = getSavedControlColors();
-    const root = document.documentElement;
-
-    root.style.setProperty("--alo-info-button", colors.infoButton);
-    root.style.setProperty("--alo-info-button-dark", colors.infoButton);
-    root.style.setProperty("--alo-info-button-rgb", hexToRgb(colors.infoButton));
-    root.style.setProperty("--alo-help-button", colors.helpButton);
-    root.style.setProperty("--alo-help-button-dark", colors.helpButton);
-    root.style.setProperty("--alo-help-button-rgb", hexToRgb(colors.helpButton));
-    root.style.setProperty("--alo-text-color", colors.textColor);
-  }
-
-  function replaceAccentColors(styleValue) {
-    return styleValue;
-  }
-
-  function shouldSkipInlineTheme(element) {
-    return (
-      !element ||
-      ["IMG", "PICTURE", "SOURCE", "VIDEO", "CANVAS"].includes(element.tagName) ||
-      element.closest("[data-alo-theme-ignore]")
-    );
-  }
-
-  function applyInlineThemeColors(root) {
-    const scope = root && root.querySelectorAll ? root : document.body;
-
-    if (!scope) return;
-
-    const elements = [];
-
-    if (scope.nodeType === 1 && scope.hasAttribute && scope.hasAttribute("style")) {
-      elements.push(scope);
-    }
-
-    scope
-      .querySelectorAll("[style]")
-      .forEach(function(element) {
-        elements.push(element);
-      });
-
-    elements.forEach(function(element) {
-      if (shouldSkipInlineTheme(element)) return;
-
-      const originalStyle = element.getAttribute("style");
-      const themedStyle = replaceAccentColors(originalStyle);
-
-      if (themedStyle !== originalStyle) {
-        element.setAttribute("style", themedStyle);
+      body[data-alo-display-mode="dark"] .topbar,
+      body[data-alo-display-mode="dark"] .global-footer,
+      body[data-alo-display-mode="dark"] .section,
+      body[data-alo-display-mode="dark"] .sidebar,
+      body[data-alo-display-mode="dark"] .content,
+      body[data-alo-display-mode="dark"] .card,
+      body[data-alo-display-mode="dark"] .glass-card,
+      body[data-alo-display-mode="dark"] .mission,
+      body[data-alo-display-mode="dark"] .info-box,
+      body[data-alo-display-mode="dark"] .info-card,
+      body[data-alo-display-mode="dark"] .tutorial-box,
+      body[data-alo-display-mode="dark"] .hero-card,
+      body[data-alo-display-mode="dark"] .start-screen-card,
+      body[data-alo-display-mode="dark"] .intro-hero,
+      body[data-alo-display-mode="dark"] .pro-tip,
+      body[data-alo-display-mode="dark"] .modal,
+      body[data-alo-display-mode="dark"] .modal-content-scroll,
+      body[data-alo-display-mode="dark"] .shop-builder-sidebar,
+      body[data-alo-display-mode="dark"] .shop-builder-scroll-content,
+      body[data-alo-display-mode="dark"] #startScreen,
+      body[data-alo-display-mode="dark"] [style*="background: white"],
+      body[data-alo-display-mode="dark"] [style*="background:#fff"],
+      body[data-alo-display-mode="dark"] [style*="background: #fff"],
+      body[data-alo-display-mode="dark"] [style*="background: #ffffff"],
+      body[data-alo-display-mode="dark"] [style*="background:#ffffff"],
+      body[data-alo-display-mode="dark"] [style*="background: rgba(255, 255, 255"],
+      body[data-alo-display-mode="dark"] [style*="background:rgba(255,255,255"] {
+        background: #000000 !important;
+        background-image: none !important;
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.35) !important;
       }
-    });
+
+      body[data-alo-display-mode="white"] .topbar,
+      body[data-alo-display-mode="white"] .global-footer,
+      body[data-alo-display-mode="white"] .section,
+      body[data-alo-display-mode="white"] .sidebar,
+      body[data-alo-display-mode="white"] .content,
+      body[data-alo-display-mode="white"] .card,
+      body[data-alo-display-mode="white"] .glass-card,
+      body[data-alo-display-mode="white"] .mission,
+      body[data-alo-display-mode="white"] .info-box,
+      body[data-alo-display-mode="white"] .info-card,
+      body[data-alo-display-mode="white"] .tutorial-box,
+      body[data-alo-display-mode="white"] .hero-card,
+      body[data-alo-display-mode="white"] .start-screen-card,
+      body[data-alo-display-mode="white"] .intro-hero,
+      body[data-alo-display-mode="white"] .pro-tip,
+      body[data-alo-display-mode="white"] .modal,
+      body[data-alo-display-mode="white"] .modal-content-scroll,
+      body[data-alo-display-mode="white"] .shop-builder-sidebar,
+      body[data-alo-display-mode="white"] .shop-builder-scroll-content,
+      body[data-alo-display-mode="white"] #startScreen,
+      body[data-alo-display-mode="white"] [style*="background: #000"],
+      body[data-alo-display-mode="white"] [style*="background:#000"],
+      body[data-alo-display-mode="white"] [style*="background: #0f172a"],
+      body[data-alo-display-mode="white"] [style*="background:#0f172a"],
+      body[data-alo-display-mode="white"] [style*="background: #111827"],
+      body[data-alo-display-mode="white"] [style*="background:#111827"],
+      body[data-alo-display-mode="white"] [style*="background: rgba(15, 23, 42"],
+      body[data-alo-display-mode="white"] [style*="background:rgba(15,23,42"],
+      body[data-alo-display-mode="white"] [style*="background: rgba(0, 0, 0"],
+      body[data-alo-display-mode="white"] [style*="background:rgba(0,0,0"],
+      body[data-alo-display-mode="white"] [style*="background: rgba(255, 255, 255"],
+      body[data-alo-display-mode="white"] [style*="background:rgba(255,255,255"] {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #111827 !important;
+        border-color: rgba(17, 24, 39, 0.22) !important;
+      }
+
+      body[data-alo-display-mode="dark"] .section::after,
+      body[data-alo-display-mode="dark"] .sidebar::after,
+      body[data-alo-display-mode="dark"] .modal::after,
+      body[data-alo-display-mode="dark"] .intro-hero::after,
+      body[data-alo-display-mode="dark"] .hero-card::after,
+      body[data-alo-display-mode="dark"] .start-screen-card::after,
+      body[data-alo-display-mode="dark"] .shop-builder-sidebar::after,
+      body[data-alo-display-mode="dark"] .pro-tip::after {
+        background: #000000 !important;
+      }
+
+      body[data-alo-display-mode="white"] .section::after,
+      body[data-alo-display-mode="white"] .sidebar::after,
+      body[data-alo-display-mode="white"] .modal::after,
+      body[data-alo-display-mode="white"] .intro-hero::after,
+      body[data-alo-display-mode="white"] .hero-card::after,
+      body[data-alo-display-mode="white"] .start-screen-card::after,
+      body[data-alo-display-mode="white"] .shop-builder-sidebar::after,
+      body[data-alo-display-mode="white"] .pro-tip::after {
+        background: #ffffff !important;
+      }
+
+      body[data-alo-display-mode="dark"],
+      body[data-alo-display-mode="dark"] p,
+      body[data-alo-display-mode="dark"] span:not([data-info-count]),
+      body[data-alo-display-mode="dark"] div,
+      body[data-alo-display-mode="dark"] label,
+      body[data-alo-display-mode="dark"] li,
+      body[data-alo-display-mode="dark"] strong,
+      body[data-alo-display-mode="dark"] h1,
+      body[data-alo-display-mode="dark"] h2,
+      body[data-alo-display-mode="dark"] h3,
+      body[data-alo-display-mode="dark"] [style*="color: black"],
+      body[data-alo-display-mode="dark"] [style*="color:#000"],
+      body[data-alo-display-mode="dark"] [style*="color: #000"],
+      body[data-alo-display-mode="dark"] [style*="color: #111827"],
+      body[data-alo-display-mode="dark"] [style*="color:#111827"],
+      body[data-alo-display-mode="dark"] [style*="color: #1e293b"],
+      body[data-alo-display-mode="dark"] [style*="color:#1e293b"] {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+      }
+
+      body[data-alo-display-mode="white"],
+      body[data-alo-display-mode="white"] p,
+      body[data-alo-display-mode="white"] span:not([data-info-count]),
+      body[data-alo-display-mode="white"] div,
+      body[data-alo-display-mode="white"] label,
+      body[data-alo-display-mode="white"] li,
+      body[data-alo-display-mode="white"] strong,
+      body[data-alo-display-mode="white"] h1,
+      body[data-alo-display-mode="white"] h2,
+      body[data-alo-display-mode="white"] h3,
+      body[data-alo-display-mode="white"] [style*="color: white"],
+      body[data-alo-display-mode="white"] [style*="color:white"],
+      body[data-alo-display-mode="white"] [style*="color: #ffffff"],
+      body[data-alo-display-mode="white"] [style*="color:#ffffff"],
+      body[data-alo-display-mode="white"] [style*="rgba(255, 255, 255"],
+      body[data-alo-display-mode="white"] [style*="rgba(255,255,255"] {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+      }
+
+      body[data-alo-display-mode="dark"] button,
+      body[data-alo-display-mode="dark"] .primary-btn,
+      body[data-alo-display-mode="dark"] .purple-btn,
+      body[data-alo-display-mode="dark"] .modal-btn,
+      body[data-alo-display-mode="dark"] .helper-btn,
+      body[data-alo-display-mode="dark"] .info-icon-btn,
+      body[data-alo-display-mode="white"] button,
+      body[data-alo-display-mode="white"] .primary-btn,
+      body[data-alo-display-mode="white"] .purple-btn,
+      body[data-alo-display-mode="white"] .modal-btn,
+      body[data-alo-display-mode="white"] .helper-btn,
+      body[data-alo-display-mode="white"] .info-icon-btn {
+        -webkit-text-fill-color: currentColor !important;
+      }
+
+      body[data-alo-display-mode="dark"] input,
+      body[data-alo-display-mode="dark"] textarea,
+      body[data-alo-display-mode="dark"] select {
+        background: #000000 !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.35) !important;
+      }
+
+      body[data-alo-display-mode="white"] input,
+      body[data-alo-display-mode="white"] textarea,
+      body[data-alo-display-mode="white"] select {
+        background: #ffffff !important;
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+        border-color: rgba(17, 24, 39, 0.25) !important;
+      }
+
+      .alo-mode-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .alo-mode-option {
+        min-height: 92px;
+        border-radius: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .alo-mode-option span {
+        font-size: 13px;
+        opacity: 0.75;
+      }
+
+      .alo-mode-option.active {
+        outline: 4px solid #38bdf8 !important;
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 640px) {
+        .alo-mode-options {
+          grid-template-columns: 1fr;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
   }
 
-  function startInlineThemeObserver() {
-    if (!document.body || window.__aloInlineThemeObserverStarted) return;
+  function applyDisplayMode() {
+    ensureDisplayModeStyle();
 
-    window.__aloInlineThemeObserverStarted = true;
+    const mode = getDisplayMode();
 
-    let scheduled = false;
-    const observer = new MutationObserver(function(mutations) {
-      if (scheduled) return;
-
-      scheduled = true;
-
-      requestAnimationFrame(function() {
-        scheduled = false;
-
-        mutations.forEach(function(mutation) {
-          if (mutation.type === "attributes") {
-            applyInlineThemeColors(mutation.target);
-          }
-
-          mutation.addedNodes.forEach(function(node) {
-            if (node.nodeType === 1) {
-              applyInlineThemeColors(node);
-            }
-          });
-        });
-      });
-    });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["style"],
-      childList: true,
-      subtree: true
-    });
-  }
-
-  function saveControlColors() {
-    const infoInput = document.getElementById("customInfoButtonColor");
-    const helpInput = document.getElementById("customHelpButtonColor");
-    const textInput = document.getElementById("customTextColor");
-
-    if (!infoInput || !helpInput || !textInput) return;
-
-    localStorage.setItem(
-      controlColorsStorageKey,
-      JSON.stringify({
-        infoButton: infoInput.value,
-        helpButton: helpInput.value,
-        textColor: textInput.value
-      })
-    );
-
-    applyControlColors();
-  }
-
-  function resetControlColorsToTheme() {
-    localStorage.removeItem(controlColorsStorageKey);
-    applyControlColors();
-
-    const colors = getSavedControlColors();
-    const infoInput = document.getElementById("customInfoButtonColor");
-    const helpInput = document.getElementById("customHelpButtonColor");
-    const textInput = document.getElementById("customTextColor");
-
-    if (infoInput) infoInput.value = colors.infoButton;
-    if (helpInput) helpInput.value = colors.helpButton;
-    if (textInput) textInput.value = colors.textColor;
-  }
-
-  function saveColorTheme(themeId) {
-    localStorage.setItem(themeStorageKey, themeId);
-    applyColorTheme(themeId);
-    applyControlColors();
-    renderThemeButtons(themeId);
-  }
-
-  function saveCustomColorTheme() {
-    const primaryInput = document.getElementById("customPrimaryColor");
-    const secondaryInput = document.getElementById("customSecondaryColor");
-
-    if (!primaryInput || !secondaryInput) return;
-
-    localStorage.setItem(
-      customThemeStorageKey,
-      JSON.stringify({
-        primary: primaryInput.value,
-        secondary: secondaryInput.value
-      })
-    );
-
-    saveColorTheme("custom");
-  }
-
-  function getSavedColorThemeId() {
-    return localStorage.getItem(themeStorageKey) || "default";
-  }
-
-  function isBorderAnimationEnabled() {
-    return localStorage.getItem(borderAnimationStorageKey) !== "off";
-  }
-
-  function applyBorderAnimationSetting() {
-    document.documentElement.style.setProperty(
-      "--alo-border-animation-state",
-      isBorderAnimationEnabled() ? "running" : "paused"
-    );
-  }
-
-  function toggleBorderAnimation() {
-    const enabled = !isBorderAnimationEnabled();
-
-    localStorage.setItem(
-      borderAnimationStorageKey,
-      enabled ? "on" : "off"
-    );
-
-    applyBorderAnimationSetting();
-    updateBorderAnimationToggle();
-  }
-
-  function updateBorderAnimationToggle() {
-    const checkbox = document.getElementById("borderAnimationToggle");
-    const label = document.getElementById("borderAnimationToggleLabel");
-
-    if (checkbox) {
-      checkbox.checked = isBorderAnimationEnabled();
+    if (mode === "standard") {
+      document.body.removeAttribute("data-alo-display-mode");
+      return;
     }
 
-    if (label) {
-      label.textContent = isBorderAnimationEnabled()
-        ? "Animation ist an"
-        : "Animation ist aus";
-    }
+    document.body.dataset.aloDisplayMode = mode;
   }
 
-  function closeThemePicker() {
-    const modal = document.getElementById("themePickerModal");
+  function saveDisplayMode(mode) {
+    if (mode === "dark" || mode === "white") {
+      localStorage.setItem(displayModeStorageKey, mode);
+    } else {
+      localStorage.removeItem(displayModeStorageKey);
+    }
+
+    applyDisplayMode();
+    closeDisplayModePicker();
+  }
+
+  function closeDisplayModePicker() {
+    const modal = document.getElementById("displayModePickerModal");
     if (modal) modal.remove();
     document.body.classList.remove("modal-open");
   }
 
-  function renderThemeButtons(activeThemeId) {
-    const grid = document.getElementById("themePickerGrid");
-    if (!grid) return;
-
-    const themes = colorThemes.concat([getColorTheme("custom")]);
-
-    grid.innerHTML = themes.map(function(theme) {
-      const activeClass = theme.id === activeThemeId ? " active" : "";
-
-      return (
-        '<button class="alo-theme-swatch' + activeClass + '" onclick="saveColorTheme(\'' + theme.id + '\')" ' +
-        'style="background: linear-gradient(135deg, ' + theme.primary + ', ' + theme.secondary + ');">' +
-          theme.name +
-        '</button>'
-      );
-    }).join("");
-  }
-
-  function getDisplayMode() {
-    return localStorage.getItem(displayModeStorageKey) === "light" ? "light" : "dark";
-  }
-
-  function applyDisplayMode() {
-    document.body.dataset.aloDisplayMode = getDisplayMode();
-    applyControlColors();
-  }
-
-  function saveDisplayMode(mode) {
-    localStorage.setItem(displayModeStorageKey, mode === "light" ? "light" : "dark");
+  function openDisplayModePicker() {
+    closeDisplayModePicker();
     applyDisplayMode();
-    closeThemePicker();
-  }
 
-  function openThemePicker() {
-    closeThemePicker();
+    const mode = getDisplayMode();
+    const activeStandard = mode === "standard" ? " active" : "";
+    const activeDark = mode === "dark" ? " active" : "";
+    const activeWhite = mode === "white" ? " active" : "";
 
-    const currentMode = getDisplayMode();
     const modal = document.createElement("div");
-
-    modal.id = "themePickerModal";
+    modal.id = "displayModePickerModal";
     modal.className = "modal-overlay";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "displayModePickerTitle");
     modal.style.display = "flex";
     modal.style.zIndex = "100000";
-    modal.onclick = function(event) {
-      if (event.target === modal) closeThemePicker();
-    };
 
     modal.innerHTML =
-      '<div class="modal" style="max-width: 560px;">' +
+      '<div class="modal" style="max-width: 680px; width: 92%; text-align: center;">' +
         '<div class="modal-content-scroll" style="padding: 44px;">' +
-          '<h3 style="margin-bottom: 18px;">Darstellung</h3>' +
-          '<p style="font-size: 17px; margin-bottom: 28px;">Waehle zwischen dem Standard-Darkmode und einem hellen Whitemode.</p>' +
-          '<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">' +
-            '<button class="modal-btn" onclick="saveDisplayMode(\'dark\')" style="' + (currentMode === "dark" ? "outline: 4px solid #ffffff !important;" : "") + '">Darkmode</button>' +
-            '<button class="modal-btn" onclick="saveDisplayMode(\'light\')" style="background: #ffffff !important; color: #111827 !important; border: 2px solid #111827 !important;' + (currentMode === "light" ? "outline: 4px solid #38bdf8 !important;" : "") + '">Whitemode</button>' +
+          '<h3 id="displayModePickerTitle" style="margin-bottom: 16px;">Design Modus</h3>' +
+          '<p style="font-size: 17px; margin-bottom: 0;">Standard ist der aktuelle Look. Darkmode macht Hintergruende schwarz und Text weiss. Whitemode macht Kacheln und Hintergrund weiss und Text schwarz.</p>' +
+          '<div class="alo-mode-options">' +
+            '<button class="alo-mode-option' + activeStandard + '" onclick="saveDisplayMode(\\'standard\\')" style="background: linear-gradient(135deg, #1e293b, #334155) !important; color: #ffffff !important;">Standard<span>Aktueller Look</span></button>' +
+            '<button class="alo-mode-option' + activeDark + '" onclick="saveDisplayMode(\\'dark\\')" style="background: #000000 !important; color: #ffffff !important;">Darkmode<span>Schwarz / Weiss</span></button>' +
+            '<button class="alo-mode-option' + activeWhite + '" onclick="saveDisplayMode(\\'white\\')" style="background: #ffffff !important; color: #111827 !important; border-color: rgba(17,24,39,0.35) !important;">Whitemode<span>Weiss / Schwarz</span></button>' +
           '</div>' +
-          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schliessen</button>' +
+          '<button class="modal-btn" onclick="closeDisplayModePicker()" style="margin-top: 30px;">Schliessen</button>' +
         '</div>' +
       '</div>';
+
+    modal.onclick = function (event) {
+      if (event.target === modal) closeDisplayModePicker();
+    };
 
     document.body.appendChild(modal);
     document.body.classList.add("modal-open");
   }
-
-  applyColorTheme(getSavedColorThemeId());
-  applyControlColors();
-  applyDisplayMode();
-  applyBorderAnimationSetting();
 
   async function getInfos() {
 
@@ -1204,7 +571,7 @@
 
                 '<span style="background: rgba(34,197,94,0.16); color: #86efac; border: 1px solid rgba(34,197,94,0.35); padding: 8px 13px; border-radius: 999px; font-size: 13px; font-weight: 800;">Gelesen</span>' +
 
-                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">LΓ¶schen</button>' +
+                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">Löschen</button>' +
 
               '</div>'
 
@@ -1212,7 +579,7 @@
 
                 '<button onclick="markInfoRead(\'' + encodeURIComponent(id) + '\', this)" style="background:#22c55e; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">Gelesen</button>' +
 
-                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">LΓ¶schen</button>' +
+                '<button onclick="deleteSingleInfo(\'' + id + '\', this)" style="background:#ef4444; color:white; border:none; padding:8px 13px; border-radius:999px; font-size:13px; font-weight:800; cursor:pointer;">Löschen</button>' +
 
               '</div>';
 
@@ -1258,7 +625,7 @@
           '<div style="max-height: 52vh; overflow-y: auto; padding-right: 6px;">' + infoItems + '</div>' +
           '<div style="text-align: center;">' +
             allReadButton +
-            '<button class="modal-btn" onclick="closeInfoBell()" style="margin-top: 22px;">SchlieΓen</button>' +
+            '<button class="modal-btn" onclick="closeInfoBell()" style="margin-top: 22px;">Schließen</button>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -1339,12 +706,12 @@
     modal.innerHTML =
       '<div class="modal" style="max-width: 500px; width: 90%; max-height: 85vh; text-align: center;">' +
         '<div class="modal-content-scroll" style="padding: 50px">' +
-          '<h3 id="settingsPinTitle" style="font-size: 28px; color: #a855f7; margin-bottom: 25px;">β™οΈ Einstellungen</h3>' +
-          '<p style="color: #ffffff; line-height: 1.8; font-size: 18px; margin-bottom: 25px;">Bitte gib die PIN ein, um die Einstellungen zu Γ¶ffnen:</p>' +
+          '<h3 id="settingsPinTitle" style="font-size: 28px; color: #a855f7; margin-bottom: 25px;">⚙️ Einstellungen</h3>' +
+          '<p style="color: #ffffff; line-height: 1.8; font-size: 18px; margin-bottom: 25px;">Bitte gib die PIN ein, um die Einstellungen zu öffnen:</p>' +
           '<input type="password" id="settingsHeaderPinInput" placeholder="PIN eingeben" style="width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #a855f7; background: rgba(168, 85, 247, 0.1); color: #ffffff; font-size: 18px; text-align: center; margin-bottom: 25px; outline: none;" />' +
           '<div id="settingsPinErrorMessage" style="color: #ef4444; font-size: 16px; margin-bottom: 20px; display: none;">Falsche PIN!</div>' +
           '<div style="display: flex; gap: 20px; justify-content: center;">' +
-            '<button class="modal-btn" onclick="submitSettingsPin()" style="background: #a855f7; color: white">BestΓ¤tigen</button>' +
+            '<button class="modal-btn" onclick="submitSettingsPin()" style="background: #a855f7; color: white">Bestätigen</button>' +
             '<button class="modal-btn" onclick="closeSettingsPinModal()" style="background: #ef4444; color: white">Abbrechen</button>' +
           '</div>' +
         '</div>' +
@@ -1436,18 +803,17 @@
 
       if (!template) throw new Error("Template " + name + "/" + variant + " nicht gefunden");
       mount.outerHTML = template.innerHTML;
+      applyDisplayMode();
       updateInfoBadge();
-      applyInlineThemeColors();
     } catch (error) {
       console.error("Komponente konnte nicht geladen werden: " + name + "/" + variant, error);
     }
   }
 
   function loadComponents() {
+    applyDisplayMode();
     document.querySelectorAll("[data-component]").forEach(loadComponent);
     updateInfoBadge();
-    applyInlineThemeColors();
-    startInlineThemeObserver();
   }
 
   window.openInfoBell = openInfoBell;
@@ -1459,14 +825,9 @@
   window.closeSettingsPinModal = closeSettingsPinModal;
   window.updateInfoBadge = updateInfoBadge;
   window.deleteSingleInfo = deleteSingleInfo;
-  window.openThemePicker = openThemePicker;
-  window.closeThemePicker = closeThemePicker;
+  window.openDisplayModePicker = openDisplayModePicker;
+  window.closeDisplayModePicker = closeDisplayModePicker;
   window.saveDisplayMode = saveDisplayMode;
-  window.saveColorTheme = saveColorTheme;
-  window.saveCustomColorTheme = saveCustomColorTheme;
-  window.saveControlColors = saveControlColors;
-  window.resetControlColorsToTheme = resetControlColorsToTheme;
-  window.toggleBorderAnimation = toggleBorderAnimation;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", loadComponents);
