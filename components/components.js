@@ -56,6 +56,7 @@ import {
         .sidebar,
         .modal,
         .glass-card,
+        .skill-card,
         .mission,
         .info-box,
         .info-card,
@@ -96,6 +97,7 @@ import {
         .content,
         .card,
         .glass-card,
+        .skill-card,
         .mission,
         .info-box,
         .info-card,
@@ -124,6 +126,7 @@ import {
         .content,
         .card,
         .glass-card,
+        .skill-card,
         .mission,
         .info-box,
         .info-card,
@@ -134,6 +137,7 @@ import {
         .pro-tip,
         .modal,
         .modal-content-scroll,
+        .modal-content-scroll div,
         #startScreen
       ):not(#shopLivePreview *):not(.shop-builder-sidebar):not(.shop-builder-scroll-content) {
         background: #ffffff !important;
@@ -194,8 +198,40 @@ import {
         h3,
         h4,
         h5,
-        h6
-      ):not(#shopLivePreview *):not([data-info-count]) {
+        h6,
+        .modal-content-scroll,
+        .modal-content-scroll div,
+        #modalText,
+        #statInfoContent,
+        #legalContent
+      ):not(#shopLivePreview *):not([data-info-count]):not(button):not(.modal-btn):not(.primary-btn):not(.purple-btn):not(.helper-btn):not(.info-icon-btn) {
+        color: #111827 !important;
+        -webkit-text-fill-color: #111827 !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(
+        .skill-card,
+        [style*="background: rgba(255, 255, 255"],
+        [style*="background:rgba(255,255,255"],
+        [style*="background: rgba(15, 23, 42"],
+        [style*="background:rgba(15,23,42"],
+        [style*="background: rgba(0, 0, 0"],
+        [style*="background:rgba(0,0,0"]
+      ):not(#shopLivePreview *):not(.shop-builder-sidebar):not(.shop-builder-scroll-content) {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #111827 !important;
+        border-color: rgba(17, 24, 39, 0.22) !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(
+        [style*="color: white"],
+        [style*="color:white"],
+        [style*="color: #ffffff"],
+        [style*="color:#ffffff"],
+        [style*="rgba(255, 255, 255"],
+        [style*="rgba(255,255,255"]
+      ):not(#shopLivePreview *):not(button):not(.modal-btn):not(.primary-btn):not(.purple-btn):not(.helper-btn):not(.info-icon-btn):not([data-info-count]) {
         color: #111827 !important;
         -webkit-text-fill-color: #111827 !important;
       }
