@@ -291,6 +291,15 @@ import {
         -webkit-text-fill-color: #111827 !important;
       }
 
+      body[data-alo-theme-mode="white"] #shopBuilderSection .shop-builder-sidebar label,
+      body[data-alo-theme-mode="white"] #shopBuilderSection .shop-builder-sidebar label.purple-label,
+      body[data-alo-theme-mode="white"] #shopBuilderSection .shop-builder-scroll-content label,
+      body[data-alo-theme-mode="white"] #shopBuilderSection .shop-builder-scroll-content label.purple-label {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        text-shadow: 0 0 12px rgba(56, 189, 248, 0.38) !important;
+      }
+
       body[data-alo-theme-mode="white"] :where(
         .skill-card,
         [style*="background: rgba(255, 255, 255"],
@@ -326,6 +335,30 @@ import {
       ):not(#shopLivePreview *):not(button):not(.modal-btn):not(.primary-btn):not(.purple-btn):not(.helper-btn):not(.info-icon-btn):not([data-info-count]) {
         color: #111827 !important;
         -webkit-text-fill-color: #111827 !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(
+        [style*="color:#86efac"],
+        [style*="color: #86efac"]
+      ):not(#shopLivePreview *) {
+        color: #166534 !important;
+        -webkit-text-fill-color: #166534 !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(
+        [style*="color:#fca5a5"],
+        [style*="color: #fca5a5"]
+      ):not(#shopLivePreview *) {
+        color: #991b1b !important;
+        -webkit-text-fill-color: #991b1b !important;
+      }
+
+      body[data-alo-theme-mode="white"] :where(
+        [style*="color:#7dd3fc"],
+        [style*="color: #7dd3fc"]
+      ):not(#shopLivePreview *) {
+        color: #075985 !important;
+        -webkit-text-fill-color: #075985 !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(input, textarea, select):not(#shopLivePreview *) {
@@ -392,21 +425,54 @@ import {
         margin-top: 2px;
       }
 
-      .alo-animation-toggle {
-        min-width: 130px;
-        border-radius: 999px;
-        padding: 12px 18px;
-        font-weight: 900;
-        border: 1px solid rgba(34, 197, 94, 0.7);
-        background: linear-gradient(135deg, #22c55e, #16a34a);
-        color: #ffffff;
-        box-shadow: 0 10px 22px rgba(34, 197, 94, 0.24);
+      .alo-animation-switch-label {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
       }
 
-      .alo-animation-toggle.off {
-        border-color: rgba(239, 68, 68, 0.7);
-        background: linear-gradient(135deg, #ef4444, #b91c1c);
-        box-shadow: 0 10px 22px rgba(239, 68, 68, 0.24);
+      .alo-animation-switch-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .alo-animation-switch {
+        position: relative;
+        width: 72px;
+        height: 38px;
+        border-radius: 999px;
+        background: rgba(239, 68, 68, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.35);
+        flex: 0 0 auto;
+        transition: all 0.25s ease;
+      }
+
+      .alo-animation-switch::after {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+        transition: all 0.25s ease;
+      }
+
+      .alo-animation-switch-input:checked + .alo-animation-switch {
+        background: linear-gradient(135deg, #38bdf8, #a855f7);
+      }
+
+      .alo-animation-switch-input:checked + .alo-animation-switch::after {
+        transform: translateX(34px);
+      }
+
+      .alo-animation-switch-label:focus-within .alo-animation-switch {
+        outline: 3px solid rgba(234, 179, 8, 0.9);
+        outline-offset: 4px;
       }
 
       .alo-theme-option {
@@ -609,8 +675,7 @@ import {
     const isEnabled = isBorderAnimationEnabled();
 
     if (toggle) {
-      toggle.textContent = isEnabled ? "Animation an" : "Animation aus";
-      toggle.classList.toggle("off", !isEnabled);
+      toggle.checked = isEnabled;
     }
 
     if (label) {
@@ -628,11 +693,10 @@ import {
     const standardActive = mode === "standard" ? " active" : "";
     const darkActive = mode === "dark" ? " active" : "";
     const whiteActive = mode === "white" ? " active" : "";
-    const animationLabel = isBorderAnimationEnabled() ? "Animation an" : "Animation aus";
     const animationState = isBorderAnimationEnabled()
       ? "Der farbige Border-Verlauf bewegt sich."
       : "Der farbige Border-Verlauf steht still.";
-    const animationClass = isBorderAnimationEnabled() ? "" : " off";
+    const animationChecked = isBorderAnimationEnabled() ? " checked" : "";
 
     const modal = document.createElement("div");
     modal.id = "themePickerModal";
@@ -654,7 +718,10 @@ import {
           '</div>' +
           '<div class="alo-animation-row">' +
             '<div><strong>Border Animation</strong><span id="borderAnimationState">' + animationState + '</span></div>' +
-            '<button id="borderAnimationToggle" class="alo-animation-toggle' + animationClass + '" type="button">' + animationLabel + '</button>' +
+            '<label class="alo-animation-switch-label" for="borderAnimationToggle" aria-label="Border Animation umschalten">' +
+              '<input id="borderAnimationToggle" class="alo-animation-switch-input" type="checkbox"' + animationChecked + '>' +
+              '<span class="alo-animation-switch" aria-hidden="true"></span>' +
+            '</label>' +
           '</div>' +
           '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 32px;">Schliessen</button>' +
         '</div>' +
@@ -675,7 +742,7 @@ import {
 
     const animationToggle = document.getElementById("borderAnimationToggle");
     if (animationToggle) {
-      animationToggle.addEventListener("click", toggleBorderAnimation);
+      animationToggle.addEventListener("change", toggleBorderAnimation);
     }
   }
 
