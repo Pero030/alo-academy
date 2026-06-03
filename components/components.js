@@ -146,9 +146,19 @@ import {
       }
 
       body[data-alo-theme-mode="dark"] .modal,
-      body[data-alo-theme-mode="white"] .modal {
+      body[data-alo-theme-mode="dark"] .modal-content-scroll,
+      body[data-alo-theme-mode="white"] .modal,
+      body[data-alo-theme-mode="white"] .modal-content-scroll {
         background: transparent !important;
         background-image: none !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .modal,
+      body[data-alo-theme-mode="white"] .modal {
+        border: 4px solid #38bdf8 !important;
+        box-shadow:
+          0 0 0 2px rgba(168, 85, 247, 0.85),
+          0 40px 100px rgba(0, 0, 0, 0.45) !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(
