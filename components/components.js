@@ -145,6 +145,12 @@ import {
         color: #111827 !important;
       }
 
+      body[data-alo-theme-mode="dark"] .modal,
+      body[data-alo-theme-mode="white"] .modal {
+        background: transparent !important;
+        background-image: none !important;
+      }
+
       body[data-alo-theme-mode="dark"] :where(
         .section,
         .sidebar,
