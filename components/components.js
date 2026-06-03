@@ -155,21 +155,20 @@ import {
 
       body[data-alo-theme-mode="dark"] .modal,
       body[data-alo-theme-mode="white"] .modal {
-        border: 4px solid transparent !important;
-        box-shadow:
-          0 40px 100px rgba(0, 0, 0, 0.45) !important;
+        border: none !important;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45) !important;
       }
 
-      body[data-alo-theme-mode="dark"] .modal {
-        background:
-          linear-gradient(#000000, #000000) padding-box,
-          conic-gradient(from 0deg, #38bdf8, #a855f7, #38bdf8, #a855f7, #38bdf8) border-box !important;
-      }
-
-      body[data-alo-theme-mode="white"] .modal {
-        background:
-          linear-gradient(#ffffff, #ffffff) padding-box,
-          conic-gradient(from 0deg, #38bdf8, #a855f7, #38bdf8, #a855f7, #38bdf8) border-box !important;
+      body[data-alo-theme-mode="dark"] .modal::before,
+      body[data-alo-theme-mode="white"] .modal::before {
+        background: conic-gradient(
+          from 0deg,
+          #38bdf8,
+          #a855f7,
+          #38bdf8,
+          #a855f7,
+          #38bdf8
+        ) !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(
