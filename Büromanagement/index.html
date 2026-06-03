@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de">
     <head>
         <meta charset="UTF-8" />
@@ -6,12 +6,13 @@
         <meta name="HandheldFriendly" content="true" />
         <meta name="MobileOptimized" content="width" />
         <meta name="format-detection" content="telephone=no" />
-        <title>Büromanagement - ALO Academy</title>
+        <title>BÃ¼romanagement - ALO Academy</title>
+        <link rel="icon" href="../assets/images/Logo/Logo.png" />
         <link rel="stylesheet" href="../assets/css/style.css" />
         <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script>
-            // Zoomen vollständig verhindern
+            // Zoomen vollstÃ¤ndig verhindern
             document.addEventListener(
                 "gesturestart",
                 function (e) {
@@ -69,14 +70,14 @@
                 }
             });
 
-            // Zoom-Level überwachen und zurücksetzen
+            // Zoom-Level Ã¼berwachen und zurÃ¼cksetzen
             setInterval(function () {
                 document.body.style.zoom = 1;
                 document.documentElement.style.zoom = 1;
             }, 100);
         </script>
     </head>
-    <body data-page="Büromanagement">
+    <body data-page="BÃ¼romanagement">
         <!-- Start Screen -->
         <div
             id="startScreen"
@@ -104,7 +105,7 @@
                         z-index: 1;
                     "
                 >
-                    Bereit für deine Karriere?
+                    Bereit fÃ¼r deine Karriere?
                 </h1>
 
                 <p
@@ -119,7 +120,7 @@
                         z-index: 1;
                     "
                 >
-                    Möchtest du das Tutorial machen oder direkt mit deiner
+                    MÃ¶chtest du das Tutorial machen oder direkt mit deiner
                     ersten Mission starten?
                 </p>
 
@@ -150,14 +151,14 @@
                     <button
                         class="purple-btn"
                         onclick="skipTutorialSinglePage()"
-                        aria-label="Tutorial überspringen"
+                        aria-label="Tutorial Ã¼berspringen"
                         style="
                             min-width: 320px;
                             font-size: 20px;
                             padding: 18px 45px;
                         "
                     >
-                        Tutorial überspringen
+                        Tutorial Ã¼berspringen
                     </button>
                 </div>
             </div>
@@ -306,7 +307,7 @@
                             box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
                         "
                     >
-                        🚀 Spiel starten
+                        ðŸš€ Spiel starten
                     </button>
                     <button
                         class="restart-btn"
@@ -329,167 +330,9 @@
                             transition: all 0.2s ease;
                         "
                     >
-                        <span class="restart-icon">🔄</span> Spiel Beenden
+                        <span class="restart-icon">ðŸ”„</span> Spiel Beenden
                     </button>
 
-                    <!-- Test-Schnellnavigation -->
-                    <div
-                        style="
-                            border-top: 1px solid rgba(255, 255, 255, 0.1);
-                            padding-top: 15px;
-                        "
-                    >
-                        <p
-                            style="
-                                color: rgba(255, 255, 255, 0.4);
-                                font-size: 11px;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                                margin-bottom: 10px;
-                                text-align: center;
-                            "
-                        >
-                            ⚡ Schnellnavigation
-                        </p>
-                        <div
-                            style="
-                                display: grid;
-                                grid-template-columns: 1fr 1fr;
-                                gap: 8px;
-                            "
-                        >
-                            <button
-                                onclick="goToTask('introSection')"
-                                style="
-                                    background: rgba(56, 189, 248, 0.15);
-                                    border: 1px solid rgba(56, 189, 248, 0.3);
-                                    color: #38bdf8;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                "
-                                onmouseover="
-                                    this.style.background =
-                                        'rgba(56,189,248,0.3)'
-                                "
-                                onmouseout="
-                                    this.style.background =
-                                        'rgba(56,189,248,0.15)'
-                                "
-                            >
-                                📖 Einleitung
-                            </button>
-                            <button
-                                onclick="
-                                    goToTask('task1Section');
-                                    loadRandomOrder();
-                                "
-                                style="
-                                    background: rgba(168, 85, 247, 0.15);
-                                    border: 1px solid rgba(168, 85, 247, 0.3);
-                                    color: #a855f7;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                "
-                                onmouseover="
-                                    this.style.background =
-                                        'rgba(168,85,247,0.3)'
-                                "
-                                onmouseout="
-                                    this.style.background =
-                                        'rgba(168,85,247,0.15)'
-                                "
-                            >
-                                📦 Mission 1
-                            </button>
-                            <button
-                                onclick="
-                                    goToTask('task2Section');
-                                    loadRandomOrder(false, 'invoiceData2');
-                                "
-                                style="
-                                    background: rgba(56, 189, 248, 0.15);
-                                    border: 1px solid rgba(56, 189, 248, 0.3);
-                                    color: #38bdf8;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                "
-                                onmouseover="
-                                    this.style.background =
-                                        'rgba(56,189,248,0.3)'
-                                "
-                                onmouseout="
-                                    this.style.background =
-                                        'rgba(56,189,248,0.15)'
-                                "
-                            >
-                                📄 Mission 2
-                            </button>
-                            <button
-                                onclick="
-                                    goToTask('task3Section');
-                                    startKommunikation();
-                                "
-                                style="
-                                    background: rgba(168, 85, 247, 0.15);
-                                    border: 1px solid rgba(168, 85, 247, 0.3);
-                                    color: #a855f7;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                "
-                                onmouseover="
-                                    this.style.background =
-                                        'rgba(168,85,247,0.3)'
-                                "
-                                onmouseout="
-                                    this.style.background =
-                                        'rgba(168,85,247,0.15)'
-                                "
-                            >
-                                💬 Mission 3
-                            </button>
-                            <button
-                                onclick="goToTask('task4Section')"
-                                style="
-                                    background: rgba(56, 189, 248, 0.15);
-                                    border: 1px solid rgba(56, 189, 248, 0.3);
-                                    color: #38bdf8;
-                                    padding: 8px;
-                                    border-radius: 8px;
-                                    font-size: 11px;
-                                    font-weight: 700;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                    grid-column: 1/-1;
-                                "
-                                onmouseover="
-                                    this.style.background =
-                                        'rgba(56,189,248,0.3)'
-                                "
-                                onmouseout="
-                                    this.style.background =
-                                        'rgba(56,189,248,0.15)'
-                                "
-                            >
-                                🗂️ Mission 4
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </aside>
 
@@ -516,7 +359,7 @@
 
                 <script>
                     if (window.innerWidth < 1024) {
-                        document.body.innerHTML = "<h1>Bitte mit PC öffnen</h1>";
+                        document.body.innerHTML = "<h1>Bitte mit PC Ã¶ffnen</h1>";
                     }
                 </script>
 
@@ -597,7 +440,7 @@
                                 color: transparent;
                             "
                         >
-                            Die Welt des Büromanagements
+                            Die Welt des BÃ¼romanagements
                         </h1>
                         <p
                             style="
@@ -611,10 +454,10 @@
                                 z-index: 1;
                             "
                         >
-                            Kaufmann/-frau für Büromanagement ist das Rückgrat
+                            Kaufmann/-frau fÃ¼r BÃ¼romanagement ist das RÃ¼ckgrat
                             jedes erfolgreichen Unternehmens. Du organisierst,
                             koordinierst und steuerst die administrativen
-                            Prozesse – präzise, effizient und professionell.
+                            Prozesse â€“ prÃ¤zise, effizient und professionell.
                         </p>
                     </div>
 
@@ -686,7 +529,7 @@
                                     text-transform: uppercase;
                                     letter-spacing: 1px;
                                 "
-                                >Zukunftsfähig</span
+                                >ZukunftsfÃ¤hig</span
                             >
                         </div>
                         <div
@@ -770,7 +613,7 @@
                                 "
                             >
                                 Im Jahr <strong>2026</strong> ist der
-                                "Kaufmann/-frau für Büromanagement" einer der
+                                "Kaufmann/-frau fÃ¼r BÃ¼romanagement" einer der
                                 vielseitigsten und gefragtesten Berufe. Du
                                 lernst, wie du administrative Prozesse
                                 optimierst, Teams koordinierst und den Erfolg
@@ -792,7 +635,7 @@
                                     "
                                     onclick="showStatInfo('dualer_fokus')"
                                 >
-                                    <span style="font-size: 24px">🏢</span>
+                                    <span style="font-size: 24px">ðŸ¢</span>
                                     <div>
                                         <strong
                                             style="
@@ -826,7 +669,7 @@
                                     "
                                     onclick="showStatInfo('tools_technik')"
                                 >
-                                    <span style="font-size: 24px">💻</span>
+                                    <span style="font-size: 24px">ðŸ’»</span>
                                     <div>
                                         <strong
                                             style="
@@ -860,7 +703,7 @@
                                     "
                                     onclick="showStatInfo('recht_sicherheit')"
                                 >
-                                    <span style="font-size: 24px">⚖️</span>
+                                    <span style="font-size: 24px">âš–ï¸</span>
                                     <div>
                                         <strong
                                             style="
@@ -894,7 +737,7 @@
                                     "
                                     onclick="showStatInfo('marketing_sales')"
                                 >
-                                    <span style="font-size: 24px">💰</span>
+                                    <span style="font-size: 24px">ðŸ’°</span>
                                     <div>
                                         <strong
                                             style="
@@ -928,7 +771,7 @@
                                     "
                                     onclick="showStatInfo('kundenmanagement')"
                                 >
-                                    <span style="font-size: 24px">💬</span>
+                                    <span style="font-size: 24px">ðŸ’¬</span>
                                     <div>
                                         <strong
                                             style="
@@ -949,7 +792,7 @@
                             </div>
                         </div>
 
-                        <!-- Die 5 Säulen -->
+                        <!-- Die 5 SÃ¤ulen -->
                         <div
                             class="glass-card purple-theme"
                             style="
@@ -978,7 +821,7 @@
                                     text-align: center;
                                 "
                             >
-                                Die 5 Säulen des Erfolgs
+                                Die 5 SÃ¤ulen des Erfolgs
                             </h3>
                             <p
                                 style="
@@ -988,11 +831,11 @@
                                     margin-bottom: 20px;
                                 "
                             >
-                                Ein erfolgreiches Büro basiert auf fünf
+                                Ein erfolgreiches BÃ¼ro basiert auf fÃ¼nf
                                 Kernbereichen, die perfekt ineinandergreifen
-                                müssen. Diese fünf Säulen bilden das Fundament
-                                für jede administrative Karriere und sind
-                                entscheidend für den langfristigen Erfolg eines
+                                mÃ¼ssen. Diese fÃ¼nf SÃ¤ulen bilden das Fundament
+                                fÃ¼r jede administrative Karriere und sind
+                                entscheidend fÃ¼r den langfristigen Erfolg eines
                                 Unternehmens.
                             </p>
                             <div style="display: grid; gap: 15px">
@@ -1011,7 +854,7 @@
                                     "
                                     onclick="showStatInfo('sortiment')"
                                 >
-                                    <span style="font-size: 24px">📄</span>
+                                    <span style="font-size: 24px">ðŸ“„</span>
                                     <div>
                                         <strong
                                             style="
@@ -1044,7 +887,7 @@
                                     "
                                     onclick="showStatInfo('plattform')"
                                 >
-                                    <span style="font-size: 24px">⚙️</span>
+                                    <span style="font-size: 24px">âš™ï¸</span>
                                     <div>
                                         <strong
                                             style="
@@ -1058,7 +901,7 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >Effiziente Arbeitsabläufe</span
+                                            >Effiziente ArbeitsablÃ¤ufe</span
                                         >
                                     </div>
                                 </div>
@@ -1077,7 +920,7 @@
                                     "
                                     onclick="showStatInfo('marketing_saeulen')"
                                 >
-                                    <span style="font-size: 24px">📢</span>
+                                    <span style="font-size: 24px">ðŸ“¢</span>
                                     <div>
                                         <strong
                                             style="
@@ -1110,7 +953,7 @@
                                     "
                                     onclick="showStatInfo('logistik')"
                                 >
-                                    <span style="font-size: 24px">📅</span>
+                                    <span style="font-size: 24px">ðŸ“…</span>
                                     <div>
                                         <strong
                                             style="
@@ -1143,7 +986,7 @@
                                     "
                                     onclick="showStatInfo('service')"
                                 >
-                                    <span style="font-size: 24px">💬</span>
+                                    <span style="font-size: 24px">ðŸ’¬</span>
                                     <div>
                                         <strong
                                             style="
@@ -1157,7 +1000,7 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >Exzellenter Büroservice</span
+                                            >Exzellenter BÃ¼roservice</span
                                         >
                                     </div>
                                 </div>
@@ -1199,11 +1042,11 @@
                                 z-index: 1;
                             "
                         >
-                            Als Kaufmann/-frau für Büromanagement behältst du
-                            den Überblick über alle administrativen Abläufe. Von
-                            der Buchhaltung bis zur Kundenkommunikation – du
+                            Als Kaufmann/-frau fÃ¼r BÃ¼romanagement behÃ¤ltst du
+                            den Ãœberblick Ã¼ber alle administrativen AblÃ¤ufe. Von
+                            der Buchhaltung bis zur Kundenkommunikation â€“ du
                             bist die zentrale Schnittstelle, die alles
-                            zusammenhält und für reibungslose Prozesse sorgt.
+                            zusammenhÃ¤lt und fÃ¼r reibungslose Prozesse sorgt.
                         </p>
                         <div
                             style="
@@ -1222,7 +1065,7 @@
                                     gap: 10px;
                                 "
                             >
-                                <span style="color: #38bdf8">✔</span>
+                                <span style="color: #38bdf8">âœ”</span>
                                 Vielseitige Aufgaben
                             </div>
                             <div
@@ -1232,8 +1075,8 @@
                                     gap: 10px;
                                 "
                             >
-                                <span style="color: #38bdf8">✔</span> Sichere
-                                Arbeitsplätze
+                                <span style="color: #38bdf8">âœ”</span> Sichere
+                                ArbeitsplÃ¤tze
                             </div>
                             <div
                                 style="
@@ -1242,7 +1085,7 @@
                                     gap: 10px;
                                 "
                             >
-                                <span style="color: #38bdf8">✔</span>
+                                <span style="color: #38bdf8">âœ”</span>
                                 Aufstiegschancen
                             </div>
                             <div
@@ -1252,8 +1095,8 @@
                                     gap: 10px;
                                 "
                             >
-                                <span style="color: #38bdf8">✔</span>
-                                Branchenübergreifend
+                                <span style="color: #38bdf8">âœ”</span>
+                                BranchenÃ¼bergreifend
                             </div>
                         </div>
                     </div>
@@ -1277,7 +1120,7 @@
                                 color: transparent;
                             "
                         >
-                            🛠️ Dein Experten-Arsenal
+                            ðŸ› ï¸ Dein Experten-Arsenal
                         </h3>
                         <div
                             style="
@@ -1317,8 +1160,8 @@
                                     "
                                 >
                                     Dein technisches Handwerkszeug: Die
-                                    erlernbaren Fähigkeiten, um administrative
-                                    Prozesse präzise zu steuern und zu
+                                    erlernbaren FÃ¤higkeiten, um administrative
+                                    Prozesse prÃ¤zise zu steuern und zu
                                     optimieren.
                                 </p>
                                 <div style="display: grid; gap: 20px">
@@ -1459,9 +1302,9 @@
                                         text-align: center;
                                     "
                                 >
-                                    Deine persönlichen Stärken: Die
+                                    Deine persÃ¶nlichen StÃ¤rken: Die
                                     psychologischen und analytischen
-                                    Fähigkeiten, um Teams zu koordinieren und
+                                    FÃ¤higkeiten, um Teams zu koordinieren und
                                     Prozesse zu verbessern.
                                 </p>
                                 <div style="display: grid; gap: 20px">
@@ -1473,7 +1316,7 @@
                                                 margin-bottom: 8px;
                                             "
                                         >
-                                            <span>Kommunikationsfähigkeit</span>
+                                            <span>KommunikationsfÃ¤higkeit</span>
                                             <span>90%</span>
                                         </div>
                                         <div
@@ -1543,7 +1386,7 @@
                                                 margin-bottom: 8px;
                                             "
                                         >
-                                            <span>Teamfähigkeit</span>
+                                            <span>TeamfÃ¤higkeit</span>
                                             <span>82%</span>
                                         </div>
                                         <div
@@ -1612,7 +1455,7 @@
                                     text-align: center;
                                 "
                             >
-                                🎓 Büromanagement lernen
+                                ðŸŽ“ BÃ¼romanagement lernen
                             </h3>
                             <p
                                 style="
@@ -1641,7 +1484,7 @@
                                     "
                                     onclick="showStatInfo('fachwirt')"
                                 >
-                                    <span style="font-size: 24px">🎓</span>
+                                    <span style="font-size: 24px">ðŸŽ“</span>
                                     <div>
                                         <strong
                                             style="
@@ -1656,7 +1499,7 @@
                                                 color: #ffffff;
                                             "
                                             >Die Aufstiegsfortbildung nach der
-                                            Ausbildung – Bachelor-Niveau (DQR
+                                            Ausbildung â€“ Bachelor-Niveau (DQR
                                             6)</span
                                         >
                                     </div>
@@ -1676,7 +1519,7 @@
                                     "
                                     onclick="showStatInfo('studium')"
                                 >
-                                    <span style="font-size: 24px">📚</span>
+                                    <span style="font-size: 24px">ðŸ“š</span>
                                     <div>
                                         <strong
                                             style="
@@ -1710,7 +1553,7 @@
                                     "
                                     onclick="showStatInfo('zertifikate')"
                                 >
-                                    <span style="font-size: 24px">📜</span>
+                                    <span style="font-size: 24px">ðŸ“œ</span>
                                     <div>
                                         <strong
                                             style="
@@ -1724,7 +1567,7 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >Profi-Kurse für Office, ERP oder
+                                            >Profi-Kurse fÃ¼r Office, ERP oder
                                             Projektmanagement</span
                                         >
                                     </div>
@@ -1744,7 +1587,7 @@
                                     "
                                     onclick="showStatInfo('self_made')"
                                 >
-                                    <span style="font-size: 24px">🔧</span>
+                                    <span style="font-size: 24px">ðŸ”§</span>
                                     <div>
                                         <strong
                                             style="
@@ -1758,8 +1601,8 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >Mit kleinen Projekten starten –
-                                            Eventplanung, Buchhaltung für
+                                            >Mit kleinen Projekten starten â€“
+                                            Eventplanung, Buchhaltung fÃ¼r
                                             Freelancer</span
                                         >
                                     </div>
@@ -1779,7 +1622,7 @@
                                     "
                                     onclick="showStatInfo('bootcamps')"
                                 >
-                                    <span style="font-size: 24px">📖</span>
+                                    <span style="font-size: 24px">ðŸ“–</span>
                                     <div>
                                         <strong
                                             style="
@@ -1793,7 +1636,7 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >Intensive 3-6 monatige Kurse für
+                                            >Intensive 3-6 monatige Kurse fÃ¼r
                                             praxisnahe Einstiege</span
                                         >
                                     </div>
@@ -1829,7 +1672,7 @@
                                     text-align: center;
                                 "
                             >
-                                📊 Die Top 5 Kennzahlen
+                                ðŸ“Š Die Top 5 Kennzahlen
                             </h3>
                             <p
                                 style="
@@ -1839,7 +1682,7 @@
                                     margin-bottom: 25px;
                                 "
                             >
-                                Das "Dashboard" eines jeden Bürokaufmanns:
+                                Das "Dashboard" eines jeden BÃ¼rokaufmanns:
                             </p>
                             <div style="display: grid; gap: 15px">
                                 <div
@@ -1857,7 +1700,7 @@
                                     "
                                     onclick="showStatInfo('conversion_rate')"
                                 >
-                                    <span style="font-size: 24px">📈</span>
+                                    <span style="font-size: 24px">ðŸ“ˆ</span>
                                     <div>
                                         <strong
                                             style="
@@ -1897,7 +1740,7 @@
                                     "
                                     onclick="showStatInfo('akquise_kosten')"
                                 >
-                                    <span style="font-size: 24px">⏱️</span>
+                                    <span style="font-size: 24px">â±ï¸</span>
                                     <div>
                                         <strong
                                             style="
@@ -1911,7 +1754,7 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >Ø Zeit pro Aufgabe
+                                            >Ã˜ Zeit pro Aufgabe
                                             <span
                                                 style="
                                                     color: #a855f7;
@@ -1937,14 +1780,14 @@
                                     "
                                     onclick="showStatInfo('warenkorb_wert')"
                                 >
-                                    <span style="font-size: 24px">✅</span>
+                                    <span style="font-size: 24px">âœ…</span>
                                     <div>
                                         <strong
                                             style="
                                                 display: block;
                                                 font-size: 16px;
                                             "
-                                            >Prozessqualität</strong
+                                            >ProzessqualitÃ¤t</strong
                                         >
                                         <span
                                             style="
@@ -1977,7 +1820,7 @@
                                     "
                                     onclick="showStatInfo('kundenwert')"
                                 >
-                                    <span style="font-size: 24px">⭐</span>
+                                    <span style="font-size: 24px">â­</span>
                                     <div>
                                         <strong
                                             style="
@@ -2017,7 +1860,7 @@
                                     "
                                     onclick="showStatInfo('retourenquote')"
                                 >
-                                    <span style="font-size: 24px">📋</span>
+                                    <span style="font-size: 24px">ðŸ“‹</span>
                                     <div>
                                         <strong
                                             style="
@@ -2031,7 +1874,7 @@
                                                 font-size: 14px;
                                                 color: #ffffff;
                                             "
-                                            >% dokumentierte Vorgänge
+                                            >% dokumentierte VorgÃ¤nge
                                             <span
                                                 style="
                                                     color: #a855f7;
@@ -2082,7 +1925,7 @@
                                 ? `<strong style="color:#38bdf8;">${name}</strong>, `
                                 : "";
                             document.getElementById("mission1Desc").innerHTML =
-                                `${greeting}prüfe die eingehende Bestellung und nimm sie an, wenn alle Angaben korrekt sind.<br>
+                                `${greeting}prÃ¼fe die eingehende Bestellung und nimm sie an, wenn alle Angaben korrekt sind.<br>
                            Suche in den Datenbanken nach den richtigen Informationen.
                            <span style="color:#fbbf24;font-weight:600;"> Suchst du etwas Falsches raus, erscheint eine neue Bestellung.</span>`;
                         })();
@@ -2204,7 +2047,7 @@
                                         cursor: pointer;
                                     "
                                 >
-                                    Bestellung prüfen
+                                    Bestellung prÃ¼fen
                                 </button>
                             </div>
                         </div>
@@ -2278,7 +2121,7 @@
                                         font-size: 22px;
                                     "
                                 >
-                                    👥
+                                    ðŸ‘¥
                                 </div>
                                 <div>
                                     <h2
@@ -2298,7 +2141,7 @@
                                             margin: 4px 0 0 0;
                                         "
                                     >
-                                        Wähle den passenden Kunden aus der
+                                        WÃ¤hle den passenden Kunden aus der
                                         Bestellung
                                     </p>
                                 </div>
@@ -2328,7 +2171,7 @@
                                         'rgba(255,255,255,0.2)'
                                 "
                             >
-                                ✕
+                                âœ•
                             </button>
                         </div>
                         <!-- Tabelle -->
@@ -2402,7 +2245,7 @@
                                         font-size: 22px;
                                     "
                                 >
-                                    📦
+                                    ðŸ“¦
                                 </div>
                                 <div>
                                     <h2
@@ -2422,7 +2265,7 @@
                                             margin: 4px 0 0 0;
                                         "
                                     >
-                                        Wähle das passende Produkt anhand der
+                                        WÃ¤hle das passende Produkt anhand der
                                         Artikelnummer
                                     </p>
                                 </div>
@@ -2452,7 +2295,7 @@
                                         'rgba(255,255,255,0.2)'
                                 "
                             >
-                                ✕
+                                âœ•
                             </button>
                         </div>
                         <!-- Tabelle -->
@@ -2733,7 +2576,7 @@
                                 line-height: 1.6;
                             "
                         >
-                            Wähle in jeder Situation die
+                            WÃ¤hle in jeder Situation die
                             <strong>professionellste Antwort</strong>. Du
                             brauchst mindestens
                             <strong style="color: #fbbf24">5 von 7</strong>
@@ -2772,15 +2615,15 @@
                             Mission 4: Budget-Management
                         </h2>
                         <p style="font-size: 20px; color: white; opacity: 0.9">
-                            Verteile das Budget von 100.000 € auf die verschiedenen Abteilungen und erfülle die Mindestanforderungen.
+                            Verteile das Budget von 100.000 â‚¬ auf die verschiedenen Abteilungen und erfÃ¼lle die Mindestanforderungen.
                         </p>
                     </div>
 
                     <div id="budgetGame" style="display: block;">
                         <div style="background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; border: 2px solid #38bdf8;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                                <h3 style="color: white; font-size: 24px; margin: 0;">Verfügbares Budget</h3>
-                                <div id="remainingBudget" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; padding: 15px 30px; border-radius: 15px; font-size: 28px; font-weight: bold;">100.000 €</div>
+                                <h3 style="color: white; font-size: 24px; margin: 0;">VerfÃ¼gbares Budget</h3>
+                                <div id="remainingBudget" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; padding: 15px 30px; border-radius: 15px; font-size: 28px; font-weight: bold;">100.000 â‚¬</div>
                             </div>
                             <div style="background: rgba(0, 0, 0, 0.3); border-radius: 10px; height: 10px; overflow: hidden;">
                                 <div id="budgetProgressBar" style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
@@ -2788,7 +2631,7 @@
                         </div>
 
                         <div id="departmentInputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
-                            <!-- Abteilungen werden hier dynamisch eingefügt -->
+                            <!-- Abteilungen werden hier dynamisch eingefÃ¼gt -->
                         </div>
 
                         <div id="budgetFeedback" style="margin-bottom: 30px;"></div>
@@ -2808,7 +2651,7 @@
                                 width: 100%;
                             "
                         >
-                            Budget prüfen
+                            Budget prÃ¼fen
                         </button>
                     </div>
 
@@ -2824,14 +2667,14 @@
                             color: white;
                         "
                     >
-                        Spiel abschließen
+                        Spiel abschlieÃŸen
                     </button>
                 </section>
             </div>
         </div>
         <div data-component="footer" data-variant="academy" data-component-base=".."></div>
 
-        <!-- Neues Popup für Namenseingabe beim Überspringen -->
+        <!-- Neues Popup fÃ¼r Namenseingabe beim Ãœberspringen -->
         <div
             id="skipNameModal"
             class="modal-overlay"
@@ -2889,7 +2732,7 @@
                     ></div>
                     <div style="text-align: center; margin-top: 40px">
                         <button class="modal-btn" onclick="closeLegalModal()">
-                            Schließen
+                            SchlieÃŸen
                         </button>
                     </div>
                 </div>
@@ -2953,13 +2796,13 @@
                         style="margin-top: 30px"
                         onclick="closeStatInfo()"
                     >
-                        Schließen
+                        SchlieÃŸen
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Neustart-Bestätigungs-Modal -->
+        <!-- Neustart-BestÃ¤tigungs-Modal -->
         <div
             id="restartConfirmModal"
             class="modal-overlay"
@@ -2969,7 +2812,7 @@
                 <div class="modal-content-scroll">
                     <h3 id="restartConfirmTitle">Spiel neu starten?</h3>
                     <p>
-                        Möchtest du wirklich das Spiel neu starten? Dein Fortschritt
+                        MÃ¶chtest du wirklich das Spiel neu starten? Dein Fortschritt
                         geht verloren.
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center">
@@ -3004,13 +2847,13 @@
                     <!-- Titel -->
                     <div style="text-align: center; margin-top: 120px; margin-bottom: 50px;">
                         <h1 style="color: #667eea; font-size: 48px; margin: 0; font-weight: bold;">Zertifikat</h1>
-                        <p style="color: #764ba2; font-size: 24px; margin: 15px 0 0 0; font-weight: 500;">Büromanagement</p>
+                        <p style="color: #764ba2; font-size: 24px; margin: 15px 0 0 0; font-weight: 500;">BÃ¼romanagement</p>
                     </div>
                     
                     <!-- Graduations-Symbol -->
                     <div style="text-align: center; margin-bottom: 50px;">
                         <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);">
-                            <span style="color: white; font-size: 60px;">🎓</span>
+                            <span style="color: white; font-size: 60px;">ðŸŽ“</span>
                         </div>
                     </div>
                     
@@ -3021,33 +2864,33 @@
                         <p style="color: #333; font-size: 20px; margin: 0; line-height: 1.6;">alle Missionen erfolgreich abgeschlossen hat</p>
                     </div>
                     
-                    <!-- Missionen-Übersicht -->
+                    <!-- Missionen-Ãœbersicht -->
                     <div style="text-align: center; margin-bottom: 60px;">
                         <div style="display: flex; justify-content: center; gap: 40px; margin-bottom: 30px;">
                             <div style="text-align: center;">
                                 <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">âœ“</span>
                                 </div>
                                 <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 1</p>
                                 <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Bestellannahme</p>
                             </div>
                             <div style="text-align: center;">
                                 <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">âœ“</span>
                                 </div>
                                 <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 2</p>
                                 <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Rechnungseingabe</p>
                             </div>
                             <div style="text-align: center;">
                                 <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">âœ“</span>
                                 </div>
                                 <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 3</p>
                                 <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Kommunikation</p>
                             </div>
                             <div style="text-align: center;">
                                 <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
-                                    <span style="color: white; font-size: 30px; font-weight: bold;">✓</span>
+                                    <span style="color: white; font-size: 30px; font-weight: bold;">âœ“</span>
                                 </div>
                                 <p style="color: #333; font-size: 16px; margin: 0; font-weight: bold;">Mission 4</p>
                                 <p style="color: #666; font-size: 14px; margin: 5px 0 0 0;">Budget-Management</p>
@@ -3057,7 +2900,7 @@
                     
                     <!-- Footer -->
                     <div style="text-align: center; margin-top: auto; padding-top: 40px; border-top: 2px solid #f0f0f0;">
-                        <p style="color: #666; font-size: 16px; margin: 0; font-weight: 500;">ALO Academy - Büromanagement Training</p>
+                        <p style="color: #666; font-size: 16px; margin: 0; font-weight: 500;">ALO Academy - BÃ¼romanagement Training</p>
                         <p id="certificateDate" style="color: #999; font-size: 14px; margin: 10px 0 0 0;">[Datum]</p>
                     </div>
                 </div>
@@ -3068,6 +2911,48 @@
         <script src="assets/js/data.js"></script>
         <script src="assets/js/game.js"></script>
         <script src="assets/js/ui.js"></script>
+        <script>
+            (function () {
+                function removeQuickNavigationBlock() {
+                    const sidebar = document.querySelector(".sidebar");
+                    if (!sidebar) return;
+
+                    const normalize = (value) =>
+                        String(value || "")
+                            .replace(/\s+/g, "")
+                            .toUpperCase();
+
+                    Array.from(sidebar.querySelectorAll("*")).forEach((el) => {
+                        if (!normalize(el.textContent).includes("SCHNELLNAVIGATION")) {
+                            return;
+                        }
+
+                        let block = el;
+                        while (block && block.parentElement !== sidebar) {
+                            const text = normalize(block.textContent);
+                            const buttonCount = block.querySelectorAll("button").length;
+                            if (
+                                text.includes("SCHNELLNAVIGATION") &&
+                                buttonCount >= 3
+                            ) {
+                                break;
+                            }
+                            block = block.parentElement;
+                        }
+
+                        if (block && block !== sidebar) {
+                            block.remove();
+                        }
+                    });
+                }
+
+                removeQuickNavigationBlock();
+                document.addEventListener("DOMContentLoaded", removeQuickNavigationBlock);
+                window.addEventListener("load", removeQuickNavigationBlock);
+                setTimeout(removeQuickNavigationBlock, 100);
+                setTimeout(removeQuickNavigationBlock, 500);
+            })();
+        </script>
         <script type="module" src="../assets/js/help-settings.js"></script>
         <script type="module" src="../assets/js/maintenance.js"></script>
     </body>
