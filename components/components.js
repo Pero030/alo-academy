@@ -154,6 +154,13 @@ import {
         box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45) !important;
       }
 
+      body[data-alo-theme-mode="dark"] .modal {
+        box-shadow:
+          0 0 24px rgba(56, 189, 248, 0.28),
+          0 0 36px rgba(168, 85, 247, 0.24),
+          0 40px 100px rgba(0, 0, 0, 0.55) !important;
+      }
+
       body[data-alo-theme-mode="dark"] .modal::before,
       body[data-alo-theme-mode="white"] .modal::before {
         z-index: 0 !important;
@@ -167,9 +174,26 @@ import {
         ) !important;
       }
 
+      body[data-alo-theme-mode="dark"] .modal::before {
+        background: conic-gradient(
+          from 0deg,
+          #7dd3fc,
+          #c084fc,
+          #38bdf8,
+          #a855f7,
+          #7dd3fc
+        ) !important;
+        filter: saturate(1.35) brightness(1.25);
+      }
+
       body[data-alo-theme-mode="dark"] .modal::after,
       body[data-alo-theme-mode="white"] .modal::after {
         z-index: 1 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .modal::after {
+        inset: 6px !important;
+        border-radius: 34px !important;
       }
 
       body[data-alo-theme-mode="dark"] .modal-content-scroll,
