@@ -115,6 +115,30 @@ import {
         border-color: rgba(255, 255, 255, 0.35) !important;
       }
 
+      body[data-alo-theme-mode="dark"] .mission.blue-border {
+        border: 1px solid #38bdf8 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .mission.purple-border {
+        border: 1px solid #a855f7 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .mission.locked.blue-border {
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .mission.locked.purple-border {
+        border: 1px solid rgba(168, 85, 247, 0.3) !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .mission.blue-border.active {
+        border: 2px solid #38bdf8 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .mission.purple-border.active {
+        border: 2px solid #a855f7 !important;
+      }
+
       body[data-alo-theme-mode="white"] :where(
         main,
         .landing-main,
@@ -337,15 +361,16 @@ import {
       .alo-theme-options {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 26px;
+        gap: 16px;
+        margin-top: 28px;
       }
 
       .alo-animation-row {
-        margin-top: 24px;
-        padding: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-radius: 14px;
+        margin-top: 22px;
+        padding: 18px 20px;
+        border: 1px solid rgba(56, 189, 248, 0.38);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.05);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -355,7 +380,9 @@ import {
 
       .alo-animation-row strong {
         display: block;
-        font-size: 17px;
+        color: #38bdf8 !important;
+        font-size: 18px;
+        font-weight: 900;
       }
 
       .alo-animation-row span {
@@ -370,37 +397,106 @@ import {
         border-radius: 999px;
         padding: 12px 18px;
         font-weight: 900;
-        border: 1px solid rgba(34, 197, 94, 0.45);
-        background: rgba(34, 197, 94, 0.18);
+        border: 1px solid rgba(34, 197, 94, 0.7);
+        background: linear-gradient(135deg, #22c55e, #16a34a);
         color: #ffffff;
+        box-shadow: 0 10px 22px rgba(34, 197, 94, 0.24);
       }
 
       .alo-animation-toggle.off {
-        border-color: rgba(239, 68, 68, 0.45);
-        background: rgba(239, 68, 68, 0.18);
+        border-color: rgba(239, 68, 68, 0.7);
+        background: linear-gradient(135deg, #ef4444, #b91c1c);
+        box-shadow: 0 10px 22px rgba(239, 68, 68, 0.24);
       }
 
       .alo-theme-option {
-        min-height: 92px;
-        border-radius: 14px;
-        border: 2px solid rgba(255, 255, 255, 0.18);
+        position: relative;
+        overflow: hidden;
+        min-height: 132px;
+        border-radius: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.16);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+        align-items: flex-start;
+        justify-content: flex-end;
+        gap: 6px;
+        padding: 18px;
         font-size: 16px;
         font-weight: 900;
+        text-align: left;
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
+        isolation: isolate;
+      }
+
+      .alo-theme-option::before {
+        content: "";
+        position: absolute;
+        inset: 12px 12px auto auto;
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: var(--alo-theme-preview);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+        z-index: -1;
+      }
+
+      .alo-theme-option::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.28));
+        z-index: -2;
+      }
+
+      .alo-theme-option:hover {
+        transform: translateY(-3px);
+        border-color: #38bdf8 !important;
+        box-shadow:
+          0 22px 42px rgba(0, 0, 0, 0.32),
+          0 0 26px rgba(56, 189, 248, 0.24);
       }
 
       .alo-theme-option span {
         font-size: 13px;
-        opacity: 0.75;
+        font-weight: 700;
+        opacity: 0.78;
       }
 
       .alo-theme-option.active {
-        outline: 4px solid #38bdf8 !important;
+        border-color: #38bdf8 !important;
+        outline: 3px solid rgba(168, 85, 247, 0.65) !important;
         outline-offset: 3px;
+        box-shadow:
+          0 22px 42px rgba(0, 0, 0, 0.35),
+          0 0 34px rgba(56, 189, 248, 0.32),
+          0 0 42px rgba(168, 85, 247, 0.22);
+      }
+
+      .alo-theme-option[data-theme-mode="standard"] {
+        --alo-theme-preview: linear-gradient(135deg, #38bdf8, #a855f7);
+        background:
+          radial-gradient(circle at 20% 18%, rgba(56, 189, 248, 0.42), transparent 42%),
+          radial-gradient(circle at 85% 22%, rgba(168, 85, 247, 0.44), transparent 45%),
+          linear-gradient(135deg, #0f172a, #1e293b) !important;
+        color: #ffffff !important;
+      }
+
+      .alo-theme-option[data-theme-mode="dark"] {
+        --alo-theme-preview: linear-gradient(135deg, #000000 0 48%, #38bdf8 48% 56%, #a855f7 56% 100%);
+        background:
+          radial-gradient(circle at 88% 18%, rgba(56, 189, 248, 0.28), transparent 38%),
+          linear-gradient(135deg, #000000, #101014) !important;
+        color: #ffffff !important;
+      }
+
+      .alo-theme-option[data-theme-mode="white"] {
+        --alo-theme-preview: linear-gradient(135deg, #ffffff 0 48%, #38bdf8 48% 56%, #a855f7 56% 100%);
+        background:
+          radial-gradient(circle at 84% 20%, rgba(56, 189, 248, 0.2), transparent 40%),
+          linear-gradient(135deg, #ffffff, #f8fafc) !important;
+        color: #111827 !important;
+        border-color: rgba(17, 24, 39, 0.18) !important;
       }
 
       @media (max-width: 700px) {
@@ -547,20 +643,20 @@ import {
     modal.style.zIndex = "100000";
 
     modal.innerHTML =
-      '<div class="modal" style="max-width: 680px; width: 92%; text-align: center;">' +
-        '<div class="modal-content-scroll" style="padding: 44px;">' +
-          '<h3 style="margin-bottom: 16px;">Farben aendern</h3>' +
-          '<p style="font-size: 17px; margin-bottom: 0;">Waehle Standard, Darkmode oder Whitemode. Standard ist der aktuelle Look der Seite.</p>' +
+      '<div class="modal" style="max-width: 760px; width: 92%; text-align: center;">' +
+        '<div class="modal-content-scroll" style="padding: 50px;">' +
+          '<h3 style="margin-bottom: 12px;">Farben</h3>' +
+          '<p style="font-size: 18px; margin-bottom: 0; color: rgba(255,255,255,0.78);">Waehle den Look der Academy.</p>' +
           '<div class="alo-theme-options">' +
-            '<button class="alo-theme-option' + standardActive + '" data-theme-mode="standard" style="background: linear-gradient(135deg, #1e293b, #334155) !important; color: #ffffff !important;">Standard<span>Aktueller Look</span></button>' +
-            '<button class="alo-theme-option' + darkActive + '" data-theme-mode="dark" style="background: #000000 !important; color: #ffffff !important;">Darkmode<span>Schwarz / Weiss</span></button>' +
-            '<button class="alo-theme-option' + whiteActive + '" data-theme-mode="white" style="background: #ffffff !important; color: #111827 !important; border-color: rgba(17,24,39,0.35) !important;">Whitemode<span>Weiss / Schwarz</span></button>' +
+            '<button class="alo-theme-option' + standardActive + '" data-theme-mode="standard" type="button">Standard<span>Blau / Lila</span></button>' +
+            '<button class="alo-theme-option' + darkActive + '" data-theme-mode="dark" type="button">Darkmode<span>Schwarz / Weiss</span></button>' +
+            '<button class="alo-theme-option' + whiteActive + '" data-theme-mode="white" type="button">Whitemode<span>Weiss / Schwarz</span></button>' +
           '</div>' +
           '<div class="alo-animation-row">' +
             '<div><strong>Border Animation</strong><span id="borderAnimationState">' + animationState + '</span></div>' +
             '<button id="borderAnimationToggle" class="alo-animation-toggle' + animationClass + '" type="button">' + animationLabel + '</button>' +
           '</div>' +
-          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 30px;">Schliessen</button>' +
+          '<button class="modal-btn" onclick="closeThemePicker()" style="margin-top: 32px;">Schliessen</button>' +
         '</div>' +
       '</div>';
 
