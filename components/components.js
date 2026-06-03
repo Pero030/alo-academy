@@ -106,7 +106,6 @@ import {
         .start-screen-card,
         .intro-hero,
         .pro-tip,
-        .modal,
         .modal-content-scroll,
         #startScreen
       ):not(#shopLivePreview *):not(.shop-builder-sidebar):not(.shop-builder-scroll-content) {
@@ -135,8 +134,6 @@ import {
         .start-screen-card,
         .intro-hero,
         .pro-tip,
-        .modal,
-        .modal-content-scroll,
         .modal-content-scroll div,
         #startScreen
       ):not(#shopLivePreview *):not(.shop-builder-sidebar):not(.shop-builder-scroll-content) {
@@ -146,9 +143,7 @@ import {
       }
 
       body[data-alo-theme-mode="dark"] .modal,
-      body[data-alo-theme-mode="dark"] .modal-content-scroll,
-      body[data-alo-theme-mode="white"] .modal,
-      body[data-alo-theme-mode="white"] .modal-content-scroll {
+      body[data-alo-theme-mode="white"] .modal {
         background: transparent !important;
         background-image: none !important;
       }
@@ -161,6 +156,7 @@ import {
 
       body[data-alo-theme-mode="dark"] .modal::before,
       body[data-alo-theme-mode="white"] .modal::before {
+        z-index: 0 !important;
         background: conic-gradient(
           from 0deg,
           #38bdf8,
@@ -169,6 +165,19 @@ import {
           #a855f7,
           #38bdf8
         ) !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .modal::after,
+      body[data-alo-theme-mode="white"] .modal::after {
+        z-index: 1 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] .modal-content-scroll,
+      body[data-alo-theme-mode="white"] .modal-content-scroll {
+        background: transparent !important;
+        background-image: none !important;
+        position: relative !important;
+        z-index: 2 !important;
       }
 
       body[data-alo-theme-mode="dark"] :where(
@@ -275,14 +284,20 @@ import {
         background: #000000 !important;
         color: #ffffff !important;
         -webkit-text-fill-color: #ffffff !important;
-        border-color: rgba(255, 255, 255, 0.35) !important;
+        border: 2px solid #38bdf8 !important;
       }
 
       body[data-alo-theme-mode="white"] :where(input, textarea, select):not(#shopLivePreview *) {
         background: #ffffff !important;
         color: #111827 !important;
         -webkit-text-fill-color: #111827 !important;
-        border-color: rgba(17, 24, 39, 0.25) !important;
+        border: 2px solid #38bdf8 !important;
+      }
+
+      body[data-alo-theme-mode="dark"] :where(input, textarea, select):not(#shopLivePreview *):focus,
+      body[data-alo-theme-mode="white"] :where(input, textarea, select):not(#shopLivePreview *):focus {
+        border-color: #a855f7 !important;
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3) !important;
       }
 
       body[data-alo-theme-mode="white"] :where(input, textarea):not(#shopLivePreview *)::placeholder {
